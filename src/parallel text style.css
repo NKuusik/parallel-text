@@ -1,0 +1,13 @@
+.textfield	{
+		background-color: tan;
+		border: 2px solid black;
+		padding: 15px;
+		position: relative;
+		top: 25px;
+		margin: auto;
+		width: 250px;
+		float: left;	
+}
+	.textfield:nth-of-type(2)	{
+			float: right;
+	}
