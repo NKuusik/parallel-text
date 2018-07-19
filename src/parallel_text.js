@@ -1,5 +1,5 @@
-import './general style.css';
-import './parallel text style.css';
+import './styles/general_style.scss';
+import {addText} from './modules/module_addText';
 
 let httpRequest;
 
@@ -31,36 +31,6 @@ function selectLanguages ()	{
 		
 		}
 	}
-/* Initially the ajaxRequest ran on two separate functions, addFirstLanguage() and addSecondLanguage(). 
-This has now been replaced by the function selectLanguages()
-
-function addFirstLanguage()	{
-		let options = document.getElementsByClassName("dropdown-content")[0].children;
-		let dropbtns = document.getElementsByClassName("dropbtn");
-		for (let i = 0; options.length - 1 >= i; i++)	{
-			options[i].addEventListener("mouseup", function()	{
-			dropbtns[0].innerHTML = options[i].innerHTML;
-			let firstLanguage = this.innerHTML + ".txt";
-			let secondLanguage = dropbtns[1].innerHTML + ".txt";
-			ajaxRequest(firstLanguage, secondLanguage);
-				});		
-			}
-		}
-
-function addSecondLanguage()	{
-		let options = document.getElementsByClassName("dropdown-content")[1].children;
-		let dropbtns = document.getElementsByClassName("dropbtn");
-		for (let i = 0; options.length - 1 >= i; i++)	{
-			options[i].addEventListener("mouseup", function()	{
-			dropbtns[1].innerHTML = options[i].innerHTML;
-			let firstLanguage = dropbtns[0].innerHTML + ".txt";
-			let secondLanguage = this.innerHTML + ".txt";
-			ajaxRequest(firstLanguage, secondLanguage);
-				});		
-			}
-		}
-*/
-
 
 function modifyText(inputText) {
 	
@@ -77,24 +47,6 @@ function modifyText(inputText) {
 			}	
 		});	
 	}
-function addText (inputText) { 
-	document.getElementById("inputForm").addEventListener("keyup", function(e) {
-		let key = e.key;
-		let konteiner = document.getElementsByClassName("container")[0];
-		let previousDiv = document.getElementById("previousdiv");
-		if (key === "Enter") {
-			let textField = document.createElement("div");
-			textField.setAttribute("class", "textfield");
-			
-			while (previousDiv.childElementCount >= 2)	{
-				previousDiv.removeChild(previousDiv.firstChild);
-			}
-			textField.appendChild(inputText);
-			previousDiv.appendChild(textField);
-		}
-	});
-}
-
 
 function ajaxRequest(inputA , inputB) {
 	httpRequest = new Array(arguments.length);
