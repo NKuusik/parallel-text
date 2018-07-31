@@ -1,18 +1,3 @@
-export function modifyText(inputText) {
-	
-	let array = inputText.split("\n");
-	document.getElementById("inputForm").addEventListener("keydown", function(e) {
-		let key = e.key;
-			let iterator = document.getElementById("inputForm").value;
-			let textContent = document.createTextNode(array[iterator]);
-			if (textContent.nodeValue == "undefined")	{
-				textContent = document.createTextNode("No line found. Choose another number.");
-				addText(textContent);
-			} else {
-				addText(textContent);
-			}	
-		});	
-	}
 export function addText (inputText) { 
 	document.getElementById("inputForm").addEventListener("keyup", function(e) {
 		let key = e.key;

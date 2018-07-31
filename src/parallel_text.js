@@ -14,15 +14,11 @@ function selectLanguages ()	{
 			dropbtns[a].innerHTML = options[i].innerHTML;
 			if (a === 0)	{
 				firstLanguage = this.innerHTML + ".txt";
-				console.log("First language is " + firstLanguage);
-			}
-				else	{
+			}	else	{
 				firstLanguage = dropbtns[0].innerHTML + ".txt";
-			}
-			if (a === 1)	{
+			}	if (a === 1)	{
 				secondLanguage = this.innerHTML + ".txt";
-			}
-				else	{
+			}	else	{
 				secondLanguage = dropbtns[1].innerHTML + ".txt";
 			}
 			ajaxRequest(firstLanguage, secondLanguage);
@@ -33,18 +29,22 @@ function selectLanguages ()	{
 	}
 
 function modifyText(inputText) {
-	
+	let scheduled = null;
 	let array = inputText.split("\n");
 	document.getElementById("inputForm").addEventListener("keydown", function(e) {
 		let key = e.key;
-			let iterator = document.getElementById("inputForm").value;
-			let textContent = document.createTextNode(array[iterator]);
-			if (textContent.nodeValue == "undefined")	{
-				textContent = document.createTextNode("No line found. Choose another number.");
+		let iterator = document.getElementById("inputForm").value;
+		let textContent = document.createTextNode(array[iterator]);
+		if (!scheduled)	{
+			setTimeout(() =>	{
+				if (textContent.nodeValue == "undefined")	{
+					textContent = document.createTextNode("No line found. Choose another number.");
+				}
 				addText(textContent);
-			} else {
-				addText(textContent);
-			}	
+				scheduled = null;	
+			}, 50);
+		}
+		scheduled = e;
 		});	
 	}
 
