@@ -3,6 +3,10 @@ $button-color: red;
 $container-background: linear-gradient(lightblue, grey);
 $hover-color: blue;
 
+.navbar	{
+	background: $container-background;
+}
+
 body {
     margin: 5% 0%;
     background-color: $general-background-color;
@@ -26,10 +30,10 @@ input  {
  
 .container  {
 	margin: auto;
-	width: 50%;
-	border: 7px groove lightblue;
+	// width: 50%;
+	//border: 7px groove lightblue;
 	border-radius: 10px;
-	padding: 10px;
+	// padding: 10px;
 	text-align: center;
 	background: $container-background
 }
@@ -41,7 +45,7 @@ input  {
 	font-family: courier;
 	font-style: italic;
 	background-color: lightgreen;
-	border: 2px groove green;
+	border: 1px solid green;
 
 	&:hover{
 		background-color: $hover-color;
