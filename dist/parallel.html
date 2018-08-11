@@ -20,31 +20,61 @@
 						<a class="nav-link ml-auto" href="mailto:normankuusik@gmail.com">e-mail</a>
 					</div>
 				</div>
-			</nav>  
+			</nav> 
+			
+			<!-- Stack the columns on mobile by making one full-width and the other half-width -->
+
+  
+  <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop
+  <div class="row">
+	<div class="col-6 col-md-4">.col-6 .col-md-4</div>
+	<div class="col-6 col-md-4">.col-6 .col-md-4</div>
+	<div class="col-6 col-md-4">.col-6 .col-md-4</div>
+  </div>
+  
+  <!-- Columns are always 50% wide, on mobile and desktop
+  <div class="row">
+	<div class="col-6">.col-6</div>
+	<div class="col-6">.col-6</div>
+  </div> -->
 
 <div class="container">
-<h1>Parallel text</h1>
-<p>This website displays two parallel versions of the Universal Declaration of Human Rights line by line.</p>
-<p>Pick input languages.</p>
-<div class="dropdown">
-	<button class="dropbtn">First Language</button>
-	<div class="dropdown-content">
-		<p>ENG</p>
-		<p>EST</p>
-		<p>GER<p>
-		<p>FRA<p>
+
+	<div class="row">
+		<div class="col-12">
+			<h1>Parallel text</h1>
+			<p>This website displays two parallel versions of the Universal Declaration of Human Rights line by line.</p>
+			<p>Pick input languages.</p>
+		</div>
+		<div class="col-6">
+			<div class="dropdown">
+				<button class="dropbtn">First Language</button>
+				<div class="dropdown-content">
+					<p>ENG</p>
+					<p>EST</p>
+					<p>GER<p>
+					<p>FRA<p>
+				</div>
+			</div>
+
+		</div>
+		<div class="col-6">
+			<div class="dropdown">
+				<button class="dropbtn">Second Language</button>
+				<div class="dropdown-content">
+					<p>ENG</p>
+					<p>EST</p>
+					<p>GER</p>
+					<p>FRA<p>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12">
+			<p>Choose the number of the line and press enter.</p>
+		</div>
 	</div>
-</div>
-<div class="dropdown">
-	<button class="dropbtn">Second Language</button>
-	<div class="dropdown-content">
-		<p>ENG</p>
-		<p>EST</p>
-		<p>GER</p>
-		<p>FRA<p>
-	</div>
-</div>
-<p>Choose the number of the line and press enter.</p>
+
 
 <input id="inputForm" type="text" name="enter text" value="1-88">
 <div id="previousdiv"></div>

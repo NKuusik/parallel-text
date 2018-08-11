@@ -3,6 +3,16 @@ $button-color: red;
 $container-background: linear-gradient(lightblue, grey);
 $hover-color: blue;
 
+.row {
+	// // background-color: yellow;
+	// border: 1px black solid;
+	text-align: center;
+
+	h1 {
+		padding-top: 20px;
+	}
+}
+
 .navbar	{
 	background: $container-background;
 }
