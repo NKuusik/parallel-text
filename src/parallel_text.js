@@ -3,6 +3,23 @@ import {addText} from './modules/module_addText';
 
 let httpRequest;
 
+function ajaxRequest(inputA , inputB) {
+	httpRequest = new Array(arguments.length);
+	for (let i = 0; arguments.length - 1 >= i; i++)	{
+	
+	httpRequest[i] = new XMLHttpRequest();
+
+	httpRequest[i].open('GET', 'texts/' + arguments[i])
+	httpRequest[i].onreadystatechange =  function()	{
+		if (httpRequest[i].readyState === XMLHttpRequest.DONE && httpRequest[i].status === 200) {
+				modifyText(httpRequest[i].responseText);
+				
+		}
+	}
+	httpRequest[i].send();
+	}
+}
+
 function selectLanguages ()	{
 	let firstLanguage;
 	let secondLanguage;
@@ -48,22 +65,7 @@ function modifyText(inputText) {
 		});	
 	}
 
-function ajaxRequest(inputA , inputB) {
-	httpRequest = new Array(arguments.length);
-	for (let i = 0; arguments.length - 1 >= i; i++)	{
-	
-	httpRequest[i] = new XMLHttpRequest();
 
-	httpRequest[i].open('GET', 'texts/' + arguments[i])
-	httpRequest[i].onreadystatechange =  function()	{
-		if (httpRequest[i].readyState === XMLHttpRequest.DONE && httpRequest[i].status === 200) {
-				modifyText(httpRequest[i].responseText);
-				
-		}
-	}
-	httpRequest[i].send();
-	}
-}
 
 
 selectLanguages();
