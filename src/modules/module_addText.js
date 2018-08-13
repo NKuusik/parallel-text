@@ -1,6 +1,6 @@
 // export function addText (inputText) {
 // 	// console.log(inputText);
-// 	document.getElementById("inputForm").addEventListener("keyup", function(e) {
+// 	document.getElementById("input-form").addEventListener("keyup", function(e) {
 // 		let key = e.key;
 // 		let displayedText = document.getElementsByClassName("displayed-text");
 // 		// console.log(displayedText);
@@ -26,18 +26,14 @@
 
 
 export function addText (inputText) {
-	let containerForDisplayedTexts = document.getElementById("container-for-displayed-texts");
-	document.getElementById("inputForm").addEventListener("keyup", function(e) {
-		let key = e.key;
-		if (key === "Enter") {
-			let displayedText = document.createElement("div");
-			displayedText.setAttribute("class", "col-6 displayed-texts");
-		
-			while (containerForDisplayedTexts.childElementCount >= 2)	{
-				containerForDisplayedTexts.removeChild(containerForDisplayedTexts.firstChild);
+	let containerForDisplayedTexts = $("#container-for-displayed-texts");
+	let displayedText = $("<div class='col-6 displayed-texts'></div>");
+	$("#input-form").on("keyup", function(e){
+		if (e.which == 13)	{
+			while (containerForDisplayedTexts.get(0).childElementCount >= 2)	{
+				containerForDisplayedTexts.find("div:first-child").remove()
 			}
-			displayedText.appendChild(inputText);
-			containerForDisplayedTexts.appendChild(displayedText);
+			containerForDisplayedTexts.append(displayedText.text(inputText));
 		}
 	});
 }
