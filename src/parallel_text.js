@@ -3,52 +3,13 @@ import {addText} from './modules/module_addText';
 
 let httpRequest;
 
-function selectLanguages ()	{
-	let firstLanguage;
-	let secondLanguage;
-	let dropbtns = document.getElementsByClassName("dropbtn");
-	for (let a = 0; dropbtns.length - 1 >= a; a++)	{
-		let options = document.getElementsByClassName("dropdown-content")[a].children;
-			for (let i = 0; options.length - 1 >= i; i++)	{
-			options[i].addEventListener("mouseup", function()	{
-			dropbtns[a].innerHTML = options[i].innerHTML;
-			if (a === 0)	{
-				firstLanguage = this.innerHTML + ".txt";
-			}	else	{
-				firstLanguage = dropbtns[0].innerHTML + ".txt";
-			}	if (a === 1)	{
-				secondLanguage = this.innerHTML + ".txt";
-			}	else	{
-				secondLanguage = dropbtns[1].innerHTML + ".txt";
-			}
-			ajaxRequest(firstLanguage, secondLanguage);
-				});		
-			}
-		
-		}
-	}
+function ajaxRequest(inputA , inputB) { 
 
-function modifyText(inputText) {
-	let scheduled = null;
-	let array = inputText.split("\n");
-	document.getElementById("inputForm").addEventListener("keydown", function(e) {
-		let key = e.key;
-		let iterator = document.getElementById("inputForm").value;
-		let textContent = document.createTextNode(array[iterator]);
-		if (!scheduled)	{
-			setTimeout(() =>	{
-				if (textContent.nodeValue == "undefined")	{
-					textContent = document.createTextNode("No line found. Choose another number.");
-				}
-				addText(textContent);
-				scheduled = null;	
-			}, 50);
-		}
-		scheduled = e;
-		});	
-	}
+	/*Defining both languages as separate parametres 
+	(and not as a single array) avoids mixing up the 
+	display order of texts. 
+	*/
 
-function ajaxRequest(inputA , inputB) {
 	httpRequest = new Array(arguments.length);
 	for (let i = 0; arguments.length - 1 >= i; i++)	{
 	
@@ -57,13 +18,53 @@ function ajaxRequest(inputA , inputB) {
 	httpRequest[i].open('GET', 'texts/' + arguments[i])
 	httpRequest[i].onreadystatechange =  function()	{
 		if (httpRequest[i].readyState === XMLHttpRequest.DONE && httpRequest[i].status === 200) {
-				modifyText(httpRequest[i].responseText);
-				
+			modifyText(httpRequest[i].responseText);				
 		}
 	}
 	httpRequest[i].send();
 	}
 }
+
+function selectLanguages ()	{
+	$(".dropdown-content p").on("mouseup", function () {
+		let selectedButton = $(this).parent().siblings(".dropbtn");
+		selectedButton.html($(this).html());
+		
+		/* Selected languages were formely assigned by looping an array
+		This version relies on a dynamically updated object instead */
+			let selectedLanguages =	{
+			firstLanguage: `${$("#first-language").text()}.txt`,
+			secondLanguage: `${$("#second-language").text()}.txt`
+		}
+	ajaxRequest(selectedLanguages.firstLanguage, selectedLanguages.secondLanguage);
+	});
+}
+
+function modifyText(inputText) {
+	let scheduled = null;
+	let textContent;
+	let array = inputText.split("\n");
+	$("#input-form").on("keydown", function(e) {
+		if (e.which == 13)	{
+		let lineNumber = $("#input-form").val();
+			if (!scheduled)	{
+				setTimeout(() =>	{
+					if (array[lineNumber] == null)	{
+						textContent = "No line found. Choose another number.";
+						addText(textContent);
+					} else {
+						textContent = array[lineNumber];
+						addText(textContent);
+					}
+					scheduled = null;	
+				}, 50);
+			}
+			scheduled = e;	
+		}	
+	});
+}
+
+
 
 
 selectLanguages();

@@ -1,11 +1,31 @@
-$general-background-color: lightgrey;
+$general-background-color: #9C9BA0;
 $button-color: red;
 $container-background: linear-gradient(lightblue, grey);
-$hover-color: blue;
+$hover-color: rgb(33, 33, 236);
+$main-radius: 10px;
+$link-color: rgba(106, 243, 14, 0.8);
+$link-background: rgba(0, 0, 0, 0.5);
 
-body {
-    margin: 5% 0%;
-    background-color: $general-background-color;
+html, body	{
+	background-color: $general-background-color;
+	background-image: url("https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c6e515b18f362fa50e05a285e03225d5&auto=format&fit=crop&w=1655&q=80");
+	background-repeat: no-repeat;
+	background-size: cover;
+	font-family: 'Corben', cursive;
+}
+
+body	{
+	margin: 5% 0%;
+}
+
+.row {
+	h1 {
+		padding-top: 20px;
+	}
+}
+
+.navbar	{
+	background: $container-background;
 }
 
 button	{
@@ -21,44 +41,30 @@ button	{
 }
 
 input  {
-	border: groove blue;
+	border: solid blue;
 	}
  
 .container  {
-	margin: auto;
-	width: 50%;
-	border: 7px groove lightblue;
-	border-radius: 10px;
-	padding: 10px;
+	border-radius: $main-radius;
 	text-align: center;
-	background: $container-background
+	background: $container-background;
+	box-shadow: 7px 7px 2px rgba(4, 4, 95, 0.2);
+
 }
 
 .container a {
 	border-radius: 5px;
-	color: inherit;
-	text-decoration: none;
-	font-family: courier;
-	font-style: italic;
-	background-color: lightgreen;
-	border: 2px groove green;
+	background-color: $link-background;
+	color: $link-color;
+	border: 1px solid green;
 
 	&:hover{
 		background-color: $hover-color;
 		transition: 1s;
 	}
-}
-
-
-
-.container .email  {
-	position: relative;
-	left: 45%;
-	bottom: 80px;
 }	
 
 .dropdown {
-	position: relative;
 	display: inline-block;
 }
 
@@ -78,20 +84,35 @@ input  {
 .dropdown-content p:hover	{
 	background-color: red;
 	transition: background-color 1s;
-	border-radius: 0px;
 }
 
-.textfield	{
-        background-color: tan;
-        border: 2px solid black;
-        padding: 15px;
-    	position: relative;
+.displayed-texts	{
+		background-color: tan;
+		border: 1px solid black;
+		border-radius: $main-radius;
+		max-width: 45%;
+		margin-left: 2.5%;
+		margin-right: 2.5%;
         top: 25px;
-        margin: auto;
-        width: 250px;
-        float: left;	
-		
-	&:nth-of-type(2)	{
-        float: right;
+}
+
+.navbar-brand, .nav-link	{	
+	padding: 0.25rem 1rem;
+	background-color: $link-background;
+	span {
+		color: $link-color;	
+	}
+}
+
+.content-body	{
+	margin-top: 10%;
+	padding: 40px 0 40px 0;
+	font-size: 1.25rem;
+
+	a {
+		padding: 0 20px 5px 20px;
+	}
+	span {
+		padding-right: 15px;
 	}
 }
