@@ -1,10 +1,17 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { watchFile } = require('fs');
 
 module.exports = {
+  mode: 'development',
   entry: './src/parallel_text.js',
+  devtool: 'inline-source-map',
+  devServer: {
+    watchFiles: ["./src/**"],
+    hot: true
+  },
   plugins: [
-    new HtmlWebpackPlugin({  // Also generate a test.html
+    new HtmlWebpackPlugin({
         title: 'Parallel text',
         filename: 'index.html',
         template: 'src/index.html'
