@@ -19,6 +19,7 @@ module.exports = {
   ],
   output: {
     filename: '[name].bundle.js',
+    assetModuleFilename: 'texts/[hash][ext][query]',
     path: path.resolve(__dirname, 'dist'),
   },
   module: {
@@ -38,6 +39,13 @@ module.exports = {
           "sass-loader",
         ],
       },
+      {
+        test: /\.txt$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'texts/[name][ext]', // Maintain the original name and extension
+        },
+      }
     ],
   },
 };
