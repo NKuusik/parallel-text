@@ -3,13 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { watchFile } = require('fs');
 
 module.exports = {
-  mode: 'development',
   entry: './src/parallel_text.js',
-  devtool: 'inline-source-map',
-  devServer: {
-    watchFiles: ["./src/**"],
-    hot: true
-  },
   plugins: [
     new HtmlWebpackPlugin({
         title: 'Parallel text',
@@ -21,6 +15,7 @@ module.exports = {
     filename: '[name].bundle.js',
     assetModuleFilename: 'texts/[hash][ext][query]',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
   module: {
     rules: [
