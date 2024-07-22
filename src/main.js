@@ -1,3 +1,10 @@
+import { createApp } from "vue";
+import App from './App.vue'     //Our .vue startup file
+
+//Will mount the vue app inside a HTML element which id equals to "app" (div into templetes/index.html file)
+createApp(App).mount('#app');
+
+
 import './styles/general_style.scss';
 import {addText} from './modules/module_addText';
 import ENG from './texts/ENG.txt';
@@ -8,11 +15,6 @@ import GER from './texts/GER.txt';
 let httpRequest;
 
 function ajaxRequest(inputA , inputB) { 
-
-	/*Defining both languages as separate parametres 
-	(and not as a single array) avoids mixing up the 
-	display order of texts. 
-	*/
 
 	httpRequest = new Array(arguments.length);
 	for (let i = 0; arguments.length - 1 >= i; i++)	{
@@ -34,8 +36,6 @@ function selectLanguages ()	{
 		let selectedButton = $(this).parent().siblings(".dropbtn");
 		selectedButton.html($(this).html());
 		
-		/* Selected languages were formely assigned by looping an array
-		This version relies on a dynamically updated object instead */
 			let selectedLanguages =	{
 			firstLanguage: `${$("#first-language").text()}.txt`,
 			secondLanguage: `${$("#second-language").text()}.txt`
