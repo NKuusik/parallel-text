@@ -1,3 +1,50 @@
+<script setup>
+import { ref } from 'vue'
+import DropDownButton from './components/DropDownButton.vue'
+
+</script>
+
 <template>
-  <h1>Hello World!</h1>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container">
+					<a class="navbar-brand" href="index.html"><span class="fas fa-home"></span></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<a class="nav-link mr-auto" href="index.html">Parallel Text Displayer</a>
+					<a class="nav-link ml-auto" href="mailto:normankuusik@gmail.com"><span class="fab fa-mailchimp"></span> e-mail</a>
+				</div>
+			</div>
+		</nav> 
+
+<div class="container content-body">
+
+	<div class="row">
+		<div class="col-12">
+			<h1>Parallel text</h1>
+			<p>This website displays two parallel versions of the Universal Declaration of Human Rights line by line.</p>
+			<p>Pick input languages.</p>
+		</div>
+		<div class="col-6">
+      <DropDownButton id="first-language" buttonText="First Language"/>
+		</div>
+    <div class="col-6">
+      <DropDownButton id="second-language" buttonText="Second Language"/>
+		</div>
+
+		<div class="col-12">
+			<p>Choose the number of the line and press enter.</p>
+		</div>
+			
+		<div class="col-12">
+			<input id="input-form" type="text" name="enter text" value="1-88">
+		</div>
+	</div>
+
+	<!-- Displayed text -->
+	<div class="row" id="container-for-displayed-texts"></div>	
+
+</div>
 </template>
