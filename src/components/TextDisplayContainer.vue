@@ -4,14 +4,16 @@ const props = defineProps({
   displayedTextArray: Array
 })
 
-const boo = () => {
-	return ('<h1>{{ displayedText }}</h1>')
+const isNull = (value) => {
+	return value === null
 }
 
 </script>
 
 <template>
-	<div v-for="text in displayedTextArray" class="row" id="container-for-displayed-texts">
-		<div class='col-6 displayed-texts'>{{ text }}</div>
-	</div>	
+	<div v-if="!displayedTextArray.every(isNull)" class="row">
+		<div v-for="text in displayedTextArray" class='col-6 displayed-texts'>
+			{{ text }}
+		</div>	
+	</div>
 </template>
