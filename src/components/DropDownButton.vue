@@ -20,7 +20,8 @@ const handleClick = (input) => {
 
 
 <template>
-<div class="dropdown">
+  <div class="col-6">
+    <div class="dropdown">
     <button class="dropbtn" :id="id">{{ currentButtonText }}</button>
     <div class="dropdown-content">
         <p @click="handleClick('ENG')">ENG</p>
@@ -29,4 +30,6 @@ const handleClick = (input) => {
         <p @click="handleClick('FRA')">FRA</p>
     </div>
 </div>
+  
+  </div>
 </template>
