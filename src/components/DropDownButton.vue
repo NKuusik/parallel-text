@@ -4,7 +4,7 @@ import { defineEmits, ref } from 'vue'
 
 const props = defineProps({
   initialButtonText: String,
-  id: String
+  id: Number
 })
 
 const emit = defineEmits(['updateSelectedLanguage'])

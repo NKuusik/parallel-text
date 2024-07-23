@@ -1,35 +1,35 @@
 <script setup>
 import DropDownButton from './components/DropDownButton.vue'
+import TextDisplayContainer from './components/TextDisplayContainer.vue'
 import { ref } from 'vue'
-import {addText} from './modules/module_addText';
 
+const selectedLanguages = ref({
+	0: '',
+	1:''
+})
+
+const currentDisplayedText = ref([null, null])
 
 const handleDataChange = (buttonText, buttonId) => {
 	selectedLanguages.value[buttonId] = buttonText
-	ajaxRequest(selectedLanguages.value['first-language'], selectedLanguages.value['second-language'])
+	ajaxRequest([selectedLanguages.value[0], selectedLanguages.value[1]])
 }
-let httpRequest;
 
-function ajaxRequest(inputA , inputB) { 
-	console.log(`ajaxRequest ${inputA} ${inputB}`)
-	httpRequest = new Array(arguments.length);
-	console.log(`ajaxRequest ${inputA} ${httpRequest}`)
-
-	for (let i = 0; arguments.length - 1 >= i; i++)	{
-
+function ajaxRequest(input) { 
+	let httpRequest = new Array(input.length)
+	for (let i = 0; input.length - 1 >= i; i++)	{
 		httpRequest[i] = new XMLHttpRequest();
-		console.log(`ajaxRequest ${inputA} ${httpRequest}`)
-		httpRequest[i].open('GET', 'texts/' + arguments[i] + ".txt")
+		httpRequest[i].open('GET', 'texts/' + input[i] + ".txt")
 		httpRequest[i].onreadystatechange =  function()	{
 			if (httpRequest[i].readyState === XMLHttpRequest.DONE && httpRequest[i].status === 200) {
-				modifyText(httpRequest[i].responseText);				
+				modifyText(httpRequest[i].responseText, i);				
 			}
 	}
 	httpRequest[i].send();
 	}
 }
 
-function modifyText(inputText) {
+function modifyText(inputText, index) {
 	let scheduled = null;
 	let textContent;
 	let array = inputText.split("\n");
@@ -40,24 +40,18 @@ function modifyText(inputText) {
 				setTimeout(() =>	{
 					if (array[lineNumber] == null)	{
 						textContent = "No line found. Choose another number.";
-						addText(textContent);
 					} else {
 						textContent = array[lineNumber];
-						addText(textContent);
+
 					}
-					scheduled = null;	
+					scheduled = null;
+					currentDisplayedText.value[index] = textContent	
 				}, 50);
 			}
 			scheduled = e;	
 		}	
 	});
 }
-
-
-const selectedLanguages = ref({
-	'first-language': '',
-	'second-language':''
-})
 
 </script>
 
@@ -85,10 +79,10 @@ const selectedLanguages = ref({
 			<p>Pick input languages.</p>
 		</div>
 		<div class="col-6">
-      <DropDownButton @updateSelectedLanguage="handleDataChange" id="first-language" initialButtonText="First Language"/>
+      <DropDownButton @updateSelectedLanguage="handleDataChange" :id="0" initialButtonText="First Language"/>
 		</div>
     <div class="col-6">
-      <DropDownButton @updateSelectedLanguage="handleDataChange" id="second-language" initialButtonText="Second Language"/>
+      <DropDownButton @updateSelectedLanguage="handleDataChange" :id="1" initialButtonText="Second Language"/>
 		</div>
 
 		<div class="col-12">
@@ -100,8 +94,7 @@ const selectedLanguages = ref({
 		</div>
 	</div>
 
-	<!-- Displayed text -->
-	<div class="row" id="container-for-displayed-texts"></div>	
+	<TextDisplayContainer :displayedTextArray=currentDisplayedText />
 
 </div>
 </template>
