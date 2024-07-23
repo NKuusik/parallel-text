@@ -1,6 +1,63 @@
 <script setup>
-import { ref } from 'vue'
 import DropDownButton from './components/DropDownButton.vue'
+import { ref } from 'vue'
+import {addText} from './modules/module_addText';
+
+
+const handleDataChange = (buttonText, buttonId) => {
+	selectedLanguages.value[buttonId] = buttonText
+	ajaxRequest(selectedLanguages.value['first-language'], selectedLanguages.value['second-language'])
+}
+let httpRequest;
+
+function ajaxRequest(inputA , inputB) { 
+	console.log(`ajaxRequest ${inputA} ${inputB}`)
+	httpRequest = new Array(arguments.length);
+	console.log(`ajaxRequest ${inputA} ${httpRequest}`)
+
+	for (let i = 0; arguments.length - 1 >= i; i++)	{
+
+		httpRequest[i] = new XMLHttpRequest();
+		console.log(`ajaxRequest ${inputA} ${httpRequest}`)
+		httpRequest[i].open('GET', 'texts/' + arguments[i] + ".txt")
+		httpRequest[i].onreadystatechange =  function()	{
+			if (httpRequest[i].readyState === XMLHttpRequest.DONE && httpRequest[i].status === 200) {
+				modifyText(httpRequest[i].responseText);				
+			}
+	}
+	httpRequest[i].send();
+	}
+}
+
+function modifyText(inputText) {
+	let scheduled = null;
+	let textContent;
+	let array = inputText.split("\n");
+	$("#input-form").on("keydown", function(e) {
+		if (e.which == 13)	{
+		let lineNumber = $("#input-form").val();
+			if (!scheduled)	{
+				setTimeout(() =>	{
+					if (array[lineNumber] == null)	{
+						textContent = "No line found. Choose another number.";
+						addText(textContent);
+					} else {
+						textContent = array[lineNumber];
+						addText(textContent);
+					}
+					scheduled = null;	
+				}, 50);
+			}
+			scheduled = e;	
+		}	
+	});
+}
+
+
+const selectedLanguages = ref({
+	'first-language': '',
+	'second-language':''
+})
 
 </script>
 
@@ -28,10 +85,10 @@ import DropDownButton from './components/DropDownButton.vue'
 			<p>Pick input languages.</p>
 		</div>
 		<div class="col-6">
-      <DropDownButton id="first-language" buttonText="First Language"/>
+      <DropDownButton @updateSelectedLanguage="handleDataChange" id="first-language" initialButtonText="First Language"/>
 		</div>
     <div class="col-6">
-      <DropDownButton id="second-language" buttonText="Second Language"/>
+      <DropDownButton @updateSelectedLanguage="handleDataChange" id="second-language" initialButtonText="Second Language"/>
 		</div>
 
 		<div class="col-12">
@@ -39,7 +96,7 @@ import DropDownButton from './components/DropDownButton.vue'
 		</div>
 			
 		<div class="col-12">
-			<input id="input-form" type="text" name="enter text" value="1-88">
+			<input id="input-form" type="text" vuename="enter text" value="1-88">
 		</div>
 	</div>
 

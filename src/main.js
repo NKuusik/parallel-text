@@ -1,10 +1,5 @@
 import { createApp } from "vue";
-import App from './App.vue'     //Our .vue startup file
-
-//Will mount the vue app inside a HTML element which id equals to "app" (div into templetes/index.html file)
-createApp(App).mount('#app');
-
-
+import App from './App.vue'
 import './styles/general_style.scss';
 import {addText} from './modules/module_addText';
 import ENG from './texts/ENG.txt';
@@ -12,63 +7,4 @@ import EST from './texts/EST.txt';
 import FRA from './texts/FRA.txt';
 import GER from './texts/GER.txt';
 
-let httpRequest;
-
-function ajaxRequest(inputA , inputB) { 
-
-	httpRequest = new Array(arguments.length);
-	for (let i = 0; arguments.length - 1 >= i; i++)	{
-	
-	httpRequest[i] = new XMLHttpRequest();
-
-	httpRequest[i].open('GET', 'texts/' + arguments[i])
-	httpRequest[i].onreadystatechange =  function()	{
-		if (httpRequest[i].readyState === XMLHttpRequest.DONE && httpRequest[i].status === 200) {
-			modifyText(httpRequest[i].responseText);				
-		}
-	}
-	httpRequest[i].send();
-	}
-}
-
-function selectLanguages ()	{
-	$(".dropdown-content p").on("mouseup", function () {
-		let selectedButton = $(this).parent().siblings(".dropbtn");
-		selectedButton.html($(this).html());
-		
-			let selectedLanguages =	{
-			firstLanguage: `${$("#first-language").text()}.txt`,
-			secondLanguage: `${$("#second-language").text()}.txt`
-		}
-	ajaxRequest(selectedLanguages.firstLanguage, selectedLanguages.secondLanguage);
-	});
-}
-
-function modifyText(inputText) {
-	let scheduled = null;
-	let textContent;
-	let array = inputText.split("\n");
-	$("#input-form").on("keydown", function(e) {
-		if (e.which == 13)	{
-		let lineNumber = $("#input-form").val();
-			if (!scheduled)	{
-				setTimeout(() =>	{
-					if (array[lineNumber] == null)	{
-						textContent = "No line found. Choose another number.";
-						addText(textContent);
-					} else {
-						textContent = array[lineNumber];
-						addText(textContent);
-					}
-					scheduled = null;	
-				}, 50);
-			}
-			scheduled = e;	
-		}	
-	});
-}
-
-
-
-
-selectLanguages();
+createApp(App).mount('#app');
