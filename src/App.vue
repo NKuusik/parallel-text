@@ -11,11 +11,23 @@ const selectedLanguages = ref({
 	1:''
 })
 
+const currentlyQueriedText = ref({
+	0: [],
+	1: []
+})
+
 const currentDisplayedText = ref([null, null])
 
-const handleDataChange = (buttonText, buttonId) => {
+const handleInputDataChange = (buttonText, buttonId) => {
 	selectedLanguages.value[buttonId] = buttonText
 	ajaxRequest([selectedLanguages.value[0], selectedLanguages.value[1]])
+}
+
+const handleSelectedLineChange = (lineNumber) => {
+	let currentTexts = currentlyQueriedText.value;
+	for (let i = 0; i < 2; i++) {
+		currentDisplayedText.value[i] = currentTexts[i][lineNumber]
+	}
 }
 
 // Todo: results of ajaxRequest should be stored as refs
@@ -26,31 +38,34 @@ function ajaxRequest(input) {
 		httpRequest[i].open('GET', 'texts/' + input[i] + ".txt")
 		httpRequest[i].onreadystatechange =  function()	{
 			if (httpRequest[i].readyState === XMLHttpRequest.DONE && httpRequest[i].status === 200) {
-				modifyText(httpRequest[i].responseText, i);				
+				let responseTextArray = httpRequest[i].responseText.split("\n");
+				currentlyQueriedText.value[i] = responseTextArray
+				modifyText(i);				
 			}
 	}
 	httpRequest[i].send();
 	}
 }
 
+
 // Todo: Refactor and move this to LineSelection
-function modifyText(inputText, index) {
+function modifyText(index) {
 	let scheduled = null;
-	let textContent;
-	let array = inputText.split("\n");
+	let selectedLine = null;
+	let textArray = currentlyQueriedText.value[index];
 	$("#input-form").on("keydown", function(e) {
 		if (e.which == 13)	{
 		let lineNumber = $("#input-form").val();
 			if (!scheduled)	{
 				setTimeout(() =>	{
-					if (array[lineNumber] == null)	{
-						textContent = "No line found. Choose another number.";
+					if (textArray[lineNumber] == null)	{
+						selectedLine = "No line found. Choose another number.";
 					} else {
-						textContent = array[lineNumber];
+						selectedLine = textArray[lineNumber];
 
 					}
 					scheduled = null;
-					currentDisplayedText.value[index] = textContent	
+					currentDisplayedText.value[index] = selectedLine	
 				}, 50);
 			}
 			scheduled = e;	
@@ -65,9 +80,9 @@ function modifyText(inputText, index) {
 <div class="container content-body">
 	<div class="row">
 		<MainText />
-	    <DropDownButton @updateSelectedLanguage="handleDataChange" :id="0" initialButtonText="First Language"/>
-    	<DropDownButton @updateSelectedLanguage="handleDataChange" :id="1" initialButtonText="Second Language"/>
-		<LineSelection/>
+	    <DropDownButton @updateSelectedLanguage="handleInputDataChange" :id="0" initialButtonText="First Language"/>
+    	<DropDownButton @updateSelectedLanguage="handleInputDataChange" :id="1" initialButtonText="Second Language"/>
+		<LineSelection @updateSelectedLine="handleSelectedLineChange"/>
 	</div>
 	<TextDisplayContainer :displayedTextArray=currentDisplayedText />
 </div>
