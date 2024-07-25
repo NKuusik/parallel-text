@@ -1,6 +1,6 @@
 <script setup>
 
-const props = defineProps({
+defineProps({
   displayedTextArray: Array
 })
 
@@ -12,7 +12,7 @@ const isNull = (value) => {
 
 <template>
 	<div v-if="!displayedTextArray.every(isNull)" class="row mt-4">
-		<div v-for="text in displayedTextArray" class='col-6 displayed-texts'>
+		<div v-for="text in displayedTextArray" v-bind:key="text" class='col-6 mb-4 displayed-texts'>
 			{{ text }}
 		</div>	
 	</div>

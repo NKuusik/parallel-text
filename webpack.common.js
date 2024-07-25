@@ -2,7 +2,6 @@ const webpack = require('webpack')
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader')
-const { watchFile } = require('fs');
 
 module.exports = {
   entry: './src/main.js',
