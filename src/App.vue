@@ -39,38 +39,11 @@ function ajaxRequest(input) {
 		httpRequest[i].onreadystatechange =  function()	{
 			if (httpRequest[i].readyState === XMLHttpRequest.DONE && httpRequest[i].status === 200) {
 				let responseTextArray = httpRequest[i].responseText.split("\n");
-				currentlyQueriedText.value[i] = responseTextArray
-				modifyText(i);				
+				currentlyQueriedText.value[i] = responseTextArray		
 			}
 	}
 	httpRequest[i].send();
 	}
-}
-
-
-// Todo: Refactor and move this to LineSelection
-function modifyText(index) {
-	let scheduled = null;
-	let selectedLine = null;
-	let textArray = currentlyQueriedText.value[index];
-	$("#input-form").on("keydown", function(e) {
-		if (e.which == 13)	{
-		let lineNumber = $("#input-form").val();
-			if (!scheduled)	{
-				setTimeout(() =>	{
-					if (textArray[lineNumber] == null)	{
-						selectedLine = "No line found. Choose another number.";
-					} else {
-						selectedLine = textArray[lineNumber];
-
-					}
-					scheduled = null;
-					currentDisplayedText.value[index] = selectedLine	
-				}, 50);
-			}
-			scheduled = e;	
-		}	
-	});
 }
 
 </script>

@@ -21,6 +21,8 @@ const keyDownHandler = (event) => {
 		choosePreviousLine()
 	} else if (event.key === 'ArrowRight') {
 		chooseNextLine()
+	} else if (event.key === 'Enter') {
+		emit('updateSelectedLine', currentLine.value)
 	}
 
     };
@@ -48,7 +50,7 @@ const keyDownHandler = (event) => {
 			</v-btn>
 			</div>
 			<div class="col-4">
-				<input id="input-form" type="number" :value="currentLine">
+				<input id="input-form" type="number" v-model="currentLine">
 			</div>
 			<div class="col-4">
 				<v-btn @click="chooseNextLine" append-icon="mdi-arrow-right">
