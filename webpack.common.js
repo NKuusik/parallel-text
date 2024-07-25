@@ -1,15 +1,23 @@
+const webpack = require('webpack')
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader')
 const { watchFile } = require('fs');
 
 module.exports = {
-  entry: './src/parallel_text.js',
+  entry: './src/main.js',
   plugins: [
+    new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
         title: 'Parallel text',
         filename: 'index.html',
         template: 'src/index.html'
-      })
+      }),
+    new webpack.DefinePlugin({
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: false,
+      __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
+    })
   ],
   output: {
     filename: '[name].bundle.js',
@@ -21,13 +29,13 @@ module.exports = {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ["vue-style-loader", "css-loader"],
       },
       {
         test: /\.s[ac]ss$/i,
         use: [
           // Creates `style` nodes from JS strings
-          "style-loader",
+          "vue-style-loader",
           // Translates CSS into CommonJS
           "css-loader",
           // Compiles Sass to CSS
@@ -38,8 +46,12 @@ module.exports = {
         test: /\.txt$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'texts/[name][ext]', // Maintain the original name and extension
+          filename: 'texts/[name][ext]', // Maintains the original name and extension
         },
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
       }
     ],
   },
