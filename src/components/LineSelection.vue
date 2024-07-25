@@ -43,17 +43,17 @@ const keyDownHandler = (event) => {
 			<p>Choose the number of the line and press enter.</p>
 		</div>
 			
-		<div class="col-12 row">
+		<div class="row">
 			<div class="col-4">
-			<v-btn @click="choosePreviousLine" prepend-icon="mdi-arrow-left">
-  				Previous
+			<v-btn @click="choosePreviousLine" prepend-icon="mdi-arrow-left" size="small">
+  				Prev
 			</v-btn>
 			</div>
 			<div class="col-4">
-				<input id="input-form" type="number" v-model="currentLine">
+				<input class="form-control text-center" id="input-form" type="number" v-model="currentLine">
 			</div>
 			<div class="col-4">
-				<v-btn @click="chooseNextLine" append-icon="mdi-arrow-right">
+				<v-btn @click="chooseNextLine" append-icon="mdi-arrow-right" size="small">
   					Next
 				</v-btn>
 			</div>

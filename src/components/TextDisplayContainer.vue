@@ -11,7 +11,7 @@ const isNull = (value) => {
 </script>
 
 <template>
-	<div v-if="!displayedTextArray.every(isNull)" class="row">
+	<div v-if="!displayedTextArray.every(isNull)" class="row mt-4">
 		<div v-for="text in displayedTextArray" class='col-6 displayed-texts'>
 			{{ text }}
 		</div>	
