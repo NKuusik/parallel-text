@@ -1,3 +1,5 @@
 front/node_modules/
 front/dist/
 front/.vscode/
+
+back/django-venv/
