@@ -3,7 +3,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.http import HttpResponse, JsonResponse
 from .forms import UploadFileForm
-import json
 
 @csrf_exempt
 def index(request):
@@ -16,11 +15,14 @@ def index(request):
         for key in request.FILES:
             file = request.FILES[key]
             file_dict[key] = {
-                "title": file.name
+                "title": file.name,
+                "lines": []
             }
             lines = file.readlines()
             for line in lines:
-                pass            
+                decoded_line = line.decode("utf-8")
+                stripped_line = decoded_line.rstrip()
+                file_dict[key]['lines'].append(stripped_line)      
         return JsonResponse(file_dict)
     else:
         return HttpResponse("Boo")
