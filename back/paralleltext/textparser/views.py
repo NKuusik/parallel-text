@@ -16,15 +16,19 @@ def index(request):
         if form.is_valid():
             for key in request.FILES:
                 file = request.FILES[key]
+
                 file_dict[key] = {
                     "title": file.name,
                     "lines": []
-                }
+                }                
+
+                # Unicode text, UTF-8 text
                 lines = file.readlines()
                 for line in lines:
                     decoded_line = line.decode("utf-8")
                     stripped_line = decoded_line.rstrip()
                     file_dict[key]['lines'].append(stripped_line)      
-        return JsonResponse(file_dict)
+            return JsonResponse(file_dict)
+        return HttpResponse("File not valid")
     else:
         return HttpResponse("Boo")
