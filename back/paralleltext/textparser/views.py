@@ -22,7 +22,6 @@ def index(request):
                     "lines": []
                 }                
 
-                # Unicode text, UTF-8 text
                 lines = file.readlines()
                 for line in lines:
                     decoded_line = line.decode("utf-8")
