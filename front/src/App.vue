@@ -30,6 +30,61 @@ const handleSelectedLineChange = (lineNumber) => {
 	}
 }
 
+const fileTypeRules = [
+	(value) => ruleValueExists(value), 
+	(value) => ruleNameLength(value, 50), 
+	(value) => ruleFileSize(value),
+	(value) => ruleFileExtensionIsCorrect(value),
+	(value) => ruleFileTypeIsCorrect(value)
+
+]
+
+
+
+const ruleValueExists = (value) => {
+	if (value.length === 1) {
+		return true		
+	}
+	return "Required"
+}
+
+const ruleNameLength = (value, acceptedLength) => {
+	console.log(value)
+	let fileName = value[0].name
+	if (fileName.length <= acceptedLength) {
+		return true
+	}
+	return "File name is too long"
+	
+} 
+
+const ruleFileSize = (value) => {
+	let file = value[0]
+	if (file.size > 0) {
+		return true
+	}
+	return "File is empty"
+}
+
+
+const ruleFileExtensionIsCorrect = (value) => {
+	let allowedExtensions = /.txt/i
+	let fileName = value[0].name
+	if (allowedExtensions.exec(fileName)) {
+		return true
+	}
+	return "Only .txt files are permitted"
+}
+
+const ruleFileTypeIsCorrect = (value) => {
+	let file = value[0]
+	if (file.type === "text/plain") {
+		return true
+	}
+	return "Plain text file required."
+}
+
+
 // Todo: results of ajaxRequest should be stored as refs
 function ajaxRequest(input) { 
 	let httpRequest = new Array(input.length)
@@ -53,6 +108,40 @@ function ajaxRequest(input) {
 <div class="container content-body">
 	<div class="row">
 		<MainText />
+
+
+		<v-form v-model="valid">
+    <v-container>
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-file-input
+		  	accept=".txt,text/plain"
+            label="First file"
+			:rules="fileTypeRules"
+            required
+          ></v-file-input>
+        </v-col>
+
+        <v-col
+          cols="12"
+          md="6"
+        >
+          <v-file-input
+		    accept=".txt,text/plain"
+            label="Second file"
+			:rules="fileTypeRules"
+            required
+          ></v-file-input>
+        </v-col>
+      </v-row>
+	  <v-btn class="mt-4 mb-4" type="submit">Submit</v-btn>
+    </v-container>
+  </v-form>
+
+
 	    <DropDownButton @updateSelectedLanguage="handleInputDataChange" :id="0" initialButtonText="First Language"/>
     	<DropDownButton @updateSelectedLanguage="handleInputDataChange" :id="1" initialButtonText="Second Language"/>
 		<LineSelection @updateSelectedLine="handleSelectedLineChange"/>
