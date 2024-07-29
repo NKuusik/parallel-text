@@ -18,6 +18,30 @@ const currentlyQueriedText = ref({
 
 const currentDisplayedText = ref([null, null])
 
+const first_file = ref(null)
+const second_file = ref(null)
+
+const handleSubmit = (event) => {
+	console.log("Submit was called")
+	let httpRequest = new XMLHttpRequest();
+	httpRequest.open("POST", "http://127.0.0.1:8000/text/")
+	httpRequest.setRequestHeader("Content-Type", "multipart/form-data")
+	const formData = new FormData();
+	formData.append('first_file', first_file.value)
+	formData.append('second_file', second_file.value)
+	httpRequest.onload = () => {
+  		if (httpRequest.readyState == 4 && httpRequest.status == 201) {
+    	console.log(JSON.parse(httpRequest.responseText));
+  	} else {
+    	console.log(`Error: ${httpRequest.status}`);
+  	}
+	};	
+	httpRequest.send(formData);
+	console.log("I finished")
+	console.log(formData)
+
+}
+
 const handleInputDataChange = (buttonText, buttonId) => {
 	selectedLanguages.value[buttonId] = buttonText
 	ajaxRequest([selectedLanguages.value[0], selectedLanguages.value[1]])
@@ -40,7 +64,6 @@ const fileTypeRules = [
 ]
 
 
-
 const ruleValueExists = (value) => {
 	if (value.length === 1) {
 		return true		
@@ -49,13 +72,11 @@ const ruleValueExists = (value) => {
 }
 
 const ruleNameLength = (value, acceptedLength) => {
-	console.log(value)
 	let fileName = value[0].name
 	if (fileName.length <= acceptedLength) {
 		return true
 	}
 	return "File name is too long"
-	
 } 
 
 const ruleFileSize = (value) => {
@@ -65,7 +86,6 @@ const ruleFileSize = (value) => {
 	}
 	return "File is empty"
 }
-
 
 const ruleFileExtensionIsCorrect = (value) => {
 	let allowedExtensions = /.txt/i
@@ -110,7 +130,7 @@ function ajaxRequest(input) {
 		<MainText />
 
 
-		<v-form v-model="valid">
+		<v-form v-model="valid" v-on:submit.prevent="handleSubmit">
     <v-container>
       <v-row>
         <v-col
@@ -118,6 +138,7 @@ function ajaxRequest(input) {
           md="6"
         >
           <v-file-input
+		  	v-model="first_file"
 		  	accept=".txt,text/plain"
             label="First file"
 			:rules="fileTypeRules"
@@ -130,6 +151,7 @@ function ajaxRequest(input) {
           md="6"
         >
           <v-file-input
+			v-model="second_file"
 		    accept=".txt,text/plain"
             label="Second file"
 			:rules="fileTypeRules"
