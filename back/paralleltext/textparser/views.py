@@ -10,6 +10,8 @@ logger = logging.getLogger("paralleltext.views")
 
 @csrf_exempt
 def index(request):
+    print("NOW printing request")
+    print(request)
 
     if request.method == 'POST':
         file_dict = {
@@ -17,6 +19,7 @@ def index(request):
             "second_file": {}
                      }
         form = UploadFileForm(request.POST, request.FILES)
+        print(form)
         if form.is_valid():
             for key in request.FILES:
                 file = request.FILES[key]
@@ -31,6 +34,7 @@ def index(request):
                     decoded_line = line.decode("utf-8")
                     stripped_line = decoded_line.rstrip()
                     file_dict[key]['lines'].append(stripped_line)      
+            print(file_dict)
             return JsonResponse(file_dict)
         else:
             error_message = "Invalid data submitted"
