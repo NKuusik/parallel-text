@@ -1,7 +1,6 @@
 from django.core.exceptions import ValidationError
 import magic
 
-# creating a validator function
 def validate_text_file(file_buffer):
 
     magic_app = magic.Magic()

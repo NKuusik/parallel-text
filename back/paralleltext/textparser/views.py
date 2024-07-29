@@ -1,8 +1,12 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
+from django.core.exceptions import ValidationError
 from .forms import UploadFileForm
+import logging
+
+logger = logging.getLogger("paralleltext.views")
 
 @csrf_exempt
 def index(request):
@@ -28,6 +32,9 @@ def index(request):
                     stripped_line = decoded_line.rstrip()
                     file_dict[key]['lines'].append(stripped_line)      
             return JsonResponse(file_dict)
-        return HttpResponse("File not valid")
+        else:
+            error_message = "Invalid data submitted"
+            logger.warning(f'{error_message}: {list((form.errors.values()))}')
+            return HttpResponse(error_message)
     else:
-        return HttpResponse("Boo")
+        return HttpResponseNotAllowed(request)
