@@ -5,6 +5,8 @@ import NavBar from './components/NavBar.vue'
 import LineSelection from './components/LineSelection.vue'
 import MainText from './components/MainText.vue'
 import { ref } from 'vue'
+import axios from 'axios';
+
 
 const selectedLanguages = ref({
 	0: '',
@@ -21,25 +23,23 @@ const currentDisplayedText = ref([null, null])
 const first_file = ref(null)
 const second_file = ref(null)
 
-const handleSubmit = (event) => {
-	console.log("Submit was called")
-	let httpRequest = new XMLHttpRequest();
-	httpRequest.open("POST", "http://127.0.0.1:8000/text/")
-	httpRequest.setRequestHeader("Content-Type", "multipart/form-data")
-	const formData = new FormData();
-	formData.append('first_file', first_file.value)
-	formData.append('second_file', second_file.value)
-	httpRequest.onload = () => {
-  		if (httpRequest.readyState == 4 && httpRequest.status == 201) {
-    	console.log(JSON.parse(httpRequest.responseText));
-  	} else {
-    	console.log(`Error: ${httpRequest.status}`);
-  	}
-	};	
-	httpRequest.send(formData);
-	console.log("I finished")
-	console.log(formData)
-
+const handleSubmit = () => {
+	axios.post('http://127.0.0.1:8000/text/', {
+		'first_file': first_file.value,
+		'second_file': second_file.value
+	},		
+	{ headers: {
+				'Content-Type': 'multipart/form-data'
+			}
+		}
+	).then((result) => {
+		// Todo: separate handling for invalid server response
+		currentlyQueriedText.value[0] = result.data['first_file']['lines']
+		currentlyQueriedText.value[1] = result.data['second_file']['lines']
+		
+	}).catch((err) => {
+		console.log(err)
+	});
 }
 
 const handleInputDataChange = (buttonText, buttonId) => {
@@ -130,7 +130,7 @@ function ajaxRequest(input) {
 		<MainText />
 
 
-		<v-form v-model="valid" v-on:submit.prevent="handleSubmit">
+		<v-form v-model="valid" @submit.prevent="handleSubmit">
     <v-container>
       <v-row>
         <v-col
