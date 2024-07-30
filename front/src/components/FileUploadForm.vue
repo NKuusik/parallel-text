@@ -21,8 +21,6 @@ const handleSubmit = () => {
 			}
 		}
 	).then((result) => {
-		console.log(result)
-		// Todo: separate handling for invalid server response
 		emit('receivedData', [result.data['first_file']['lines'], result.data['second_file']['lines']])
 		
 	}).catch((err) => {
@@ -39,7 +37,6 @@ const fileTypeRules = [
 	(value) => ruleFileSize(value),
 	(value) => ruleFileExtensionIsCorrect(value),
 	(value) => ruleFileTypeIsCorrect(value)
-
 ]
 
 
