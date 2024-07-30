@@ -1,17 +1,18 @@
 <script setup>
 
 import { ref } from 'vue'
-import axios from 'axios';
-
-const isFormValid = ref(false)
+import axios from 'axios'
+import { store } from '../store.js'
 
 const first_file = ref(null)
 const second_file = ref(null)
+const isFormValid = ref(false)
 
 const emit = defineEmits(['receivedData'])
 
+
 const handleSubmit = () => {
-	if (isFormValid.value) {
+	if (isFormValid) {
 		axios.post('http://127.0.0.1:8000/text/', {
 		'first_file': first_file.value,
 		'second_file': second_file.value
@@ -21,6 +22,8 @@ const handleSubmit = () => {
 			}
 		}
 	).then((result) => {
+		store.dataIsReceived()
+		console.log(store.isDataReceived)
 		emit('receivedData', [result.data['first_file']['lines'], result.data['second_file']['lines']])
 		
 	}).catch((err) => {
@@ -29,7 +32,6 @@ const handleSubmit = () => {
 	}
 
 }
-
 
 const fileTypeRules = [
 	(value) => ruleValueExists(value), 

@@ -20,7 +20,6 @@ const handleSelectedLineChange = (lineNumber) => {
 }
 
 const updateText = (LineLists) => {
-	console.log(LineLists)
 	currentTexts.value[0] = LineLists[0]
 	currentTexts.value[1] = LineLists[1]
 }

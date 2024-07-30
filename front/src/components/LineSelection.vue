@@ -1,5 +1,6 @@
 <script setup>
 import { defineEmits, ref, onMounted, onUnmounted } from 'vue'
+import { store } from '../store.js'
 
 const emit = defineEmits(['updateSelectedLine'])
 const currentLine = ref(0)
@@ -17,15 +18,16 @@ const choosePreviousLine = () => {
 }
 
 const keyDownHandler = (event) => {
-	if (event.key === 'ArrowLeft') {
-		choosePreviousLine()
-	} else if (event.key === 'ArrowRight') {
-		chooseNextLine()
-	} else if (event.key === 'Enter') {
-		emit('updateSelectedLine', currentLine.value)
+	if (store.isDataReceived) {
+		if (event.key === 'ArrowLeft') {
+			choosePreviousLine()
+		} else if (event.key === 'ArrowRight') {
+			chooseNextLine()
+		} else if (event.key === 'Enter') {
+			emit('updateSelectedLine', currentLine.value)
+		}
 	}
-
-    };
+};
 
     onMounted(() => {
       window.addEventListener('keydown', keyDownHandler);
@@ -34,6 +36,7 @@ const keyDownHandler = (event) => {
     onUnmounted(() => {
       window.removeEventListener('keydown', keyDownHandler);
     });
+
 
 
 </script>
@@ -45,15 +48,15 @@ const keyDownHandler = (event) => {
 			
 		<div class="row">
 			<div class="col-4">
-			<v-btn @click="choosePreviousLine" prepend-icon="mdi-arrow-left" size="small">
+			<v-btn :disabled="!store.isDataReceived" @click="choosePreviousLine" prepend-icon="mdi-arrow-left" size="small">
   				Prev
 			</v-btn>
 			</div>
 			<div class="col-4">
-				<input class="form-control text-center" id="input-form" type="number" v-model="currentLine">
+				<input :disabled="!store.isDataReceived" class="form-control text-center" id="input-form" type="number" v-model="currentLine">
 			</div>
 			<div class="col-4">
-				<v-btn @click="chooseNextLine" append-icon="mdi-arrow-right" size="small">
+				<v-btn :disabled="!store.isDataReceived" @click="chooseNextLine" append-icon="mdi-arrow-right" size="small">
   					Next
 				</v-btn>
 			</div>
