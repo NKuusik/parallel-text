@@ -36,9 +36,6 @@ const keyDownHandler = (event) => {
     onUnmounted(() => {
       window.removeEventListener('keydown', keyDownHandler);
     });
-
-
-
 </script>
 
 <template>

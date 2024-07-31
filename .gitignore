@@ -1,14 +1,15 @@
-# Front-end
+# Custom front-end
 
 front/node_modules/
 front/dist/
 front/.vscode/
 
 
-# Back-end
-
+# Custom back-end
 back/django-venv/
-# Created by https://www.gitignore.io
+back/paralleltext/static/
+
+# Default created by https://www.gitignore.io for Django
 
 ### OSX ###
 .DS_Store

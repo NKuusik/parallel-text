@@ -13,7 +13,7 @@ const emit = defineEmits(['receivedData'])
 
 const handleSubmit = () => {
 	if (isFormValid) {
-		axios.post('http://127.0.0.1:8000/text/', {
+		axios.post('http://127.0.0.1:30005/text/', {
 		'first_file': first_file.value,
 		'second_file': second_file.value
 	},		
@@ -23,7 +23,6 @@ const handleSubmit = () => {
 		}
 	).then((result) => {
 		store.dataIsReceived()
-		console.log(store.isDataReceived)
 		emit('receivedData', [result.data['first_file']['lines'], result.data['second_file']['lines']])
 		
 	}).catch((err) => {
