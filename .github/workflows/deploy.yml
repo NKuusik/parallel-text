@@ -38,3 +38,5 @@ jobs:
           context: ./back/paralleltext
           file: ./Dockerfile
           push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
