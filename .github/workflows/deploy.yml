@@ -31,7 +31,8 @@ jobs:
         with:
           images: nkuusik/django-paralleltext
       - run: echo $(pwd)
-      - run: cd /back/paralleltext/
+      - run: echo $(ls)
+      - run: cd back/paralleltext/
       - run: echo $(pwd)
       - name: Build and push Docker image
         id: push
