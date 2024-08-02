@@ -3,7 +3,9 @@ services:
     secrets:
       - "DJANGO_SECRET_KEY"
     environment:
-      DJANGO_SECRET_KEY: /run/secrets/DJANGO_SECRET_KEY
+      - DJANGO_SECRET_KEY=/run/secrets/DJANGO_SECRET_KEY
+      - DEBUG=False
+      - ALLOWED_HOSTS=*
     image: "nkuusik/django-paralleltext:latest"
     ports:
       - "8000:8000"
