@@ -37,7 +37,7 @@ try:
 except KeyError as e:
     print('No environment variable found, only permit local use')
     DEBUG = True
-#    ALLOWED_HOSTS = ['127.0.0.1']
+    ALLOWED_HOSTS = ['127.0.0.1']
 
 # SECURITY WARNING: keep the secret key used in production secret!
 try:
