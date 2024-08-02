@@ -43,7 +43,7 @@ except KeyError as e:
 try:
     SECRET_KEY = get_secret('DJANGO_SECRET_KEY')
 except KeyError as e:
-    if (DEBUG == True):
+    if (DEBUG is True):
         SECRET_KEY = 'django-insecure-0izc+il^nt(me64fct3ja#zq!d62j3uak-6=@d8(x-(($s@pro'
     else:
         raise RuntimeError("Could not find valid secret key for production")
