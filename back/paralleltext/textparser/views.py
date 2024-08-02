@@ -4,30 +4,21 @@ from .forms import UploadFileForm
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
 import logging
 
 logger = logging.getLogger("paralleltext.views")
 
-# Function-based view example
-
 @api_view(['POST'])
 @csrf_exempt
 def index(request):
-    print("NOW printing request")
-    print(request)
-
-
     file_dict = {
         "first_file": {},
         "second_file": {}
                      }
     form = UploadFileForm(request.POST, request.FILES)
-    print(form)
     if form.is_valid():
         for key in request.FILES:
             file = request.FILES[key]
-            print(file)
 
             file_dict[key] = {
                 "title": file.name,

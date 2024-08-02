@@ -20,23 +20,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-
-SECRET_KEY = 'django-insecure-0izc+il^nt(me64fct3ja#zq!d62j3uak-6=@d8(x-(($s@pro'
-
-"""
-try:
-    SECRET_KEY = os.environ["SECRET_KEY"]
-except KeyError as e:
-    raise RuntimeError("Could not find a SECRET_KEY in environment") from e
-
-"""
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
 
+# SECURITY WARNING: keep the secret key used in production secret!
+# https://en.ovcharov.me/2021/09/30/use-docker-secrets-in-django/
+def get_secret(key):
+    value = os.getenv(key)
+    if os.path.isfile(value):
+        with open(value) as f:
+            return f.read()
+    return value
+
+try:
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+except KeyError as e:
+    if (DEBUG):
+        SECRET_KEY = 'django-insecure-0izc+il^nt(me64fct3ja#zq!d62j3uak-6=@d8(x-(($s@pro'
+    else:
+        raise RuntimeError("Coluld not find valid secret key for production")
+
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
