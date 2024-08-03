@@ -34,5 +34,5 @@ jobs:
 # Siin tee run käsuga ümber
       - run: cd back/paralleltext/
       - run: echo $(pwd)
-      - run: docker build . -t nkuusik/django-paralleltext
+      - run: docker build back/paralleltext/. -t nkuusik/django-paralleltext
       - run: docker push nkuusik/django-paralleltext
