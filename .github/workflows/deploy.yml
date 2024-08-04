@@ -46,4 +46,6 @@ jobs:
           REMOTE_USER: ${{ secrets.AWS_USER }}
           SCRIPT_AFTER: |
             ./script
-            echo $(pwd)
+            sudo docker system prune -a -f
+            cd deploy/
+            sudo docker compose up
