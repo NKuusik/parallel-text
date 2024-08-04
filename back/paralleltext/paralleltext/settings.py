@@ -31,7 +31,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-ALLOWED_HOSTS = [get_secret('ALLOWED_HOSTS')]
+
+try:
+    ALLOWED_HOSTS = [get_secret('ALLOWED_HOSTS')]
+except KeyError as e:
+    print('No environment variable found, only permit local use')
+    ALLOWED_HOSTS = ['127.0.0.1']
 try:
     DEBUG = get_secret('DEBUG')
 except KeyError as e:
