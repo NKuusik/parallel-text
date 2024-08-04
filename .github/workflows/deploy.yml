@@ -14,36 +14,39 @@ jobs:
       attestations: write
       id-token: write
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
+#      - name: Check out the repo
+#        uses: actions/checkout@v4
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+#      - name: Log in to Docker Hub
+#        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+#        with:
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: nkuusik/django-paralleltext
+#      - name: Extract metadata (tags, labels) for Docker
+#        id: meta
+#        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+#        with:
+#          images: nkuusik/django-paralleltext
 
-# Siin tee run käsuga ümber
-      - run: cd back/paralleltext/
-      - run: echo $(pwd)
-      - run: docker build back/paralleltext/. -t nkuusik/django-paralleltext
-      - run: docker push nkuusik/django-paralleltext
+#      - run: cd back/paralleltext/
+#      - run: echo $(pwd)
+#      - run: docker build back/paralleltext/. -t nkuusik/django-paralleltext
+#      - run: docker push nkuusik/django-paralleltext
 
+      - uses: actions/checkout@v4
+      - name: Deploy docker on remote server
+        env:
+            PRIVATE_KEY: ${{ secrets.AWS_KEY }}
+            HOSTNAME: ${{secrets.AWS_HOST}}
+            USER_NAME: ${{secrets.AWS_USER}}
+      
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
-      - uses: easingthemes/ssh-deploy@v5.0.0
-        name: Deploy over SSH
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.AWS_KEY }}
-          REMOTE_HOST: ${{ secrets.AWS_HOST }}
-          REMOTE_USER: ${{ secrets.AWS_USER }}
-          SCRIPT_AFTER: |
-            ./script
+              # Now we have got the access of EC2 and we will start the deploy .
+            sudo docker ps -aq | sudo xargs docker stop |sudo  xargs docker rm
             sudo docker system prune -a -f
             cd deploy/
-            sudo docker compose up
+            sudo docker compose up'
