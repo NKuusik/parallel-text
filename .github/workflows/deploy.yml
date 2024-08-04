@@ -42,8 +42,8 @@ jobs:
         name: Deploy over SSH
         with:
           SSH_PRIVATE_KEY: ${{ secrets.AWS_KEY }}
-          REMOTE_HOST: ${{ vars.AWS_HOST }}
-          REMOTE_USER: ${{ vars.AWS_USER }}
+          REMOTE_HOST: ${{ secrets.AWS_HOST }}
+          REMOTE_USER: ${{ secrets.AWS_USER }}
           SCRIPT_AFTER: |
             ./script
             echo $(pwd)
