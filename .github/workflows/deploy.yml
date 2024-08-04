@@ -34,7 +34,6 @@ jobs:
 #      - run: docker build back/paralleltext/. -t nkuusik/django-paralleltext
 #      - run: docker push nkuusik/django-paralleltext
 
-      - uses: actions/checkout@v4
       - name: Deploy docker on remote server
         env:
             PRIVATE_KEY: ${{ secrets.AWS_KEY }}
@@ -49,4 +48,4 @@ jobs:
             sudo docker ps -aq | sudo xargs docker stop |sudo  xargs docker rm
             sudo docker system prune -a -f
             cd deploy/
-            sudo docker compose up'
+            sudo docker compose up -d'
