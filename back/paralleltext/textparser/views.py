@@ -37,4 +37,4 @@ def index(request):
         return Response(error_message, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
     
 def test(request):
-    return HttpResponse('I am test')
+    return HttpResponse('I am renewed test')
