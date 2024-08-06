@@ -1,0 +1,21 @@
+services:
+  django-paralleltext:
+    secrets:
+      - "DJANGO_SECRET_KEY"
+      - "DEBUG"
+      - "ALLOWED_HOSTS"
+    environment:
+      - DJANGO_SECRET_KEY=/run/secrets/DJANGO_SECRET_KEY
+      - DEBUG=/run/secrets/DEBUG
+      - ALLOWED_HOSTS=/run/secrets/ALLOWED_HOSTS
+    image: "nkuusik/django-paralleltext:latest"
+    ports:
+      - "8000:8000"
+
+secrets:
+  DJANGO_SECRET_KEY:
+    file: "$HOME/django_secrets/DJANGO_SECRET_KEY"
+  DEBUG:
+    file: "$HOME/django_secrets/DEBUG"
+  ALLOWED_HOSTS:
+    file: "$HOME/django_secrets/ALLOWED_HOSTS"

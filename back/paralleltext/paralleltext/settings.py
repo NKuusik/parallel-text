@@ -13,6 +13,21 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 
+"""
+Optain environmen variable from presented as Docker secret
+"""
+def get_secret(key):
+    value = os.getenv(key)
+    if value is None:
+        raise KeyError(f"No variable found: {key}")
+    elif os.path.isfile(value):
+        with open(value) as f:
+            value = f.read()
+
+    output = value.strip()
+    print(f'stripped output {output}')
+    return output
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,13 +35,39 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0izc+il^nt(me64fct3ja#zq!d62j3uak-6=@d8(x-(($s@pro'
+"""
+Set up ALLOWED_HOST, DEBUG and SECRET_KEY based on environment variables.
+If no enviornment variable for ALLOWED_HOST exists, default to 127.0.0.1.
+If no enviornment variable for DEBUG exists, default to True and set ALLOWED_HOSTS to 127.0.0.1.
+If no enviornment variable for SECRET_KEY exists, and DEBUG is True 
+    set to hard-coded insecure SECRET_KEY.
+    Raise error otherwise.
+"""
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+try:
+    ALLOWED_HOSTS = [get_secret('ALLOWED_HOSTS')]
+except KeyError as e:
+    print('No allowed hosts environment variable found, only permit local use')
+    ALLOWED_HOSTS = ['127.0.0.1']
 
-ALLOWED_HOSTS = []
+try:
+    DEBUG = False
+    debug_key = get_secret('DEBUG')
+    if (debug_key == 'True'):
+        DEBUG = True
+except KeyError as e:
+    print('No debug environment variable found, only permit local use')
+    DEBUG = True
+    ALLOWED_HOSTS = ['127.0.0.1']
+
+try:
+    SECRET_KEY = get_secret('DJANGO_SECRET_KEY')
+except KeyError as e:
+    if (DEBUG is True):
+        SECRET_KEY = 'django-insecure-0izc+il^nt(me64fct3ja#zq!d62j3uak-6=@d8(x-(($s@pro'
+    else:
+        raise RuntimeError("Could not find valid secret key for production")
+
 
 
 # Application definition

@@ -2,8 +2,8 @@
 
 front/node_modules/
 front/dist/
-front/.vscode/
-
+*/.vscode/
+.vscode/
 
 # Custom back-end
 back/django-venv/
