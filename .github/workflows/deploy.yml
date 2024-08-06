@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is building a new DockerFile on push
 on:
   push:
     branches:
-      - 15-deploy-back-end-server-on-aws-ec2-instance-using-docker
+      - master
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -29,12 +29,10 @@ jobs:
         with:
           images: nkuusik/django-paralleltext
 
-      - run: cd back/paralleltext/
-      - run: echo $(pwd)
-      - run: docker build back/paralleltext/. -t nkuusik/django-paralleltext
-      - run: docker push nkuusik/django-paralleltext
+      - name: Build and push Docker image
+        run: docker build back/paralleltext/. -t nkuusik/django-paralleltext && docker push nkuusik/django-paralleltext
 
-      - name: Deploy docker on remote server
+      - name: Deploy Docker container on remote server
         env:
             PRIVATE_KEY: ${{ secrets.AWS_KEY }}
             HOSTNAME: ${{secrets.AWS_HOST}}
@@ -44,8 +42,9 @@ jobs:
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
-              # Now we have got the access of EC2 and we will start the deploy .
+              # Stop and remove all previous Docker containers.
             sudo docker ps -aq | sudo xargs docker stop |sudo  xargs docker rm
             sudo docker system prune -a -f
+              # Deploy Docker container with new Docker image
             cd deploy/
             sudo docker compose up -d'
