@@ -25,7 +25,6 @@ def get_secret(key):
             value = f.read()
 
     output = value.strip()
-    print(f'stripped output {output}')
     return output
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
