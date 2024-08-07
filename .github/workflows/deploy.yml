@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is building a new DockerFile on push
 on:
   push:
     branches:
-      - master
+      - 17-deploy-front-end-on-vercel
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub

@@ -54,6 +54,8 @@ try:
     debug_key = get_secret('DEBUG')
     if (debug_key == 'True'):
         DEBUG = True
+        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+        SECURE_SSL_REDIRECT = True
 except KeyError as e:
     print('No debug environment variable found, only permit local use')
     DEBUG = True
