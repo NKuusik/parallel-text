@@ -12,7 +12,7 @@ const emit = defineEmits(['receivedData'])
 
 const handleSubmit = () => {
 	if (isFormValid) {
-		axios.post('http://127.0.0.1:8000/text/', {
+		axios.post('https://paralleltext.ndk89.live/text/', {
 		'first_file': first_file.value,
 		'second_file': second_file.value
 	},		
