@@ -40,6 +40,12 @@ const keyDownHandler = (event) => {
 			nextButtonStyleRef.value = true
 			chooseNextLine()
 		} else if (event.key === 'Enter') {
+
+			if (currentLine.value < 1) {
+				currentLine.value = 1
+			} else if (currentLine.value > props.maxLines) {
+				currentLine.value = props.maxLines
+			}
 			emit('updateSelectedLine', currentLine.value)
 		}
 	}
