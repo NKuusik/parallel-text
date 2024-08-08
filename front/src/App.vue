@@ -9,14 +9,14 @@ import { ref } from 'vue'
 const currentTexts = ref({
 	0: [],
 	1: [],
-	maxLines: 0
+	maxLines: 1
 })
 
 const currentlyDisplayedLines = ref([null, null])
 
 const handleSelectedLineChange = (lineNumber) => {
 	for (let i = 0; i < 2; i++) {
-		currentlyDisplayedLines.value[i] = currentTexts.value[i][lineNumber]
+		currentlyDisplayedLines.value[i] = currentTexts.value[i][lineNumber - 1]
 	}
 }
 
@@ -24,6 +24,7 @@ const updateText = (lineLists) => {
 	currentTexts.value[0] = lineLists[0]
 	currentTexts.value[1] = lineLists[1]
 	updateMaxText(lineLists)
+	handleSelectedLineChange(1)
 }
 
 const updateMaxText = (lineLists) => {
@@ -34,7 +35,6 @@ const updateMaxText = (lineLists) => {
 		}
 	}
 	currentTexts.value['maxLines'] = highestValue
-	console.log(currentTexts.value['maxLines'])
 }
 </script>
 
