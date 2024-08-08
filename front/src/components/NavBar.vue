@@ -7,8 +7,7 @@
 					</button>
 					
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<a class="nav-link mr-auto" href="index.html">Parallel Text Displayer</a>
-					<a class="nav-link ml-auto" href="mailto:normankuusik@gmail.com"><span class="fab fa-mailchimp"></span> e-mail</a>
+					<a class="nav-link ml-auto" href="index.html">Parallel Text Displayer</a>
 				</div>
 			</div>
 		</nav> 

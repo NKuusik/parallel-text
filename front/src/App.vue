@@ -8,22 +8,34 @@ import { ref } from 'vue'
 
 const currentTexts = ref({
 	0: [],
-	1: []
+	1: [],
+	maxLines: 1
 })
 
 const currentlyDisplayedLines = ref([null, null])
 
 const handleSelectedLineChange = (lineNumber) => {
 	for (let i = 0; i < 2; i++) {
-		currentlyDisplayedLines.value[i] = currentTexts.value[i][lineNumber]
+		currentlyDisplayedLines.value[i] = currentTexts.value[i][lineNumber - 1]
 	}
 }
 
-const updateText = (LineLists) => {
-	currentTexts.value[0] = LineLists[0]
-	currentTexts.value[1] = LineLists[1]
+const updateText = (lineLists) => {
+	currentTexts.value[0] = lineLists[0]
+	currentTexts.value[1] = lineLists[1]
+	updateMaxText(lineLists)
+	handleSelectedLineChange(1)
 }
 
+const updateMaxText = (lineLists) => {
+	let highestValue = 0
+	for (let line of lineLists) {
+		if (line.length > highestValue) {
+			highestValue = line.length
+		}
+	}
+	currentTexts.value['maxLines'] = highestValue
+}
 </script>
 
 <template>
@@ -32,7 +44,7 @@ const updateText = (LineLists) => {
 	<div class="row">
 		<MainText />
 		<FileUploadForm @receivedData="updateText"/>
-		<LineSelection @updateSelectedLine="handleSelectedLineChange"/>
+		<LineSelection :maxLines="currentTexts['maxLines']" @updateSelectedLine="handleSelectedLineChange"/>
 	</div>
 	<TextDisplayContainer :displayedTextArray=currentlyDisplayedLines />
 </div>
