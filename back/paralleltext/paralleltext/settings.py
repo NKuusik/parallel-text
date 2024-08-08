@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 
 """
-Optain environmen variable from presented as Docker secret
+Optain environment variable from presented as Docker secret
 """
 def get_secret(key):
     value = os.getenv(key)
@@ -173,5 +173,5 @@ else:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
+    'http://localhost:8080'
 ]
