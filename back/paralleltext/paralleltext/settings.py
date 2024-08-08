@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 
 """
-Optain environmen variable from presented as Docker secret
+Optain environment variable from presented as Docker secret
 """
 def get_secret(key):
     value = os.getenv(key)
@@ -54,8 +54,6 @@ try:
     debug_key = get_secret('DEBUG')
     if (debug_key == 'True'):
         DEBUG = True
-        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-        SECURE_SSL_REDIRECT = True
 except KeyError as e:
     print('No debug environment variable found, only permit local use')
     DEBUG = True
@@ -175,5 +173,5 @@ else:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
+    'http://localhost:8080'
 ]
