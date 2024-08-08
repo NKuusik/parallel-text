@@ -4,6 +4,8 @@ import { store } from '../store.js'
 
 const emit = defineEmits(['updateSelectedLine'])
 const currentLine = ref(0)
+const prevButtonStyleRef = ref(false)
+const nextButtonStyleRef = ref(false)
 
 const chooseNextLine = () => {
 	currentLine.value++
@@ -20,8 +22,10 @@ const choosePreviousLine = () => {
 const keyDownHandler = (event) => {
 	if (store.isDataReceived) {
 		if (event.key === 'ArrowLeft') {
+			prevButtonStyleRef.value = true
 			choosePreviousLine()
 		} else if (event.key === 'ArrowRight') {
+			nextButtonStyleRef.value = true
 			chooseNextLine()
 		} else if (event.key === 'Enter') {
 			emit('updateSelectedLine', currentLine.value)
@@ -29,12 +33,25 @@ const keyDownHandler = (event) => {
 	}
 };
 
+const keyUpHandler = () => {
+	prevButtonStyleRef.value = false
+	nextButtonStyleRef.value = false
+};
+
     onMounted(() => {
       window.addEventListener('keydown', keyDownHandler);
     });
 
+    onMounted(() => {
+      window.addEventListener('keyup', keyUpHandler);
+    });
+
     onUnmounted(() => {
       window.removeEventListener('keydown', keyDownHandler);
+    });
+
+	onUnmounted(() => {
+      window.removeEventListener('keyup', keyUpHandler);
     });
 </script>
 
@@ -45,7 +62,7 @@ const keyDownHandler = (event) => {
 			
 		<div class="row">
 			<div class="col-4">
-			<v-btn :disabled="!store.isDataReceived" @click="choosePreviousLine" prepend-icon="mdi-arrow-left" size="small">
+			<v-btn :class="{ 'active-button': prevButtonStyleRef }" :disabled="!store.isDataReceived" @click="choosePreviousLine" prepend-icon="mdi-arrow-left" size="small">
   				Prev
 			</v-btn>
 			</div>
@@ -53,7 +70,7 @@ const keyDownHandler = (event) => {
 				<input :disabled="!store.isDataReceived" class="form-control text-center" id="input-form" type="number" v-model="currentLine">
 			</div>
 			<div class="col-4">
-				<v-btn :disabled="!store.isDataReceived" @click="chooseNextLine" append-icon="mdi-arrow-right" size="small">
+				<v-btn :class="{ 'active-button': nextButtonStyleRef }" :disabled="!store.isDataReceived" @click="chooseNextLine" append-icon="mdi-arrow-right" size="small">
   					Next
 				</v-btn>
 			</div>

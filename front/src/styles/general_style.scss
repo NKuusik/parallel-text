@@ -28,16 +28,13 @@ body	{
 	background: $container-background;
 }
 
-button	{
-	border-radius: 5px;
-	background-color: $button-color;
-	border: groove red;
-	padding: 2px 15px;	
-
-	&:hover  {
+button:hover	{
 	background-color: $hover-color;
 	transition: background-color 1s;
-	}
+}
+
+.active-button {
+	background-color: $hover-color;
 }
 
 input  {
@@ -63,28 +60,6 @@ input  {
 		transition: 1s;
 	}
 }	
-
-.dropdown {
-	display: inline-block;
-}
-
-.dropdown-content	{
-	display: none;
-	position: absolute;
-	z-index: 1;
-	}
-		
-.dropdown:hover .dropdown-content	{
-	display: block;
-	background: cornsilk;
-	border: 1px solid black;
-	width: 100%;
-}
-
-.dropdown-content p:hover	{
-	background-color: red;
-	transition: background-color 1s;
-}
 
 .displayed-texts	{
 		background-color: tan;

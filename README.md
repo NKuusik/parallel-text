@@ -6,7 +6,7 @@ This is a web app that displays two .txt files line by line
 ### Option 1: Run for development locally using venv
 
 - Install dependencies using venv
-- Run development server directly: 
+- Run development server inside venv directly: 
 
 ```
 python manage.py runserver
@@ -35,7 +35,7 @@ This is useful for testing various configurations in `settings.py` before actual
 ### Option 3: Run for production on remote server using Docker
 
 - Add Docker secrets on remote server in `/root/django_secrets`
-- Run GitHub Actions on push to master
+- Push to master prompting deployment via GitHub Action
     - For other branch, temporarily change branches value in `.github/workflows/deploy.yml`
 
-If Docker secrets are not properly configured, will the back-end will default to local access only.
+If Docker secrets are not properly configured, the back-end will default to local access only.
