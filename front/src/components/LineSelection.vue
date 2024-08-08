@@ -2,6 +2,11 @@
 import { defineEmits, ref, onMounted, onUnmounted } from 'vue'
 import { store } from '../store.js'
 
+
+defineProps({
+	maxLines: Number
+})
+
 const emit = defineEmits(['updateSelectedLine'])
 const currentLine = ref(0)
 const prevButtonStyleRef = ref(false)
@@ -57,6 +62,7 @@ const keyUpHandler = () => {
 
 <template>
     <div class="col-12">
+			<p>Currently on line {{currentLine}}/{{ maxLines }}</p>
 			<p>Choose the number of the line and press enter.</p>
 		</div>
 			
