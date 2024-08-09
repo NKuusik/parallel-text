@@ -5,9 +5,12 @@ export const store = reactive({
   dataIsReceived() {
     this.isDataReceived = true
   },
-  exampleUse: true,
+  exampleUse: false,
   toggleExampleUse() {
     this.exampleUse = !this.exampleUse
+  },
+  resetExampleUse() {
+    this.exampleUse = false
   }
   
 })
