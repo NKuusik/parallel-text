@@ -4,17 +4,50 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { store } from '../store.js'
 
-const first_file = ref(null)
-const second_file = ref(null)
+
+const props = defineProps({
+	exampleUse: Boolean
+})
+const firstExampleText = new File([
+	`The Raven\n`, 
+	`By Edgar Allan Poe\n`, 
+	`Once upon a midnight dreary, while I pondered, weak and weary,
+	Over many a quaint and curious volume of forgotten lore,
+	While I nodded, nearly napping, suddenly there came a tapping,
+	As of some one gently rapping, rapping at my chamber door. “
+	“'Tis some visitor,” I muttered, “tapping at my chamber door—
+	Only this, and nothing more.”`], 
+	"firstExample.txt", 
+	{type: "text/plain"})
+const secondExampleText = new File([
+	`Kaaren\n`, 
+	`Edgar Allan Poe\n`, 
+	`Südaööl, mil kambris selles tummalt, tuskjalt mõlgutelles
+	meeliskelin aegu vanu, ammu veernuid surmani,
+	kuulin äkitselt eel ukse kerge väikse sõrmetukse,
+	koputuse ma eel ukse, tasa kostva minuni.
+	"Rändur see vist, rännukäigul jõudev öisel minuni,"
+    mõtlin, "muud ei midagi."`], 
+	"secondExample.txt", 
+	{type: "text/plain"})
+
+
+let firstFileRef = ref(null)
+let secondFileRef = ref(null)
+
+if (props.exampleUse == true) {
+	firstFileRef.value = firstExampleText
+	secondFileRef.value = secondExampleText
+}
 const isFormValid = ref(false)
 const emit = defineEmits(['receivedData'])
 
 const handleSubmit = () => {
-	if (isFormValid) {
+	if (isFormValid.value) {
 		let api_endpoint = [process.env.API_URL, 'text/'].join('')
 		axios.post(api_endpoint, {
-		'first_file': first_file.value,
-		'second_file': second_file.value
+		'first_file': firstFileRef.value,
+		'second_file': secondFileRef.value
 	},		
 	{ headers: {
 				'Content-Type': 'multipart/form-data'
@@ -93,7 +126,7 @@ const ruleFileTypeIsCorrect = (value) => {
           md="6"
         >
           <v-file-input
-		  	v-model="first_file"
+		  	v-model="firstFileRef"
 		  	accept=".txt,text/plain"
             label="First file"
 			:rules="fileTypeRules"
@@ -106,7 +139,7 @@ const ruleFileTypeIsCorrect = (value) => {
           md="6"
         >
           <v-file-input
-			v-model="second_file"
+			v-model="secondFileRef"
 		    accept=".txt,text/plain"
             label="Second file"
 			:rules="fileTypeRules"

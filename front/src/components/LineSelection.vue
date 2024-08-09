@@ -2,7 +2,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { store } from '../store.js'
 
-
 const props = defineProps({
 	maxLines: Number
 })
