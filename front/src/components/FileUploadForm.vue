@@ -1,20 +1,58 @@
 <script setup>
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import axios from 'axios'
 import { store } from '../store.js'
 
-const first_file = ref(null)
-const second_file = ref(null)
+const firstExampleText = new File([
+	`The Raven\n`, 
+	`By Edgar Allan Poe\n`, 
+	`Once upon a midnight dreary, while I pondered, weak and weary,
+	Over many a quaint and curious volume of forgotten lore,
+	While I nodded, nearly napping, suddenly there came a tapping,
+	As of some one gently rapping, rapping at my chamber door. “
+	“'Tis some visitor,” I muttered, “tapping at my chamber door—
+	Only this, and nothing more.”`], 
+	"firstExample.txt", 
+	{type: "text/plain"})
+const secondExampleText = new File([
+	`Kaaren\n`, 
+	`Edgar Allan Poe\n`, 
+	`Südaööl, mil kambris selles tummalt, tuskjalt mõlgutelles
+	meeliskelin aegu vanu, ammu veernuid surmani,
+	kuulin äkitselt eel ukse kerge väikse sõrmetukse,
+	koputuse ma eel ukse, tasa kostva minuni.
+	"Rändur see vist, rännukäigul jõudev öisel minuni,"
+    mõtlin, "muud ei midagi."`], 
+	"secondExample.txt", 
+	{type: "text/plain"})
+
+
+let firstFileRef = ref(null)
+let secondFileRef = ref(null)
+
+
 const isFormValid = ref(false)
 const emit = defineEmits(['receivedData'])
 
 
+watch(store, () => {
+	if (store.exampleUse == true) {
+		firstFileRef.value = firstExampleText
+		secondFileRef.value = secondExampleText
+	} else {
+		firstFileRef.value = null
+		secondFileRef.value = null
+	}
+})
+
+
 const handleSubmit = () => {
-	if (isFormValid) {
-		axios.post('https://paralleltext.ndk89.live/text/', {
-		'first_file': first_file.value,
-		'second_file': second_file.value
+	if (isFormValid.value) {
+		let api_endpoint = [process.env.API_URL, 'text/'].join('')
+		axios.post(api_endpoint, {
+		'first_file': firstFileRef.value,
+		'second_file': secondFileRef.value
 	},		
 	{ headers: {
 				'Content-Type': 'multipart/form-data'
@@ -22,6 +60,7 @@ const handleSubmit = () => {
 		}
 	).then((result) => {
 		store.dataIsReceived()
+		store.resetExampleUse()
 		emit('receivedData', [result.data['first_file']['lines'], result.data['second_file']['lines']])
 		
 	}).catch((err) => {
@@ -85,7 +124,7 @@ const ruleFileTypeIsCorrect = (value) => {
 
 
 <template>
-		<v-form v-model="isFormValid" @submit.prevent="handleSubmit">
+	<v-form v-model="isFormValid" @submit.prevent="handleSubmit">
     <v-container>
       <v-row>
         <v-col
@@ -93,7 +132,8 @@ const ruleFileTypeIsCorrect = (value) => {
           md="6"
         >
           <v-file-input
-		  	v-model="first_file"
+		  	:disabled="store.exampleUse"
+		  	v-model="firstFileRef"
 		  	accept=".txt,text/plain"
             label="First file"
 			:rules="fileTypeRules"
@@ -106,7 +146,8 @@ const ruleFileTypeIsCorrect = (value) => {
           md="6"
         >
           <v-file-input
-			v-model="second_file"
+		  	:disabled="store.exampleUse"
+			v-model="secondFileRef"
 		    accept=".txt,text/plain"
             label="Second file"
 			:rules="fileTypeRules"
@@ -114,7 +155,7 @@ const ruleFileTypeIsCorrect = (value) => {
           ></v-file-input>
         </v-col>
       </v-row>
-	  <v-btn class="mt-4 mb-4" type="submit">Submit</v-btn>
+	  <v-btn class="mt-4 mb-4 button-universal" type="submit">Submit</v-btn>
     </v-container>
   </v-form>
 </template>

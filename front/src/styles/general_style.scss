@@ -33,9 +33,7 @@ button:hover	{
 	transition: background-color 1s;
 }
 
-.active-button {
-	background-color: $hover-color;
-}
+
 
 .container  {
 	border-radius: $main-radius;
@@ -45,7 +43,7 @@ button:hover	{
 
 }
 
-.container a {
+.button-universal {
 	border-radius: 5px;
 	background-color: $link-background;
 	color: $link-color;
@@ -54,6 +52,17 @@ button:hover	{
 	&:hover{
 		background-color: $hover-color;
 		transition: 1s;
+	}
+
+	&:disabled {
+		background-color: $link-background;
+		color: white;
+		opacity: 50%;
+		border: none;
+	}
+
+	&.active-button {
+		background-color: $hover-color;
 	}
 }	
 

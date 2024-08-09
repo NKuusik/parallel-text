@@ -1,7 +1,6 @@
 <script setup>
-import { defineProps, defineEmits, ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { store } from '../store.js'
-
 
 const props = defineProps({
 	maxLines: Number
@@ -81,7 +80,7 @@ const keyUpHandler = () => {
 			
 		<div class="row">
 			<div class="col-4">
-			<v-btn :class="{ 'active-button': prevButtonStyleRef }" :disabled="!store.isDataReceived" @click="choosePreviousLine" prepend-icon="mdi-arrow-left" size="small">
+			<v-btn class="button-universal" :class="{ 'active-button': prevButtonStyleRef }" :disabled="!store.isDataReceived" @click="choosePreviousLine" prepend-icon="mdi-arrow-left" size="small">
   				Prev
 			</v-btn>
 			</div>
@@ -89,7 +88,7 @@ const keyUpHandler = () => {
 				<input :disabled="!store.isDataReceived" class="form-control text-center" id="input-form" type="number" v-model="currentLine">
 			</div>
 			<div class="col-4">
-				<v-btn :class="{ 'active-button': nextButtonStyleRef }" :disabled="!store.isDataReceived" @click="chooseNextLine" append-icon="mdi-arrow-right" size="small">
+				<v-btn class="button-universal" :class="{ 'active-button': nextButtonStyleRef }" :disabled="!store.isDataReceived" @click="chooseNextLine" append-icon="mdi-arrow-right" size="small">
   					Next
 				</v-btn>
 			</div>

@@ -43,7 +43,7 @@ const updateMaxText = (lineLists) => {
 <div class="container content-body">
 	<div class="row">
 		<MainText />
-		<FileUploadForm @receivedData="updateText"/>
+		<FileUploadForm :exampleUse=true @receivedData="updateText"/>
 		<LineSelection :maxLines="currentTexts['maxLines']" @updateSelectedLine="handleSelectedLineChange"/>
 	</div>
 	<TextDisplayContainer :displayedTextArray=currentlyDisplayedLines />
