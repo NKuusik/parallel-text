@@ -155,7 +155,7 @@ const ruleFileTypeIsCorrect = (value) => {
           ></v-file-input>
         </v-col>
       </v-row>
-	  <v-btn class="mt-4 mb-4" type="submit">Submit</v-btn>
+	  <v-btn class="mt-4 mb-4 button-universal" type="submit">Submit</v-btn>
     </v-container>
   </v-form>
 </template>
