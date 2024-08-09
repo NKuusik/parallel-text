@@ -9,10 +9,10 @@ const second_file = ref(null)
 const isFormValid = ref(false)
 const emit = defineEmits(['receivedData'])
 
-
 const handleSubmit = () => {
 	if (isFormValid) {
-		axios.post('https://paralleltext.ndk89.live/text/', {
+		let api_endpoint = [process.env.API_URL, 'text/'].join('')
+		axios.post(api_endpoint, {
 		'first_file': first_file.value,
 		'second_file': second_file.value
 	},		

@@ -1,3 +1,6 @@
+<script setup>
+</script>
+
 <template>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container">
@@ -7,7 +10,7 @@
 					</button>
 					
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<a class="nav-link ml-auto" href="index.html">Parallel Text Displayer</a>
+					<a class="nav-link ml-auto" href="index.html">Example use</a>
 				</div>
 			</div>
 		</nav> 
