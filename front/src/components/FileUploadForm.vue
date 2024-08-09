@@ -1,13 +1,9 @@
 <script setup>
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import axios from 'axios'
 import { store } from '../store.js'
 
-
-const props = defineProps({
-	exampleUse: Boolean
-})
 const firstExampleText = new File([
 	`The Raven\n`, 
 	`By Edgar Allan Poe\n`, 
@@ -35,12 +31,21 @@ const secondExampleText = new File([
 let firstFileRef = ref(null)
 let secondFileRef = ref(null)
 
-if (props.exampleUse == true) {
-	firstFileRef.value = firstExampleText
-	secondFileRef.value = secondExampleText
-}
+
 const isFormValid = ref(false)
 const emit = defineEmits(['receivedData'])
+
+
+watch(store, () => {
+	if (store.exampleUse == true) {
+		firstFileRef.value = firstExampleText
+		secondFileRef.value = secondExampleText
+	} else {
+		firstFileRef.value = null
+		secondFileRef.value = null
+	}
+})
+
 
 const handleSubmit = () => {
 	if (isFormValid.value) {
