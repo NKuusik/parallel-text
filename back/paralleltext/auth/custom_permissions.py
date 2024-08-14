@@ -5,16 +5,19 @@ from pprint import pprint
 # Permission
 class WhitelistPermission(permissions.BasePermission):
     """
-    Global permission check for whitelisted IPs.
+    Global permission check for whitelisted domain names.
     """
 
     def has_permission(self, request, view):
-        #domain = request.META['REMOTE_HOST']
-
-        print(request.META)
-        #print(domain)
-        #remote_address = request.META['REMOTE_ADDR']
-        #print(remote_address)
-        #whitelisted_origins = settings.WHITELISTED_ORIGINS
-        #return domain in whitelisted_origins or remote_address in whitelisted_origins
-        return True
+        has_permission = False
+        whitelisted_origins = settings.WHITELISTED_ORIGINS
+        if settings.DEBUG is True:
+             has_permission = True
+        else: 
+            domain = None
+            if 'HTTP_ORIGIN' in request.META:
+                domain = request.META['HTTP_ORIGIN']
+            elif 'HTTP_REFERER' in request.META:
+                domain = request.META['HTTP_REFERER']
+            has_permission = domain in whitelisted_origins
+        return has_permission
