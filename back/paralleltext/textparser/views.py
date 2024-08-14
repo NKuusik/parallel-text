@@ -13,7 +13,6 @@ logger = logging.getLogger("paralleltext.views")
 class Text(APIView):
     permission_classes = (WhitelistPermission,)
     def post(self, request, format=None):
-        print("yes")
         file_dict = {
             "first_file": {},
             "second_file": {}

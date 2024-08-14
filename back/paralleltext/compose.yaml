@@ -4,10 +4,12 @@ services:
       - "DJANGO_SECRET_KEY"
       - "DEBUG"
       - "ALLOWED_HOSTS"
+      - "WHITELISTED_ORIGINS"
     environment:
       - DJANGO_SECRET_KEY=/run/secrets/DJANGO_SECRET_KEY
       - DEBUG=/run/secrets/DEBUG
       - ALLOWED_HOSTS=/run/secrets/ALLOWED_HOSTS
+      - WHITELISTED_ORIGINS=/run/secrets/WHITELISTED_ORIGINS
     image: "nkuusik/django-paralleltext:latest"
     ports:
       - "8000:8000"
@@ -18,4 +20,6 @@ secrets:
   DEBUG:
     file: "$HOME/django_secrets/DEBUG"
   ALLOWED_HOSTS:
+    file: "$HOME/django_secrets/ALLOWED_HOSTS"
+  WHITELISTED_ORIGINS:
     file: "$HOME/django_secrets/ALLOWED_HOSTS"

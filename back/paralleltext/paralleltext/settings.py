@@ -67,8 +67,6 @@ except KeyError as e:
     else:
         raise RuntimeError("Could not find valid secret key for production")
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -175,3 +173,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080'
 ]
+
+# Custom variables
+
+try:
+    WHITELISTED_ORIGINS = get_secret('WHITELISTED_ORIGINS').split(',')
+except KeyError as e:
+    print('No whitelisted origins found, only permit local use')
+    WHITELISTED_ORIGINS = ['127.0.0.1']
