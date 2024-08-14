@@ -22,4 +22,4 @@ secrets:
   ALLOWED_HOSTS:
     file: "$HOME/django_secrets/ALLOWED_HOSTS"
   WHITELISTED_ORIGINS:
-    file: "$HOME/django_secrets/ALLOWED_HOSTS"
+    file: "$HOME/django_secrets/WHITELISTED_ORIGINS"
