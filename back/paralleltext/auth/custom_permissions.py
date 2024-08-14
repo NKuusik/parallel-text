@@ -1,5 +1,6 @@
 from rest_framework import permissions
 from django.conf import settings
+from pprint import pprint
 
 # Permission
 class WhitelistPermission(permissions.BasePermission):
@@ -9,7 +10,8 @@ class WhitelistPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
         #domain = request.META['REMOTE_HOST']
-        print(request)
+
+        print(request.META)
         #print(domain)
         #remote_address = request.META['REMOTE_ADDR']
         #print(remote_address)
