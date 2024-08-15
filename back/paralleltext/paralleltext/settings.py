@@ -13,15 +13,16 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 
-"""
-Optain environment variable from presented as Docker secret
-"""
+
 def get_secret(key):
+    """
+    Optain environment variable from presented as Docker secret
+    """
     value = os.getenv(key)
     if value is None:
         raise KeyError(f"No variable found: {key}")
-    elif os.path.isfile(value):
-        with open(value) as f:
+    if os.path.isfile(value):
+        with open(value, encoding="utf-8") as f:
             value = f.read()
 
     output = value.strip()
@@ -52,7 +53,7 @@ except KeyError as e:
 try:
     DEBUG = False
     debug_key = get_secret('DEBUG')
-    if (debug_key == 'True'):
+    if debug_key == 'True':
         DEBUG = True
 except KeyError as e:
     print('No debug environment variable found, only permit local use')
@@ -62,10 +63,10 @@ except KeyError as e:
 try:
     SECRET_KEY = get_secret('DJANGO_SECRET_KEY')
 except KeyError as e:
-    if (DEBUG is True):
+    if DEBUG is True:
         SECRET_KEY = 'django-insecure-0izc+il^nt(me64fct3ja#zq!d62j3uak-6=@d8(x-(($s@pro'
     else:
-        raise RuntimeError("Could not find valid secret key for production")
+        raise RuntimeError("Could not find valid secret key for production") from e
 
 # Application definition
 
