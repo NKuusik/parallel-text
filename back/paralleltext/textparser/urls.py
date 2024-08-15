@@ -1,7 +1,11 @@
-from django.urls import path, include
+"""
+Urls
+"""
+
+from django.urls import path
 
 from . import views
 
 urlpatterns = [
-    path("", views.index, name="index")
+    path("text/", views.Text.as_view())
 ]
