@@ -4,9 +4,9 @@ import magic
 
 def validate_text_file(file_buffer):
 
+
     # Validating a copy of the buffer ensures the whole file is retained
     validation_buffer = copy.deepcopy(file_buffer)
-
     magic_app = magic.Magic()
     mime_type = magic_app.from_buffer(validation_buffer.read(1024))
     valid_mime_types = ['ASCII text', 'Unicode text']

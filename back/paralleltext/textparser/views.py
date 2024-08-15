@@ -9,7 +9,6 @@ import logging
 
 logger = logging.getLogger("paralleltext.views")
 
-#@csrf_exempt
 class Text(APIView):
     permission_classes = (WhitelistPermission,)
     def post(self, request, format=None):
