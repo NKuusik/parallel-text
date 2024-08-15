@@ -18,5 +18,6 @@ class WhitelistPermission(permissions.BasePermission):
             elif 'HTTP_REFERER' in request.META:
                 domain = request.META['HTTP_REFERER']
             
+
             has_permission = domain in whitelisted_origins
         return has_permission
