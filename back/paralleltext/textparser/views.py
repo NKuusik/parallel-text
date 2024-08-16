@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from auth.custom_permissions import WhitelistPermission
 from .forms import UploadFileForm
+from .services import TextSplitter
 
 
 logger = logging.getLogger("paralleltext.views")
@@ -28,9 +29,9 @@ class Text(APIView):
                      }
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            separator = request.GET.get('delim')
-            if separator == 'newline' or separator is None:
-                separator = '\n'
+            param_value = request.GET.get('delim')
+            text_splitter = TextSplitter(param_value)
+
             for key in request.FILES:
                 file = request.FILES[key]
 
@@ -39,18 +40,7 @@ class Text(APIView):
                     "lines": []
                 }
                 text = file.read().decode("utf-8")
-                lines = text.split(separator)
-                stripped_lines = []
-                # Restore the separator to the end of if it is not newline
-                for x in range(len(lines)):
-                    current_line = lines[x]
-                    if current_line != '':
-                        if x < len(lines) - 1:
-                            current_line += separator
-                        current_line = current_line.strip()
-                        current_line = current_line.replace('\n', ' ')
-                        stripped_lines.append(current_line)
-                file_dict[key]['lines'] = stripped_lines
+                file_dict[key]['lines'] = text_splitter.split_text(text)
 
             return JsonResponse(file_dict)
         error_message = "Invalid data submitted"
