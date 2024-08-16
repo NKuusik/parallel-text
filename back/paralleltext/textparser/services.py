@@ -1,32 +1,36 @@
 """
 Services.
 """
+import re
 
 class TextSplitter:
     def __init__(self, param_value):
-        self.__separator = self.parse_separator(param_value)
-    
-    def parse_separator(self, param_value):
-        """
-        Provide the separator value according to the param_value received from the query.
-        """
-        # Todo: explicitly check for the value to be either 'newline' or 'sentence'
-        # and raise error otherwise.
-        separator = '\n'
-        if param_value == 'sentence':
-            separator = '.'            
-        return separator
+        self.__param_value = param_value
 
     def split_text(self, text):
-        lines = text.split(self.__separator)
+        """
+        Split text into list of lines depending on the param_value
+        """
+        lines = None
+        sentence_terminators = []
+        if self.__param_value == 'sentence':
+            sentence_terminators = ['.','?', '!']
+            lines = re.split('([.|?|!])', text)
+        # Todo: explicitly check for the value to be either 'newline' or 'sentence'
+        # and raise error otherwise.
+        else:
+            lines = text.split('\n')
         stripped_lines = []
-        # Restore the separator to the end of if it is not newline
+        previous_line = None
         for x in range(len(lines)):
             current_line = lines[x]
-            if current_line != '':
-                if x < len(lines) - 1:
-                    current_line += self.__separator
+            if not current_line.isspace():
                 current_line = current_line.strip()
                 current_line = current_line.replace('\n', ' ')
-                stripped_lines.append(current_line)
+                if current_line in sentence_terminators:
+                    previous_line += current_line
+                    stripped_lines[-1] = previous_line
+                else:
+                    stripped_lines.append(current_line)
+                    previous_line = current_line
         return stripped_lines
