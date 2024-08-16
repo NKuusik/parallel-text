@@ -29,6 +29,7 @@ class TextSplitter:
                 current_line = current_line.replace('\n', ' ')
                 if current_line in sentence_terminators:
                     previous_line += current_line
+                    # Add index check here
                     stripped_lines[-1] = previous_line
                 else:
                     stripped_lines.append(current_line)
