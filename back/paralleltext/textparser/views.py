@@ -40,7 +40,12 @@ class Text(APIView):
                     "lines": []
                 }
                 text = file.read().decode("utf-8")
-                file_dict[key]['lines'] = text_splitter.split_text(text)
+                try:
+                    file_dict[key]['lines'] = text_splitter.split_text(text)
+                except:
+                    error_message = "Invalid param value submitted"
+                    logger.warning("%s:%s", error_message, param_value)
+                    return Response(error_message, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
             return JsonResponse(file_dict)
         error_message = "Invalid data submitted"
