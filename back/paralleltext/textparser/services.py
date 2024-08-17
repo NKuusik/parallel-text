@@ -16,12 +16,11 @@ class TextSplitter:
         sentence_terminators = []
         if self.__param_value == 'sentence':
             # How to handle quotation marks of any type?
-            sentence_terminators = ['.','?', '!']
+            sentence_terminators = ['.','?', '!', '\n']
+            re_expression_part = '|'.join(sentence_terminators)
             # Replace hard-coded value with variable using .join('|')
             # Consider adding \n to regular expresison
-            lines = re.split('([.|?|!])', text)
-        # Todo: explicitly check for the value to be either 'newline' or 'sentence'
-        # and raise error otherwise.
+            lines = re.split(f'([{re_expression_part}])', text)
         elif self.__param_value == 'newline':
             lines = text.split('\n')
         else:
@@ -30,7 +29,7 @@ class TextSplitter:
         previous_line = None
         for x in range(len(lines)):
             current_line = lines[x]
-            if not current_line.isspace():
+            if not current_line.isspace() and current_line != "":
                 current_line = current_line.strip()
                 current_line = current_line.replace('\n', ' ')
                 if current_line in sentence_terminators:
