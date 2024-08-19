@@ -12,7 +12,17 @@ This is a web app that displays two .txt files line by line
 python manage.py runserver
 ```
 
-This is the reccomended way for active work on the back-end
+For running tests
+```
+coverage run manage.py test && coverage html
+```
+
+For running linter
+```
+pylint textparser/
+```
+
+This is the recommended option for active work on the back-end
 
 ### Option 2: Run for development locally using Docker
 

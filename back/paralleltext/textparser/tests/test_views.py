@@ -83,3 +83,14 @@ class TextViewTestCase(TestCase):
         response = self.client.post('/api/text/', {'first_file': file1, 'second_file': file2},
                                     HTTP_ORIGIN='somedomain.com')
         self.assertEqual(403, response.status_code)
+
+    def test_invalid_param_value(self):
+        """
+        Test whether request fails when delimiter is provide as param value.
+        """
+        file1 = SimpleUploadedFile('file1.txt', b"I am a test file 1", content_type="text/plain")
+        file2 = SimpleUploadedFile('file2.txt', b"I am a test file 2", content_type="text/plain")
+        response = self.client.post('/api/text/?delim=somevalue', {'first_file': file1,
+                                                                   'second_file': file2},
+                                    format=None)
+        self.assertEqual(422, response.status_code)

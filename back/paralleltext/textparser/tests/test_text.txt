@@ -1,0 +1,13 @@
+Tere!
+
+See on testtekst, kus leidub erineval kujul vormistust. Esiteks, see on lause, mis lõpeb punktiga. Kas see on lause, mis lõpeb küsimusega?
+
+
+Mitu uut rida peaks taanduma!
+
+Otsekõne on raske: "Kas otsekõne on tõesti raske?" Noh, ma usun küll, eks vaatame. "Samas, mis saab siis, kui lause algab otsekõnega!" ei oska me arvata.
+
+
+    See rida algab taandreaga. Selles              lauses on palju tühja    vahel.  Kõige lõpus veel veidraid tühimikke?!.
+
+Aga mõnikord väljendab punkt hoopis lühendamist, i.e. this is an abbrevation in English.
