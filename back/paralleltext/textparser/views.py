@@ -20,14 +20,14 @@ class Text(APIView):
     API View for Text
     """
     permission_classes = (WhitelistPermission,)
-    def post(self, request, format=None):
+    def post(self, request):
         """
         Handle post requests.
         """
         file_dict = {
             "first_file": {},
             "second_file": {}
-                     }
+                    }
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             param_value = request.GET.get('delim')
@@ -47,10 +47,6 @@ class Text(APIView):
                     error_message = "Invalid param value submitted"
                     logger.warning("%s:%s", error_message, param_value)
                     return Response(error_message, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-                except Exception as e:
-                    error_message = "Unexpected error identified"
-                    logger.warning("%s: %s", error_message, e)
-
             return JsonResponse(file_dict)
         error_message = "Invalid data submitted"
         logger.warning("%s:%s", error_message, list((form.errors.values())))

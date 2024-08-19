@@ -17,6 +17,11 @@ For running tests
 coverage run manage.py test && coverage html
 ```
 
+For running linter
+```
+pylint textparser/
+```
+
 This is the recommended option for active work on the back-end
 
 ### Option 2: Run for development locally using Docker

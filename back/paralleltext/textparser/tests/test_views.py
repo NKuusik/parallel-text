@@ -90,6 +90,7 @@ class TextViewTestCase(TestCase):
         """
         file1 = SimpleUploadedFile('file1.txt', b"I am a test file 1", content_type="text/plain")
         file2 = SimpleUploadedFile('file2.txt', b"I am a test file 2", content_type="text/plain")
-        response = self.client.post('/api/text/?delim=somevalue', {'first_file': file1, 'second_file': file2},
+        response = self.client.post('/api/text/?delim=somevalue', {'first_file': file1,
+                                                                   'second_file': file2},
                                     format=None)
         self.assertEqual(422, response.status_code)
