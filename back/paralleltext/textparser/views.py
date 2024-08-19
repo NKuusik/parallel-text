@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from auth.custom_permissions import WhitelistPermission
 from .forms import UploadFileForm
 from .services import TextSplitter
+from .exceptions import InvalidParamValueError
 
 
 logger = logging.getLogger("paralleltext.views")
@@ -42,10 +43,13 @@ class Text(APIView):
                 text = file.read().decode("utf-8")
                 try:
                     file_dict[key]['lines'] = text_splitter.split_text(text)
-                except:
+                except InvalidParamValueError:
                     error_message = "Invalid param value submitted"
                     logger.warning("%s:%s", error_message, param_value)
                     return Response(error_message, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                except Exception as e:
+                    error_message = "Unexpected error identified"
+                    logger.warning("%s: %s", error_message, e)
 
             return JsonResponse(file_dict)
         error_message = "Invalid data submitted"

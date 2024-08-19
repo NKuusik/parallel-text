@@ -49,7 +49,7 @@ watch(store, () => {
 
 const handleSubmit = () => {
 	if (isFormValid.value) {
-		let api_endpoint = [process.env.API_URL, 'api/text/'].join('')
+		let api_endpoint = [process.env.API_URL, 'api/text/?delim=sentence'].join('')
 		axios.post(api_endpoint, {
 		'first_file': firstFileRef.value,
 		'second_file': secondFileRef.value
