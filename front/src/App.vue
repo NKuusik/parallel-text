@@ -4,7 +4,7 @@ import NavBar from './components/NavBar.vue'
 import LineSelection from './components/LineSelection.vue'
 import MainText from './components/MainText.vue'
 import FileUploadForm from './components/FileUploadForm.vue'
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 
 const currentTexts = ref({
 	0: [],
@@ -13,6 +13,7 @@ const currentTexts = ref({
 })
 
 const currentlyDisplayedLines = ref([null, null])
+const textDisplayContainer = ref(null)
 
 const handleSelectedLineChange = (lineNumber) => {
 	for (let i = 0; i < 2; i++) {
@@ -25,6 +26,7 @@ const updateText = (lineLists) => {
 	currentTexts.value[1] = lineLists[1]
 	updateMaxText(lineLists)
 	handleSelectedLineChange(1)
+	scrollToBottom()
 }
 
 const updateMaxText = (lineLists) => {
@@ -36,6 +38,12 @@ const updateMaxText = (lineLists) => {
 	}
 	currentTexts.value['maxLines'] = highestValue
 }
+
+const scrollToBottom = () => {
+	nextTick(() => {
+		textDisplayContainer.value.$el.scrollIntoView({behaviour: "smooth"})
+	})
+}
 </script>
 
 <template>
@@ -46,6 +54,6 @@ const updateMaxText = (lineLists) => {
 		<FileUploadForm :exampleUse=true @receivedData="updateText"/>
 		<LineSelection :maxLines="currentTexts['maxLines']" @updateSelectedLine="handleSelectedLineChange"/>
 	</div>
-	<TextDisplayContainer :displayedTextArray=currentlyDisplayedLines />
+	<TextDisplayContainer ref="textDisplayContainer" :displayedTextArray=currentlyDisplayedLines />
 </div>
 </template>
