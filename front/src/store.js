@@ -8,9 +8,5 @@ export const store = reactive({
   exampleUse: false,
   toggleExampleUse() {
     this.exampleUse = !this.exampleUse
-  },
-  resetExampleUse() {
-    this.exampleUse = false
   }
-  
 })

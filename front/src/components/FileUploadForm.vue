@@ -60,7 +60,6 @@ const handleSubmit = () => {
 		}
 	).then((result) => {
 		store.dataIsReceived()
-		store.resetExampleUse()
 		emit('receivedData', [result.data['first_file']['lines'], result.data['second_file']['lines']])
 		
 	}).catch((err) => {
@@ -132,7 +131,6 @@ const ruleFileTypeIsCorrect = (value) => {
           md="6"
         >
           <v-file-input
-		  	:disabled="store.exampleUse"
 		  	v-model="firstFileRef"
 		  	accept=".txt,text/plain"
             label="First file"
@@ -146,7 +144,6 @@ const ruleFileTypeIsCorrect = (value) => {
           md="6"
         >
           <v-file-input
-		  	:disabled="store.exampleUse"
 			v-model="secondFileRef"
 		    accept=".txt,text/plain"
             label="Second file"
