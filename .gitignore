@@ -2,8 +2,10 @@
 
 front/node_modules/
 front/dist/
+front/coverage/
 */.vscode/
 .vscode/
+
 
 # Custom back-end
 back/django-venv/
