@@ -52,7 +52,7 @@ const scrollToBottom = () => {
 <div class="container content-body">
 	<div class="row">
 		<MainText />
-		<FileUploadForm :exampleUse=true @receivedData="updateText"/>
+		<FileUploadForm @receivedData="updateText"/>
 		<LineSelection :maxLines="currentTexts['maxLines']" @updateSelectedLine="handleSelectedLineChange"/>
 	</div>
 	<TextDisplayContainer ref="textDisplayContainer" :displayedTextArray=currentlyDisplayedLines />
