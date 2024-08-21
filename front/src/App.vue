@@ -44,6 +44,7 @@ const scrollToBottom = () => {
 		textDisplayContainer.value.$el.scrollIntoView({behaviour: "smooth"})
 	})
 }
+
 </script>
 
 <template>

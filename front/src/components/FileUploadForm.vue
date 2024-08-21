@@ -118,9 +118,8 @@ const ruleFileTypeIsCorrect = (value) => {
 	return "Plain text file required."
 }
 
+
 </script>
-
-
 
 <template>
 	<v-form v-model="isFormValid" @submit.prevent="handleSubmit">
@@ -131,6 +130,7 @@ const ruleFileTypeIsCorrect = (value) => {
           md="6"
         >
           <v-file-input
+		  	:disabled="store.exampleUse"
 		  	v-model="firstFileRef"
 		  	accept=".txt,text/plain"
             label="First file"
@@ -144,6 +144,7 @@ const ruleFileTypeIsCorrect = (value) => {
           md="6"
         >
           <v-file-input
+		  	:disabled="store.exampleUse"
 			v-model="secondFileRef"
 		    accept=".txt,text/plain"
             label="Second file"
