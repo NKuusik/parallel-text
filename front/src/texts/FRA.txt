@@ -1,2 +1,0 @@
-This should include text in French.
-But at the moment it does not.
