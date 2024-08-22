@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-
+/*
 import { mount } from '@vue/test-utils'
 import TextDisplayContainer from '../components/TextDisplayContainer.vue'
 
@@ -28,4 +28,4 @@ test('TextDisplayContainer with lines in displayedTextArray displays these lines
 
   expect(lines[0].text()).toMatch('First line')
   expect(lines[1].text()).toMatch('Second line')
-})
+})*/

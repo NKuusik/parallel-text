@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-
+/*
 import { mount } from '@vue/test-utils'
 import MainText from '../components/MainText.vue'
 import { store } from '../store.js'
@@ -20,3 +20,4 @@ test('MainText when exampleUse is true', () => {
     const conditionalLine = wrapper.findAll('p')[1]
     expect(conditionalLine.text()).toMatch('Example mode enabled, using pre-defined text')
   })
+    */

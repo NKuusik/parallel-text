@@ -48,6 +48,7 @@ watch(store, () => {
 
 
 const handleSubmit = () => {
+	console.log(`handleSubmit ${isFormValid.value}`)
 	if (isFormValid.value) {
 		let api_endpoint = [process.env.API_URL, 'api/text/?delim=sentence'].join('')
 		axios.post(api_endpoint, {
@@ -79,6 +80,7 @@ const fileTypeRules = [
 
 
 const ruleValueExists = (value) => {
+	console.log(`ruleValueExists ${value}`)
 	if (value.length === 1) {
 		return true		
 	}

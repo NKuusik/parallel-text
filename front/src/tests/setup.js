@@ -1,14 +1,19 @@
-// tests/setup.js
-import { config } from '@vue/test-utils';
-import Vuetify from 'vuetify';
-import { createVuetify } from 'vuetify';
-import { jest } from '@jest/globals';
+//
+// package.json has a section that instructs jest to
+// read this setup/startup file.
+//
 
-// Create a Vuetify instance
-const vuetify = createVuetify();
+import Vue from 'vue';
 
-// Mock Vuetify use
-config.global.plugins = [vuetify];
+// DON'T DO THIS or you'll have problems like <v-btn :to="..."> rendering
+// as <router-link> instead of <a href="..."> on the unit tests.
+// See tests/Foo.spec.js to learn how to use Vuetify in the unit tests.
+//import Vuetify from 'vuetify';
+//Vue.use(Vuetify); // NO, DON'T DO THIS.
 
-// Optional: Add any global mocks, stubs, etc. for Vuetify components
-jest.mock('vuetify');
+// You may not need this. Uncomment only if you see some sort of
+// regeneratorRuntime error.
+//import 'babel-polyfill';
+
+// So we don't see unnecessary Vue warnings about production.
+//Vue.config.productionTip = false;

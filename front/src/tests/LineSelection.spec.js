@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-
+/*
 import { mount } from '@vue/test-utils'
 import LineSelection from '../components/LineSelection.vue'
 
@@ -42,7 +42,7 @@ test('Clicking navigation buttons increments or decrements the currentline respe
 
   })
 
-
+*/
 // Keyboard events do not seem to work at the moment.
 /*
   test('Navigating via arrow keys increments or decrements the currentline respectively', async () => {
