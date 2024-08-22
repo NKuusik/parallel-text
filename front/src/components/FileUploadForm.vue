@@ -80,7 +80,6 @@ const fileTypeRules = [
 
 
 const ruleValueExists = (value) => {
-	console.log(`ruleValueExists ${value}`)
 	if (value.length === 1) {
 		return true		
 	}

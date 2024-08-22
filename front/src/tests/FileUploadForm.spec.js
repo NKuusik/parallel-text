@@ -1,16 +1,28 @@
-/**
- * @jest-environment jsdom
- */
-/*
+
 import { mount, render } from '@vue/test-utils'
 import FileUploadForm from '../components/FileUploadForm.vue'
 import { store } from '../store.js'
-import vuetify from "vuetify"
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import { describe, expect, it, test } from 'vitest'
 
+const vuetify = createVuetify({
+  components,
+  directives,
+})
+
+global.ResizeObserver = require('resize-observer-polyfill')
 
 test('FileUploadForm renders correctly', () => {
-  const wrapper = mount(FileUploadForm)
-  const submitButton = wrapper.find('v-btn')
+  const wrapper = mount(
+    FileUploadForm, 
+    {
+      global: {
+        plugins: [vuetify]
+      }
+    })
+  const submitButton = wrapper.findComponent({name: 'VBtn'})
   expect(submitButton.text()).toMatch('Submit')
 })
 
@@ -27,27 +39,32 @@ test('Valid input data is properly submitted', async () => {
     {type: "text/plain"}
   )
 
-  const wrapper = mount(FileUploadForm)
+  const wrapper = mount(
+    FileUploadForm, 
+    {
+      global: {
+        plugins: [vuetify]
+      }
+    })
   const children = wrapper.findAll('*')
-  console.log(children)
 
-  const inputFields = wrapper.findAll('v-file-input')
-  const fileInput = inputFields[0].findAll('*')
-  console.log("inputFields")
-  console.log(inputFields[0].element)
-  console.log("fileInput")
-  console.log(fileInput)
-  const submitButton = wrapper.find('v-btn')
-
+  const inputFields = wrapper.findAllComponents({name: 'VFileInput'})
+  await inputFields[0].setValue(firstTestFile)
+  await inputFields[1].setValue(secondTestFile)
+  
+  expect(inputFields[0].text()).toMatch('firstTestFile.txt')
+  expect(inputFields[1].text()).toMatch('secondTestFile.txt')
+  /*
+  Todo: add submission
   inputFields[0].element.value = firstTestFile
   inputFields[1].element.setValue(secondTestFile)
   await submitButton.trigger('submit')
-  expect(inputFields[0].text()).toMatch('firstTestFile.txt')
-  expect(inputFields[1].text()).toMatch('secondTestFile.txt')
+
   store.exampleUse = false
+  */
 })
 
-
+/*
 test('Cannot submit empty form', async () => {
     const wrapper = mount(FileUploadForm)
     const submitButton = wrapper.find('v-btn')
