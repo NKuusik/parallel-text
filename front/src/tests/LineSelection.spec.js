@@ -104,3 +104,40 @@ test('Clicking navigation buttons increments or decrements the currentline respe
     await wrapper.vm.$nextTick()
     expect(lineText.text()).toMatch('Currently on line 1/10')
   })
+
+
+
+  test('Jump to line via enter', async () => {
+    store.isDataReceived = true
+
+    const wrapper = mount(LineSelection, {
+      props: {
+          maxLines: 10
+      },
+      global: {
+        plugins: [vuetify]
+      } 
+    })
+    const lineText = wrapper.find('p')
+    expect(lineText.text()).toMatch('Currently on line 1/10')
+
+
+    const inputField = wrapper.find('input')
+    inputField.setValue(6)
+    const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+    
+    window.dispatchEvent(enterEvent);
+    await wrapper.vm.$nextTick()
+    expect(lineText.text()).toMatch('Currently on line 6/10')
+
+
+    inputField.setValue(60)
+    window.dispatchEvent(enterEvent);
+    await wrapper.vm.$nextTick()
+    expect(lineText.text()).toMatch('Currently on line 10/10')
+
+    inputField.setValue(-7)
+    window.dispatchEvent(enterEvent);
+    await wrapper.vm.$nextTick()
+    expect(lineText.text()).toMatch('Currently on line 1/10')
+  })

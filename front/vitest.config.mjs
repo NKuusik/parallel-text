@@ -12,6 +12,8 @@ export default defineConfig({
       },
     },
     coverage: {
+      provider: 'istanbul',
+      exclude: ['webpack.*', '*.config.*', 'node_modules/**','dist/**', 'src/tests/**', 'src/styles/**'],
       reporter: ['text', 'html'], // <-- ***
       },
     },

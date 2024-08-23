@@ -31,7 +31,6 @@ const secondExampleText = new File([
 let firstFileRef = ref(null)
 let secondFileRef = ref(null)
 
-
 const isFormValid = ref(false)
 const emit = defineEmits(['receivedData'])
 
@@ -48,7 +47,6 @@ watch(store, () => {
 
 
 const handleSubmit = () => {
-	console.log(`handleSubmit ${isFormValid.value}`)
 	if (isFormValid.value) {
 		let api_endpoint = [process.env.API_URL, 'api/text/?delim=sentence'].join('')
 		axios.post(api_endpoint, {
@@ -118,7 +116,6 @@ const ruleFileTypeIsCorrect = (value) => {
 	}
 	return "Plain text file required."
 }
-
 
 </script>
 
