@@ -31,7 +31,6 @@ const choosePreviousLine = () => {
 }
 
 const keyDownHandler = (event) => {
-	console.log('keyDownHandler')
 	if (store.isDataReceived) {
 		if (event.key === 'ArrowLeft') {
 			prevButtonStyleRef.value = true

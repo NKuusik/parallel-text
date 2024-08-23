@@ -60,8 +60,6 @@ test('Clicking navigation buttons increments or decrements the currentline respe
   })
 
 
-// Todo: Keyboard events do not seem to work at the moment.
-/*
   test('Navigating via arrow keys increments or decrements the currentline respectively', async () => {
     store.isDataReceived = true
 
@@ -76,14 +74,33 @@ test('Clicking navigation buttons increments or decrements the currentline respe
     const lineText = wrapper.find('p')
     expect(lineText.text()).toMatch('Currently on line 1/10')
 
-    const navigationButtons = wrapper.findAllComponents({name: 'VBtn'})
-    await wrapper.trigger('keydown', {
-      key: 'a'
-    })
-    //await navigationButtons[0].trigger('keydown.left')
+
+    const moveLeftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+    window.dispatchEvent(moveLeftEvent);
     await wrapper.vm.$nextTick()
 
     expect(lineText.text()).toMatch('Currently on line 10/10')
 
+    window.dispatchEvent(moveLeftEvent);
+    await wrapper.vm.$nextTick()
+    expect(lineText.text()).toMatch('Currently on line 9/10')
+
+
+    window.dispatchEvent(moveLeftEvent);
+    await wrapper.vm.$nextTick()
+    expect(lineText.text()).toMatch('Currently on line 8/10')
+    
+    const moveRightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+
+    window.dispatchEvent(moveRightEvent);
+    await wrapper.vm.$nextTick()
+    expect(lineText.text()).toMatch('Currently on line 9/10')
+
+    window.dispatchEvent(moveRightEvent);
+    await wrapper.vm.$nextTick()
+    expect(lineText.text()).toMatch('Currently on line 10/10')
+
+    window.dispatchEvent(moveRightEvent);
+    await wrapper.vm.$nextTick()
+    expect(lineText.text()).toMatch('Currently on line 1/10')
   })
-*/
