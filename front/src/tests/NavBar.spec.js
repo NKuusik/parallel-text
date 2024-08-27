@@ -3,7 +3,7 @@ import NavBar from '../components/NavBar.vue'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import { describe, expect, it, test } from 'vitest'
+import { expect, test } from 'vitest'
 
 const vuetify = createVuetify({
   components,

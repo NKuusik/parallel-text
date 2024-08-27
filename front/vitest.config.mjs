@@ -17,5 +17,5 @@ export default defineConfig({
       reporter: ['text', 'html'], // <-- ***
       },
     },
-    plugins: [vue()]
+    plugins: [vue()],
 });

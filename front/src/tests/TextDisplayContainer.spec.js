@@ -4,7 +4,7 @@ import TextDisplayContainer from '../components/TextDisplayContainer.vue'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import { describe, expect, it, test } from 'vitest'
+import { expect, test } from 'vitest'
 
 const vuetify = createVuetify({
   components,
@@ -18,6 +18,14 @@ test('TextDisplayContainer without lines in displayedTextArray does not display 
     props: {
       displayedTextArray: [null, null]
     },
+
+
+
+
+
+
+
+    
     global: {
       plugins: [vuetify]
     } 

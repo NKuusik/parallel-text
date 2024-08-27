@@ -2,7 +2,7 @@
 import { mount } from '@vue/test-utils'
 import MainText from '../components/MainText.vue'
 import { store } from '../store.js'
-
+import { expect, test } from 'vitest'
 
 test('MainText when exampleUse is false', () => {
   const wrapper = mount(MainText)

@@ -1,11 +1,10 @@
-import { mount, render } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import App from '../App.vue'
-import { store } from '../store.js'
+import axios from 'axios';
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import { describe, expect, it, test, vi } from 'vitest'
-import LineSelection from '../components/LineSelection.vue'
+import { expect, test, vi } from 'vitest'
 
 const vuetify = createVuetify({
   components,
@@ -13,32 +12,68 @@ const vuetify = createVuetify({
 })
 
 global.ResizeObserver = require('resize-observer-polyfill')
-// Todo
-test('Valid data functions correctly', () => {
 
-    const mockDataReceived = vi.fn().mockReturnValue(
-        [
-            ['First sentence in first text', 'Second sentence in first text'],
-            ['First sentence in second text', 'Second sentence in second text']
-        ]);
+test('Valid data functions correctly', async () => {
+    // Resolves TypeError textDisplayContainer.value.$el.scrollIntoView is not a function
+    window.HTMLElement.prototype.scrollIntoView = vi.fn();
+    vi.mock('axios')
+
+
+    const firstTestFile = new File(
+      ['This is the first test file.'], 
+      'firstTestFile.txt',
+      {type: "text/plain"}
+    )
+    const secondTestFile = new File(
+      ['This is the second test file.'],
+      'secondTestFile.txt',
+      {type: "text/plain"}
+    )
+    const mockDataReceived = 
+      { data: {
+        first_file: 
+          { title: "First mocked text",
+            lines: ['First sentence in first text', 'Second sentence in first text']
+          },
+        second_file: 
+        { title: "Second mocked text",
+          lines: ['First sentence in second text', 'Second sentence in second text']
+        },
+        } 
+      }
+      axios.post.mockResolvedValue(mockDataReceived)
 
   const wrapper = mount(
     App, 
     {
       global: {
         plugins: [vuetify]
-      },
-      methods: {
-        handleSubmit: () =>         [
-            ['First sentence in first text', 'Second sentence in first text'],
-            ['First sentence in second text', 'Second sentence in second text']
-        ]
-      },
+    }
     })
 
     const lineSelectionComponent = wrapper.findComponent({name: 'LineSelection'})
+
     const lineText = lineSelectionComponent.find('p')
-    expect(true).toBe(true)
-    // Todo
-//    expect(lineText.text()).toMatch('Currently on line 1/2')
+
+    const inputFields = wrapper.findAllComponents({name: 'VFileInput'})
+
+    await inputFields[0].setValue(firstTestFile)
+    await inputFields[1].setValue(secondTestFile)
+
+    // NEED TO WAIT FOR NEXT TICK FOR EACH FILETYPE RULE!
+    // Note this throws an error in ruleFileExtensionIsCorrect that is impossible to trace. 
+      // It does not affect the outcome of the test though. 
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+
+    const submitButton = wrapper.findAllComponents({name: 'VBtn'})[1]
+    expect(submitButton.text()).toMatch('Submit')
+    await submitButton.trigger('submit')
+  
+    expect(lineText.text()).toMatch('Currently on line 1/2')
+
+    vi.resetAllMocks()
 })

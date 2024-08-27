@@ -1,11 +1,11 @@
 
-import { mount, render } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import FileUploadForm from '../components/FileUploadForm.vue'
 import { store } from '../store.js'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import { describe, expect, it, test } from 'vitest'
+import { expect, test } from 'vitest'
 
 const vuetify = createVuetify({
   components,
@@ -50,10 +50,9 @@ test('Valid input data does not raise validation error', async () => {
   const inputFields = wrapper.findAllComponents({name: 'VFileInput'})
   await inputFields[0].setValue(firstTestFile)
   await inputFields[1].setValue(secondTestFile)
-  
+
   expect(inputFields[0].text()).toMatch('firstTestFile.txt')
   expect(inputFields[1].text()).toMatch('secondTestFile.txt')
-  
 })
 
 

@@ -7,7 +7,7 @@
     "test": "clear && vitest run --coverage",
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "lint": "eslint"
+    "lint": "eslint --fix"
   },
   "author": "Norman Kuusik",
   "license": "ISC",
