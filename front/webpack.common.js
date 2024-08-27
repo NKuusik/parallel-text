@@ -42,13 +42,6 @@ module.exports = {
         ],
       },
       {
-        test: /\.txt$/i,
-        type: 'asset/resource',
-        generator: {
-          filename: 'texts/[name][ext]', // Maintains the original name and extension
-        },
-      },
-      {
         test: /\.vue$/,
         loader: 'vue-loader'
       }

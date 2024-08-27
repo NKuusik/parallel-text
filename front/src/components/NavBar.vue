@@ -1,9 +1,22 @@
 <script setup>
 import { store } from '../store.js'
+import { ref, watch } from 'vue'
+
+const exampleUseStyleRef = ref(false)
+
+watch(store, () => {
+	if (store.exampleUse == true) {
+		exampleUseStyleRef.value = true
+	} else {
+		exampleUseStyleRef.value = false
+	}
+})
 
 const handleExampleUseClick = () => {
 	store.toggleExampleUse()
 }
+
+
 </script>
 
 <template>
@@ -15,7 +28,10 @@ const handleExampleUseClick = () => {
 					</button>
 					
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<v-btn class="nav-link ml-auto button-universal" @click="handleExampleUseClick">Example use</v-btn>
+					<v-btn 
+						class="nav-link ml-auto button-universal" :class="{'example-use-active': exampleUseStyleRef}" 
+						@click="handleExampleUseClick">Example use
+					</v-btn>
 				</div>
 			</div>
 		</nav> 

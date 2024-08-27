@@ -31,7 +31,6 @@ const secondExampleText = new File([
 let firstFileRef = ref(null)
 let secondFileRef = ref(null)
 
-
 const isFormValid = ref(false)
 const emit = defineEmits(['receivedData'])
 
@@ -60,13 +59,13 @@ const handleSubmit = () => {
 		}
 	).then((result) => {
 		store.dataIsReceived()
-		store.resetExampleUse()
 		emit('receivedData', [result.data['first_file']['lines'], result.data['second_file']['lines']])
 		
 	}).catch((err) => {
 		console.log(err)
 	});
 	}
+
 
 }
 
@@ -120,8 +119,6 @@ const ruleFileTypeIsCorrect = (value) => {
 }
 
 </script>
-
-
 
 <template>
 	<v-form v-model="isFormValid" @submit.prevent="handleSubmit">

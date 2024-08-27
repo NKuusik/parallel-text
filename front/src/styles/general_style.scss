@@ -64,7 +64,13 @@ button:hover	{
 	&.active-button {
 		background-color: $hover-color;
 	}
+
+	&.example-use-active {
+		background-color: $hover-color;
+		border: 2px solid green;
+	  }
 }	
+
 
 .displayed-texts	{
 		background-color: tan;
