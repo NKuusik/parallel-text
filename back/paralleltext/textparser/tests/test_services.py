@@ -2,7 +2,7 @@
 Test services
 """
 from django.test import TestCase
-from ..services import TextSplitter
+from ..services.text_splitter import TextSplitter
 from ..exceptions import InvalidParamValueError
 
 class TextSplitterTestCase(TestCase):

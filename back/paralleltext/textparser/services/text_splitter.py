@@ -1,8 +1,8 @@
 """
-Services.
+TextSplitter.
 """
 import re
-from .exceptions import InvalidParamValueError
+from ..exceptions import InvalidParamValueError
 
 class TextSplitter:
     """
