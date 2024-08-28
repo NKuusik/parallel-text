@@ -1,6 +1,8 @@
 $general-background-color: #9C9BA0;
 $button-color: red;
 $container-background: linear-gradient(lightblue, grey);
+$container-background-inversed: linear-gradient(grey, lightblue);
+
 $hover-color: rgb(33, 33, 236);
 $main-radius: 10px;
 $link-color: rgba(106, 243, 14, 0.8);
@@ -33,8 +35,6 @@ button:hover	{
 	transition: background-color 1s;
 }
 
-
-
 .container  {
 	border-radius: $main-radius;
 	text-align: center;
@@ -42,7 +42,16 @@ button:hover	{
 	box-shadow: 7px 7px 2px rgba(4, 4, 95, 0.2);
 
 }
+.dropdown-selection {
+	width: 100%; 
+	height: 100%;
+	background: $container-background-inversed;
+	position: absolute; 
+	top: 0px;
+	border: 1px solid green;
 
+
+}
 .button-universal {
 	border-radius: 5px;
 	background-color: $link-background;

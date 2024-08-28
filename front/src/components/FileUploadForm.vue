@@ -34,6 +34,18 @@ let secondFileRef = ref(null)
 const isFormValid = ref(false)
 const emit = defineEmits(['receivedData'])
 
+const separatorTypesRef = ref([
+		{
+			title: 'Sentence (regex)',
+			value: 'sentence'
+		},
+		{
+			title: 'New line',
+			value: 'newline'
+		}
+	])
+const selectedSeparatorTypeRef = ref(separatorTypesRef.value[0].value)
+
 
 watch(store, () => {
 	if (store.exampleUse == true) {
@@ -47,8 +59,9 @@ watch(store, () => {
 
 
 const handleSubmit = () => {
+	console.log(selectedSeparatorTypeRef.value)
 	if (isFormValid.value) {
-		let api_endpoint = [process.env.API_URL, 'api/text/?delim=sentence'].join('')
+		let api_endpoint = [process.env.API_URL, 'api/text/?delim=', selectedSeparatorTypeRef.value].join('')
 		axios.post(api_endpoint, {
 		'first_file': firstFileRef.value,
 		'second_file': secondFileRef.value
@@ -152,6 +165,28 @@ const ruleFileTypeIsCorrect = (value) => {
           ></v-file-input>
         </v-col>
       </v-row>
+	  <v-row 
+	  	justify="center"
+		>
+		<v-col
+			md="5"
+			sm="6"
+		>
+			<v-select
+				v-model="selectedSeparatorTypeRef"
+  				label="Separate by"
+  				:items="separatorTypesRef"
+  				variant="outlined"
+				>
+				<!-- Provides background color for selection -->
+				<template #prepend-item>
+					<v-card flat class="dropdown-selection" />
+          		</template>
+			</v-select>
+			
+		</v-col>
+	  </v-row>
+
 	  <v-btn class="mt-4 mb-4 button-universal" type="submit">Submit</v-btn>
     </v-container>
   </v-form>
