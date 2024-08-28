@@ -59,7 +59,6 @@ watch(store, () => {
 
 
 const handleSubmit = () => {
-	console.log(selectedSeparatorTypeRef.value)
 	if (isFormValid.value) {
 		let api_endpoint = [process.env.API_URL, 'api/text/?delim=', selectedSeparatorTypeRef.value].join('')
 		axios.post(api_endpoint, {
