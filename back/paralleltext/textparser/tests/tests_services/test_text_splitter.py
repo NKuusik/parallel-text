@@ -2,12 +2,12 @@
 Test services
 """
 from django.test import TestCase
-from ..services.text_splitter import TextSplitter
-from ..exceptions import InvalidParamValueError
+from ...services.text_splitter import TextSplitter
+from ...exceptions import InvalidParamValueError
 
 class TextSplitterTestCase(TestCase):
     """
-    Tests for Text view
+    Tests for TextSplitter service view
     """
     def setUp(self):
         """

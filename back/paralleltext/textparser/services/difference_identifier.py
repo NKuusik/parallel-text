@@ -28,7 +28,7 @@ class DifferenceIdentifier:
                 identical_string += x
             else:
                 if identical_string != "":
-                    output.append(identical_string)
+                    output.append([identical_string])
                     identical_string = ""
                 different_string1 += x
                 different_string2 += y
