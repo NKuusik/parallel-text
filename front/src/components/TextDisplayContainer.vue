@@ -1,5 +1,7 @@
 <script setup>
 
+import { ref } from 'vue'
+
 defineProps({
   displayedTextArray: Object
 })
@@ -8,14 +10,26 @@ const isNull = (value) => {
 	return value === null
 }
 
+const isComparisonActive = ref(true)
+
+
 </script>
 
 <template>
+	<div>
+		<div class='row'>
+    		<v-checkbox
+      			v-model="isComparisonActive"
+      			:label="`Comparison mode`">
+			</v-checkbox>
+  		</div>
+
+	
 	<div v-if="!displayedTextArray['lines'].every(isNull)" class="row mt-4">
-		<div v-for="text in displayedTextArray['lines']" v-bind:key="text" class='col-6 mb-4 displayed-texts'>
+		<div v-if="!isComparisonActive" v-for="text in displayedTextArray['lines']" v-bind:key="text" class='col-6 mb-4 displayed-texts'>
 			{{ text }}
 		</div>
-		<div v-for="i in 2" class='col-6 mb-4 displayed-texts'>
+		<div v-else v-for="i in 2" class='col-6 mb-4 displayed-texts'>
 				<span v-for="allComparisons in displayedTextArray['comparison']" v-bind:key="allComparisons">
 				<span v-if="allComparisons.length == 1" class="identical-text">
 					{{allComparisons[0]}}
@@ -25,5 +39,7 @@ const isNull = (value) => {
 				</span>
 			</span>
 		</div>	
+	</div>	
 	</div>
+
 </template>
