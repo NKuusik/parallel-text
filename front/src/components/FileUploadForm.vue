@@ -71,7 +71,8 @@ const handleSubmit = () => {
 		}
 	).then((result) => {
 		store.dataIsReceived()
-		emit('receivedData', [result.data['first_file']['lines'], result.data['second_file']['lines']])
+		emit('receivedData', [result.data['first_file']['lines'], result.data['second_file']['lines'], 
+			result.data['comparison']])
 		
 	}).catch((err) => {
 		console.log(err)

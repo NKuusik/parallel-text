@@ -33,7 +33,7 @@ class DifferenceIdentifier:
                 different_string1 += x
                 different_string2 += y
         if identical_string != "":
-            output.append(identical_string)
+            output.append([identical_string])
         elif different_string1 != "" and different_string2 != "":
             output.append([different_string1, different_string2])
         return output

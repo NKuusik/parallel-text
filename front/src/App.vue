@@ -9,22 +9,30 @@ import { ref, nextTick } from 'vue'
 const currentTexts = ref({
 	0: [],
 	1: [],
-	maxLines: 1
+	maxLines: 1,
+	comparison: []
 })
 
-const currentlyDisplayedLines = ref([null, null])
+const currentlyDisplayedLines = ref({
+	lines: [null, null],
+	comparison: null
+})
 const textDisplayContainer = ref(null)
 
 const handleSelectedLineChange = (lineNumber) => {
 	for (let i = 0; i < 2; i++) {
-		currentlyDisplayedLines.value[i] = currentTexts.value[i][lineNumber - 1]
+		currentlyDisplayedLines.value['lines'][i] = currentTexts.value[i][lineNumber - 1]
 	}
+	currentlyDisplayedLines.value['comparison'] = currentTexts.value['comparison'][lineNumber - 1]
+	console.log(currentlyDisplayedLines.value)
 }
 
 const updateText = (lineLists) => {
 	currentTexts.value[0] = lineLists[0]
 	currentTexts.value[1] = lineLists[1]
-	updateMaxText(lineLists)
+	currentTexts.value['comparison'] = lineLists[2]
+	console.log(lineLists)
+	updateMaxText([lineLists[0], lineLists[1]])
 	handleSelectedLineChange(1)
 	scrollToBottom()
 }

@@ -107,7 +107,14 @@ button:hover	{
 	a {
 		padding: 0 20px 5px 20px;
 	}
-	span {
-		padding-right: 15px;
-	}
+}
+
+.identical-text {
+	background-color: green;
+
+}
+
+.different-text {
+	background-color: red;
+
 }
