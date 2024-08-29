@@ -16,16 +16,14 @@ const isComparisonActive = ref(true)
 </script>
 
 <template>
-	<div>
-		<div class='row'>
-    		<v-checkbox
-      			v-model="isComparisonActive"
-      			:label="`Comparison mode`">
-			</v-checkbox>
-  		</div>
-
-	
 	<div v-if="!displayedTextArray['lines'].every(isNull)" class="row mt-4">
+		<div>
+			<v-checkbox
+				class="d-inline-flex"
+      			v-model="isComparisonActive"
+      			:label="`Highlight differences`">
+			</v-checkbox>
+		</div>
 		<div v-if="!isComparisonActive" v-for="text in displayedTextArray['lines']" v-bind:key="text" class='col-6 mb-4 displayed-texts'>
 			{{ text }}
 		</div>
@@ -40,6 +38,4 @@ const isComparisonActive = ref(true)
 			</span>
 		</div>	
 	</div>	
-	</div>
-
 </template>
