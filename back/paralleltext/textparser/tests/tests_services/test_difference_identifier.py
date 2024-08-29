@@ -26,7 +26,7 @@ class DifferenceIdentifierTestCase(TestCase):
         difference_identifier = DifferenceIdentifier()
         analysed_text = difference_identifier.compare_strings(test_text, test_text)
         self.assertEqual(len(analysed_text), 1)
-        self.assertEqual(analysed_text[0], test_text)
+        self.assertEqual(analysed_text[0][0], test_text)
 
     def test_completely_different_strings(self):
         """

@@ -1,7 +1,10 @@
 $general-background-color: #9C9BA0;
-$button-color: red;
 $container-background: linear-gradient(lightblue, grey);
 $container-background-inversed: linear-gradient(grey, lightblue);
+$different-text-color: #EF0107;
+$identical-text-color: #018749;
+$animation-time: 1000ms;
+
 
 $hover-color: rgb(33, 33, 236);
 $main-radius: 10px;
@@ -89,6 +92,38 @@ button:hover	{
 		margin-left: 2.5%;
 		margin-right: 2.5%;
         top: 25px;
+		padding: 4px 0px 4px 0px;
+}
+
+.identical-text {
+	background-color: $identical-text-color;
+	animation-name: fade-in-identical;
+    animation-duration: $animation-time;  
+}
+
+.different-text {
+	background-color: $different-text-color;
+	animation-name: fade-in-different;
+    animation-duration: $animation-time;   
+}
+
+
+@keyframes fade-in-different {
+    from {
+		background-color: tan;
+    }
+    to {
+		background-color: $different-text-color;
+    } 
+}
+
+@keyframes fade-in-identical {
+    from {
+		background-color: tan;
+    }
+    to {
+		background-color: $identical-text-color;
+    } 
 }
 
 .navbar-brand, .nav-link	{	
@@ -107,7 +142,5 @@ button:hover	{
 	a {
 		padding: 0 20px 5px 20px;
 	}
-	span {
-		padding-right: 15px;
-	}
 }
+

@@ -13,19 +13,15 @@ const vuetify = createVuetify({
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
-test('TextDisplayContainer without lines in displayedTextArray does not display anything', () => {
+test('TextDisplayContainer without lines in displayedTextObject does not display anything', () => {
   const wrapper = mount(TextDisplayContainer, {
     props: {
-      displayedTextArray: [null, null]
+      displayedTextObject: {
+        lines: [null, null],
+        comparison: null
+        }
     },
 
-
-
-
-
-
-
-    
     global: {
       plugins: [vuetify]
     } 
@@ -34,15 +30,43 @@ test('TextDisplayContainer without lines in displayedTextArray does not display 
   expect(wrapper.find('div').exists()).toBe(false)
 })
 
-test('TextDisplayContainer with lines in displayedTextArray displays these lines properly', () => {
+
+test('TextDisplayContainer with identical lines in displayedTextObject displays these lines properly', () => {
   const wrapper = mount(TextDisplayContainer, {
     props: {
-      displayedTextArray: ['First line', 'Second line']
+      displayedTextObject: {
+          lines: ['Identical line', 'Identical line'],
+          comparison: [['Identical line']]
+          }
     },
     global: {
       plugins: [vuetify]
     } 
   })
+  expect(true).toBe(true)
+
+  expect(wrapper.find('div').exists()).toBe(true)
+
+  const lines = wrapper.findAll('.displayed-texts')
+
+  expect(lines[0].text()).toMatch('Identical line')
+  expect(lines[1].text()).toMatch('Identical line')
+
+})
+
+test('TextDisplayContainer with different lines in displayedTextObject displays these lines properly', () => {
+  const wrapper = mount(TextDisplayContainer, {
+    props: {
+      displayedTextObject: {
+          lines: ['First line', 'Second line'],
+          comparison: [['First line', 'Second line']]
+          }
+    },
+    global: {
+      plugins: [vuetify]
+    } 
+  })
+  expect(true).toBe(true)
 
   expect(wrapper.find('div').exists()).toBe(true)
 
@@ -50,4 +74,40 @@ test('TextDisplayContainer with lines in displayedTextArray displays these lines
 
   expect(lines[0].text()).toMatch('First line')
   expect(lines[1].text()).toMatch('Second line')
+
+})
+
+
+test('Toggling comparison checkbox works properly', async () => {
+  const wrapper = mount(TextDisplayContainer, {
+    props: {
+      displayedTextObject: {
+          lines: ['First line', 'Second line'],
+          comparison: [['First line', 'Second line']]
+          }
+    },
+    global: {
+      plugins: [vuetify]
+    } 
+  })
+  expect(true).toBe(true)
+
+  expect(wrapper.find('div').exists()).toBe(true)
+
+  const lines = wrapper.findAll('.displayed-texts')
+
+  expect(lines[0].text()).toMatch('First line')
+  expect(lines[1].text()).toMatch('Second line')
+
+  const checkbox = wrapper.findComponent({name: 'VCheckbox'})
+  expect(wrapper.vm.isComparisonActive).toBe(true);
+
+  await checkbox.setValue(false);
+
+  expect(wrapper.vm.isComparisonActive).toBe(false);
+
+  expect(lines[0].text()).toMatch('First line')
+  expect(lines[1].text()).toMatch('Second line')
+
+
 })
