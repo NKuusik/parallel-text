@@ -24,14 +24,12 @@ const handleSelectedLineChange = (lineNumber) => {
 		currentlyDisplayedLines.value['lines'][i] = currentTexts.value[i][lineNumber - 1]
 	}
 	currentlyDisplayedLines.value['comparison'] = currentTexts.value['comparison'][lineNumber - 1]
-	console.log(currentlyDisplayedLines.value)
 }
 
 const updateText = (lineLists) => {
 	currentTexts.value[0] = lineLists[0]
 	currentTexts.value[1] = lineLists[1]
 	currentTexts.value['comparison'] = lineLists[2]
-	console.log(lineLists)
 	updateMaxText([lineLists[0], lineLists[1]])
 	handleSelectedLineChange(1)
 	scrollToBottom()
@@ -63,6 +61,6 @@ const scrollToBottom = () => {
 		<FileUploadForm @receivedData="updateText"/>
 		<LineSelection :maxLines="currentTexts['maxLines']" @updateSelectedLine="handleSelectedLineChange"/>
 	</div>
-	<TextDisplayContainer ref="textDisplayContainer" :displayedTextArray=currentlyDisplayedLines />
+	<TextDisplayContainer ref="textDisplayContainer" :displayedTextObject=currentlyDisplayedLines />
 </div>
 </template>
