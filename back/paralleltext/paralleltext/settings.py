@@ -71,7 +71,6 @@ except KeyError as e:
 # Application definition
 
 INSTALLED_APPS = [
-    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -79,7 +78,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'textparser'
+    'textparser',
+    'rest_framework',
+#    'rest_framework_swagger', # Todo: remove from pip and its dependencies
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [

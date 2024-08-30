@@ -15,7 +15,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
+from django.conf import settings
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
-urlpatterns = [
-    path("api/", include("textparser.urls")),
-]
+urlpatterns = [path("api/", include("textparser.urls"))]
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Parallel text API",
+        default_version='v1',
+    ),
+    public=False,
+    permission_classes=(permissions.AllowAny,),
+)
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    ]
