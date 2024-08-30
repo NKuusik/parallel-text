@@ -15,7 +15,7 @@ const currentTexts = ref({
 
 const currentlyDisplayedLines = ref({
 	lines: [null, null],
-	comparison: null
+	comparison: undefined
 })
 const textDisplayContainer = ref(null)
 

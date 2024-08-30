@@ -111,3 +111,27 @@ test('Toggling comparison checkbox works properly', async () => {
 
 
 })
+
+test('If there is no comparison data, ignore checkbox value', async () => {
+  const wrapper = mount(TextDisplayContainer, {
+    props: {
+      displayedTextObject: {
+          lines: ['First line', ''],
+          comparison: undefined
+          }
+    },
+    global: {
+      plugins: [vuetify]
+    } 
+  })
+  expect(true).toBe(true)
+
+  expect(wrapper.find('div').exists()).toBe(true)
+
+  const lines = wrapper.findAll('.displayed-texts')
+
+  expect(lines[0].text()).toMatch('First line')
+  expect(lines[1].text()).toMatch('')
+
+  expect(wrapper.vm.isComparisonActive).toBe(true);
+})
