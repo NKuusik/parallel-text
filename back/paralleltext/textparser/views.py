@@ -13,7 +13,6 @@ from .services.text_splitter import TextSplitter
 from .services.difference_identifier import DifferenceIdentifier
 from .exceptions import InvalidParamValueError
 
-
 logger = logging.getLogger("paralleltext.views")
 
 class Text(APIView):
