@@ -45,7 +45,7 @@ class LanguageIdentifierTestCase(TestCase):
         self.assertEqual(language_et, 'et')
 
         test_text_ru = ("принимая во внимание, что необходимо содействовать"
-                        "развитию дружественных отношений между cd народами; и")
+                        "развитию дружественных отношений между народами; и")
         language_ru = identifier.identify_language(test_text_ru)
         self.assertEqual(language_ru, 'ru')
 
@@ -63,3 +63,4 @@ class LanguageIdentifierTestCase(TestCase):
                               "freundschaftlicher дружественных отношений между народами;")
         language_et_ru_de = identifier.identify_language(test_text_et_ru_de)
         self.assertEqual(language_et_ru_de, 'und')
+
