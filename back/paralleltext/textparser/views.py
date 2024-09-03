@@ -13,16 +13,9 @@ from auth.custom_permissions import WhitelistPermission
 from .forms import UploadFileForm
 from .services.text_splitter import TextSplitter
 from .services.difference_identifier import DifferenceIdentifier
-from .services.language_identifier import LanguageIdentifier
-from .services.parts_of_speech_tagger import PartsOfSpeechTagger
-
 from .exceptions import InvalidParamValueError
 
 logger = logging.getLogger("paralleltext.views")
-difference_identifier = DifferenceIdentifier()
-language_identifier = LanguageIdentifier()
-pos_tagger = PartsOfSpeechTagger()
-text_splitter = TextSplitter()
 
 class Text(APIView):
     """
@@ -66,31 +59,24 @@ class Text(APIView):
         file_dict = {
             "first_file": {},
             "second_file": {},
-            "comparison": None,
+            "comparison": None
                     }
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             param_value = request.GET.get('delim')
+            text_splitter = TextSplitter(param_value)
+            difference_identifier = DifferenceIdentifier()
 
             for key in request.FILES:
                 file = request.FILES[key]
-                # Todo: refactor file_dict so that lines and lines_pos are merged
-                # Also consider using dataclass or Model?
+
                 file_dict[key] = {
                     "title": file.name,
-                    "lines": [],
-                    "language": None,
-                    "lines_pos": None
+                    "lines": []
                 }
                 text = file.read().decode("utf-8")
                 try:
-                    identified_language = language_identifier.identify_language(text)
-                    lines = text_splitter.split_text(text, param_value)
-
-                    file_dict[key]["language"] = identified_language
-                    file_dict[key]['lines'] = lines
-                    tagged_lines = pos_tagger.tag_several_lines(lines, identified_language)
-                    file_dict[key]["lines_pos"] = tagged_lines
+                    file_dict[key]['lines'] = text_splitter.split_text(text)
                 except InvalidParamValueError:
                     error_message = "Invalid param value submitted"
                     logger.warning("%s:%s", error_message, param_value)
@@ -98,7 +84,8 @@ class Text(APIView):
             compared_text = []
             for line1, line2 in zip(file_dict["first_file"]["lines"],
                                     file_dict["second_file"]["lines"]):
-                compared_text.append(difference_identifier.compare_strings(line1, line2))
+                analysed_list = difference_identifier.compare_strings(line1, line2)
+                compared_text.append(analysed_list)
             file_dict["comparison"] = compared_text
             return JsonResponse(file_dict)
         error_message = "Invalid data submitted"
