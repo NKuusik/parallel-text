@@ -19,7 +19,7 @@ coverage run manage.py test && coverage html
 
 For running linter
 ```
-pylint textparser/ --ignore=migrations
+pylint textparser/
 ```
 
 This is the recommended option for active work on the back-end

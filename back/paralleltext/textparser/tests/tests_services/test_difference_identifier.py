@@ -1,5 +1,5 @@
 """
-Test services
+Test DifferenceIdentifier
 """
 from django.test import TestCase
 from ...services.difference_identifier import DifferenceIdentifier
