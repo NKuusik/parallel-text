@@ -37,7 +37,7 @@ docker push nkuusik/django-paralleltext
 - (Optional) Add Docker secrets in `$HOME/django_secrets/`
 - run Docker locally using docker compose:
 ```
-sudo docker compose up
+docker compose up
 ``` 
 
 This is useful for testing various configurations in `settings.py` before actual deployment

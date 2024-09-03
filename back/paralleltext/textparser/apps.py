@@ -13,5 +13,6 @@ class TextparserConfig(AppConfig):
     name = 'textparser'
     def ready(self) -> None:
         nltk.download('punkt')
+        nltk.download('punkt_tab')
         nltk.download('averaged_perceptron_tagger_eng')
         return super().ready()
