@@ -3,6 +3,7 @@ Apps
 """
 
 from django.apps import AppConfig
+import nltk
 
 class TextparserConfig(AppConfig):
     """

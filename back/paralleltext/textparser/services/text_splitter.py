@@ -8,23 +8,21 @@ class TextSplitter:
     """
     Split input text based on the specified strategy
     """
-    def __init__(self, param_value):
-        self.__strategy = param_value
+    def __init__(self):
         self.__minimum_sentence_length = 3
 
-
-    def split_text(self, text):
+    def split_text(self, text, param_value):
         """
         Split text into list of lines depending on the strategy
         """
         raw_lines = None
         sentence_terminators = []
-        if self.__strategy == 'sentence':
+        if param_value == 'sentence':
             sentence_terminators = ['.','?', '!', '\n']
             new_pattern = self.__provide_sentence_termination_regex(sentence_terminators)
             raw_lines = re.split(new_pattern, text)
 
-        elif self.__strategy == 'newline' or self.__strategy is None:
+        elif param_value == 'newline' or param_value is None:
             raw_lines = text.split('\n')
         else:
             raise InvalidParamValueError('Invalid parameter value provided for splitting text')
