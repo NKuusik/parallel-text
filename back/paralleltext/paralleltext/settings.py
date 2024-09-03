@@ -80,7 +80,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'textparser',
     'rest_framework',
-    'rest_framework_swagger',
+#    'rest_framework_swagger', # Todo: remove from pip and its dependencies
     'drf_yasg'
 ]
 

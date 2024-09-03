@@ -6,6 +6,8 @@ import logging
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from django.http import JsonResponse
 from auth.custom_permissions import WhitelistPermission
 from .forms import UploadFileForm
@@ -26,7 +28,37 @@ class Text(APIView):
     """
     API View for Text
     """
+
     permission_classes = (WhitelistPermission,)
+
+    # Todo: either create a serializer class for Text or import schema from UploadFileForm
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                'delim', 
+                openapi.IN_QUERY,
+                description="Determine which delimiter to use",
+                type=openapi.TYPE_STRING,
+                enum=['sentence', 'newline'],  # Allowed values
+            ),
+        ],
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'first_file': openapi.Schema(
+                    type=openapi.TYPE_FILE,
+                    description='First file'
+                    ),
+                'second_file': openapi.Schema(
+                    type=openapi.TYPE_FILE,
+                    description='Second file'
+                    )
+            },
+            required=['first_file', 'second_file'],
+        ),
+        responses={200: 'Success',
+                   422: 'Unprocessable entity'},
+    )
     def post(self, request):
         """
         Handle post requests.
