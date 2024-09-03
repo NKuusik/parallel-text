@@ -26,8 +26,8 @@ class TextSplitterTestCase(TestCase):
         """
         Test valid input data.
         """
-        text_splitter = TextSplitter('sentence')
-        separated_sentences = text_splitter.split_text(self.text)
+        text_splitter = TextSplitter()
+        separated_sentences = text_splitter.split_text(self.text, 'sentence')
         valid_sentences = ['Tere!',
                             'See on testtekst, kus leidub erineval kujul vormistust.',
                             'Esiteks, see on lause, mis lõpeb punktiga.',
@@ -49,6 +49,6 @@ class TextSplitterTestCase(TestCase):
         """
         Test invalid param value raises error.
         """
-        text_splitter = TextSplitter('some_param_value')
+        text_splitter = TextSplitter()
         with self.assertRaises(InvalidParamValueError):
-            text_splitter.split_text(self.text)
+            text_splitter.split_text(self.text, 'some_param_value')
