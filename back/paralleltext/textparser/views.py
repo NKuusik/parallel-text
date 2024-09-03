@@ -87,7 +87,7 @@ class Text(APIView):
                 try:
                     identified_language = language_identifier.identify_language(text)
                     lines = text_splitter.split_text(text)
-                    
+
                     file_dict[key]["language"] = identified_language
                     file_dict[key]['lines'] = lines
                     tagged_lines = pos_tagger.tag_several_lines(lines, identified_language)

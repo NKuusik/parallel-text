@@ -34,7 +34,7 @@ class PartsOfSpeechTaggerTestCase(TestCase):
 
         for result, test_text in zip(tagged_lines, test_text_list):
             tokenized_words = nltk.word_tokenize(test_text)
-            self.assertEqual(result, nltk.pos_tag(tokenized_words))        
+            self.assertEqual(result, nltk.pos_tag(tokenized_words))
 
     def test_other_languages_are_not_tagged(self):
         """
