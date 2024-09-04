@@ -97,8 +97,8 @@ class Text(APIView):
                     logger.warning("%s:%s", error_message, param_value)
                     return Response(error_message, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             compared_text = []
-            for line1, line2 in zip(file_dict["first_file"]["lines"],
-                                    file_dict["second_file"]["lines"]):
+            for line1, line2 in zip(file_dict["first_file"]["lines"]["raw"],
+                                    file_dict["second_file"]["lines"]["raw"]):
                 compared_text.append(difference_identifier.compare_strings(line1, line2))
             file_dict["comparison"] = compared_text
             return JsonResponse(file_dict)

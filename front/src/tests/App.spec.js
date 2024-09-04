@@ -33,11 +33,17 @@ test('Valid data functions correctly', async () => {
       { data: {
         first_file: 
           { title: "First mocked text",
-            lines: ['First sentence in first text', 'Second sentence in first text']
+            lines: {
+              raw: ['First sentence in first text', 'Second sentence in first text'],
+              pos: null
+            },
           },
         second_file: 
         { title: "Second mocked text",
-          lines: ['First sentence in second text', 'Second sentence in second text']
+          lines: {
+            raw: ['First sentence in second text', 'Second sentence in second text'],
+            pos: null
+          },
         },
         } 
       }
