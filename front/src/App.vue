@@ -7,8 +7,14 @@ import FileUploadForm from './components/FileUploadForm.vue'
 import { ref, nextTick } from 'vue'
 
 const currentTexts = ref({
-	0: [],
-	1: [],
+	0: {
+		text: [], 
+		language: null
+	},
+	1: {
+		text: [],
+		language: null
+	},
 	maxLines: 1,
 	comparison: []
 })
@@ -24,9 +30,10 @@ const handleSelectedLineChange = (lineNumber) => {
 	const tagColors = {}
 
 	for (let i = 0; i < 2; i++) {
-		let pos_data = currentTexts.value[i]["pos"]
+		console.log(currentTexts.value[i])
+		let pos_data = currentTexts.value[i]["text"]["pos"]
 		if (pos_data !== null) {
-			pos_data = currentTexts.value[i]["pos"][lineNumber - 1]
+			pos_data = currentTexts.value[i]["text"]["pos"][lineNumber - 1]
 			for (let entry of pos_data) {
 				const tag = entry[1]
 				if (!(tag in tagColors)) {
@@ -36,20 +43,22 @@ const handleSelectedLineChange = (lineNumber) => {
 		}
 
 		currentlyDisplayedLines.value['lines'][i] = {
-			raw: currentTexts.value[i]["raw"][lineNumber - 1],
+			raw: currentTexts.value[i]["text"]["raw"][lineNumber - 1],
 			pos: pos_data,
+			language: currentTexts.value[i]["language"],
 		}
 	}
 	currentlyDisplayedLines.value['tagColors'] = tagColors
 	currentlyDisplayedLines.value['comparison'] = currentTexts.value['comparison'][lineNumber - 1]
-	console.log(currentlyDisplayedLines.value['tagColors'])
+	console.log(currentlyDisplayedLines.value)
 }
 
-const updateText = (lineLists) => {
-	currentTexts.value[0] = lineLists[0]
-	currentTexts.value[1] = lineLists[1]
-	currentTexts.value['comparison'] = lineLists[2]
-	updateMaxText([lineLists[0]["raw"], lineLists[1]["raw"]])
+const updateText = (receivedData) => {
+	console.log(receivedData)
+	currentTexts.value[0] = receivedData[0]
+	currentTexts.value[1] = receivedData[1]
+	currentTexts.value['comparison'] = receivedData['comparison']
+	updateMaxText([receivedData[0]["text"]["raw"], receivedData[1]["text"]["raw"]])
 	handleSelectedLineChange(1)
 	scrollToBottom()
 

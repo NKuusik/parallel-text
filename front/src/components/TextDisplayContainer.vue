@@ -43,11 +43,17 @@ const isNull = (value) => {
           		</template>
 			</v-select>
 		</div>
+		<!-- PoS key explainer -->
 		<div v-if="selectedFilterTypeRef==='pos'">
 			<span v-for="(tagColor, tagKey) of displayedTextObject['tagColors']" v-bind:key="tagColor" :style="{backgroundColor:tagColor}">
+				<!-- Empty <span> maintains line-breaking whitespace. -->
 				{{ tagKey }} <span></span>
 			</span>
 
+		</div>
+		<!-- Displayed texts -->
+		<div>
+			The languages are in {{ displayedTextObject["lines"][0]["language"] }} and {{ displayedTextObject["lines"][1]["language"] }}
 		</div>
 		<div v-if="selectedFilterTypeRef==='diff' && displayedTextObject['comparison'] !== undefined" v-for="i in 2" v-bind:key="i" class='col-6 mb-4 displayed-texts'>
 				<span v-for="allComparisons in displayedTextObject['comparison']" v-bind:key="allComparisons">

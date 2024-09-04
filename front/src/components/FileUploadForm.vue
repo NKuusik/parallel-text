@@ -70,8 +70,17 @@ const handleSubmit = () => {
 		}
 	).then((result) => {
 		store.dataIsReceived()
-		emit('receivedData', [result.data['first_file']['lines'], result.data['second_file']['lines'], 
-			result.data['comparison']])
+		emit('receivedData', {
+			0: {
+				text: result.data['first_file']['lines'],
+				language: result.data['first_file']['language']
+				}, 
+			1: {
+				text: result.data['second_file']['lines'],
+				language: result.data['second_file']['language']
+				},
+			comparison: result.data['comparison']
+		})
 		
 	}).catch((err) => {
 		console.log(err)
