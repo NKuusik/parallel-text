@@ -6,8 +6,22 @@ const props = defineProps({
   displayedTextObject: Object
 })
 
-const isComparisonActive = ref(false)
-const isPosTagActive = ref(true)
+const filterTypesRef = ref([
+		{
+			title: 'Highlight differences',
+			value: 'diff'
+		},
+		{
+			title: 'Display Parts of Speech',
+			value: 'pos'
+		},
+		{
+			title: 'None',
+			value: null
+		}
+	])
+
+const selectedFilterTypeRef = ref(filterTypesRef.value[0].value)
 
 const isNull = (value) => {
 	return value === null
@@ -17,13 +31,25 @@ const isNull = (value) => {
 <template>
 	<div v-if="!displayedTextObject['lines'].every(isNull)" class="row mt-4">
 		<div>
-			<v-checkbox
-				class="d-inline-flex"
-      			v-model="isComparisonActive"
-      			:label="`Highlight differences`">
-			</v-checkbox>
+			<v-select
+				v-model="selectedFilterTypeRef"
+  				label="Filter"
+  				:items="filterTypesRef"
+  				variant="outlined"
+				>
+				<!-- Provides background color for selection -->
+				<template #prepend-item>
+					<v-card flat class="dropdown-selection" />
+          		</template>
+			</v-select>
 		</div>
-		<div v-if="isComparisonActive && displayedTextObject['comparison'] !== undefined" v-for="i in 2" v-bind:key="i" class='col-6 mb-4 displayed-texts'>
+		<div v-if="selectedFilterTypeRef==='pos'">
+			<span v-for="(tagColor, tagKey) of displayedTextObject['tagColors']" v-bind:key="tagColor" :style="{backgroundColor:tagColor}">
+				{{ tagKey }} <span></span>
+			</span>
+
+		</div>
+		<div v-if="selectedFilterTypeRef==='diff' && displayedTextObject['comparison'] !== undefined" v-for="i in 2" v-bind:key="i" class='col-6 mb-4 displayed-texts'>
 				<span v-for="allComparisons in displayedTextObject['comparison']" v-bind:key="allComparisons">
 					<span v-if="allComparisons.length == 1" class="identical-text">
 						{{allComparisons[0]}}
@@ -34,12 +60,12 @@ const isNull = (value) => {
 				</span>
 		</div>	
 		<div v-else v-for="text in displayedTextObject['lines']" v-bind:key="text" class='col-6 mb-4 displayed-texts'>
-			<span v-if="!isPosTagActive">
+			<span v-if="selectedFilterTypeRef===null">
 				<div>
 				{{ text['raw'] }}
 				</div>
 			</span>
-			<span v-else>
+			<span v-else-if="selectedFilterTypeRef==='pos'">
 				<div>
 					<span v-for="tag in text['pos']" v-bind:key="tag" :style="{backgroundColor: displayedTextObject['tagColors'][tag[1]]}">
 						<!-- Empty <span> maintains line-breaking whitespace. -->
