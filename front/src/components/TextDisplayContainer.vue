@@ -2,16 +2,16 @@
 
 import { ref } from 'vue'
 
-defineProps({
+const props = defineProps({
   displayedTextObject: Object
 })
+
+const isComparisonActive = ref(false)
+const isPosTagActive = ref(true)
 
 const isNull = (value) => {
 	return value === null
 }
-
-const isComparisonActive = ref(true)
-
 </script>
 
 <template>
@@ -34,8 +34,19 @@ const isComparisonActive = ref(true)
 				</span>
 		</div>	
 		<div v-else v-for="text in displayedTextObject['lines']" v-bind:key="text" class='col-6 mb-4 displayed-texts'>
-			{{ text }}
+			<span v-if="!isPosTagActive">
+				<div>
+				{{ text['raw'] }}
+				</div>
+			</span>
+			<span v-else>
+				<div>
+					<span v-for="tag in text['pos']" v-bind:key="tag" :style="{backgroundColor: displayedTextObject['tagColors'][tag[1]]}">
+						<!-- Empty <span> maintains line-breaking whitespace. -->
+						{{ tag[0] }} <span></span>
+					</span>
+				</div>
+			</span>
 		</div>
-		
 	</div>	
 </template>

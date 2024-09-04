@@ -57,7 +57,6 @@ watch(store, () => {
 	}
 })
 
-
 const handleSubmit = () => {
 	if (isFormValid.value) {
 		let api_endpoint = [process.env.API_URL, 'api/text/?delim=', selectedSeparatorTypeRef.value].join('')
@@ -78,8 +77,6 @@ const handleSubmit = () => {
 		console.log(err)
 	});
 	}
-
-
 }
 
 const fileTypeRules = [
@@ -89,7 +86,6 @@ const fileTypeRules = [
 	(value) => ruleFileExtensionIsCorrect(value),
 	(value) => ruleFileTypeIsCorrect(value)
 ]
-
 
 const ruleValueExists = (value) => {
 	if (value.length === 1) {

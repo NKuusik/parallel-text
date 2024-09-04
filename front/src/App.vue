@@ -15,16 +15,34 @@ const currentTexts = ref({
 
 const currentlyDisplayedLines = ref({
 	lines: [null, null],
-	comparison: undefined
+	comparison: undefined,
+	tagColors: {}
 })
 const textDisplayContainer = ref(null)
 
 const handleSelectedLineChange = (lineNumber) => {
+	const tagColors = {}
 
 	for (let i = 0; i < 2; i++) {
-		currentlyDisplayedLines.value['lines'][i] = currentTexts.value[i]["raw"][lineNumber - 1]
+		let pos_data = currentTexts.value[i]["pos"]
+		if (pos_data !== null) {
+			pos_data = currentTexts.value[i]["pos"][lineNumber - 1]
+			for (let entry of pos_data) {
+				const tag = entry[1]
+				if (!(tag in tagColors)) {
+					tagColors[tag] = assignRandomColor()
+				}
+			}
+		}
+
+		currentlyDisplayedLines.value['lines'][i] = {
+			raw: currentTexts.value[i]["raw"][lineNumber - 1],
+			pos: pos_data,
+		}
 	}
+	currentlyDisplayedLines.value['tagColors'] = tagColors
 	currentlyDisplayedLines.value['comparison'] = currentTexts.value['comparison'][lineNumber - 1]
+	console.log(currentlyDisplayedLines.value['tagColors'])
 }
 
 const updateText = (lineLists) => {
@@ -34,7 +52,7 @@ const updateText = (lineLists) => {
 	updateMaxText([lineLists[0]["raw"], lineLists[1]["raw"]])
 	handleSelectedLineChange(1)
 	scrollToBottom()
-	console.log(currentTexts.value)
+
 }
 
 const updateMaxText = (lineLists) => {
@@ -46,6 +64,11 @@ const updateMaxText = (lineLists) => {
 	}
 	currentTexts.value['maxLines'] = highestValue
 }
+
+
+const assignRandomColor = () => {
+      return '#' + Math.floor(Math.random() * 16777215).toString(16);
+    }
 
 const scrollToBottom = () => {
 	nextTick(() => {
