@@ -74,13 +74,14 @@ class Text(APIView):
 
             for key in request.FILES:
                 file = request.FILES[key]
-                # Todo: refactor file_dict so that lines and lines_pos are merged
-                # Also consider using dataclass or Model?
+                # Todo: consider using dataclass or Model?
                 file_dict[key] = {
                     "title": file.name,
-                    "lines": [],
-                    "language": None,
-                    "lines_pos": None
+                    "lines": {
+                        "raw": [],
+                        "pos": []
+                        },
+                    "language": None
                 }
                 text = file.read().decode("utf-8")
                 try:
@@ -88,9 +89,9 @@ class Text(APIView):
                     lines = text_splitter.split_text(text, param_value)
 
                     file_dict[key]["language"] = identified_language
-                    file_dict[key]['lines'] = lines
+                    file_dict[key]['lines']["raw"] = lines
                     tagged_lines = pos_tagger.tag_several_lines(lines, identified_language)
-                    file_dict[key]["lines_pos"] = tagged_lines
+                    file_dict[key]["lines"]["pos"] = tagged_lines
                 except InvalidParamValueError:
                     error_message = "Invalid param value submitted"
                     logger.warning("%s:%s", error_message, param_value)
