@@ -33,11 +33,16 @@ const validatePoSTag = (tagKey) => {
 	return props.posTable[tagKey] !== undefined
 }
 
-const provideTagColor = (tagKey) => {
-	if (validatePoSTag(tagKey)) {
+const provideTagColor = (tagKey, tokenValue='default') => {
+	if (validatePoSTag(tagKey) && isAlphanumeric(tokenValue) ) {
+		console.log(tagKey, tokenValue)
 		return props.posTable[tagKey]['color']
 	}
 	return 'transparent'
+}
+
+const isAlphanumeric = (str) => {
+  return /^[a-zA-Z0-9]+$/.test(str);
 }
 
 onUpdated(() => {
@@ -63,7 +68,7 @@ onUpdated(() => {
 		</div>
 		<!-- PoS key explainer -->
 		<div v-if="selectedFilterTypeRef==='pos'">
-			<span v-for="(tagColor, tagKey) of displayedTextObject['tagColors']" v-bind:key="tagColor" :style="{backgroundColor:provideTagColor(tagKey)}">
+			<span v-for="tagKey of displayedTextObject['usedTags']" v-bind:key="tagKey" :style="{backgroundColor:provideTagColor(tagKey)}">
 				<span v-if="validatePoSTag(tagKey)">
 					<!-- Empty <span> maintains line-breaking whitespace. -->
 					{{ posTable[tagKey]['name'] }} <span></span>
@@ -93,7 +98,7 @@ onUpdated(() => {
 			</span>
 			<span v-else-if="selectedFilterTypeRef==='pos'">
 				<div>
-					<span v-for="tag in text['pos']" v-bind:key="tag" :style="{backgroundColor: provideTagColor([tag[1]])}">
+					<span v-for="tag in text['pos']" v-bind:key="tag" :style="{backgroundColor: provideTagColor(tag[1], tag[0])}">
 						<!-- Empty <span> maintains line-breaking whitespace. -->
 						{{ tag[0] }} <span></span>
 					</span>

@@ -25,7 +25,7 @@ const currentTexts = ref({
 const currentlyDisplayedLines = ref({
 	lines: [null, null],
 	comparison: undefined,
-	tagColors: {}
+	usedTags: new Set()
 })
 const textDisplayContainer = ref(null)
 
@@ -33,7 +33,7 @@ const languageTable = ref({})
 const posTable = ref({})
 
 const handleSelectedLineChange = (lineNumber) => {
-	const tagColors = {}
+	currentlyDisplayedLines.value['usedTags'].clear()
 
 	for (let i = 0; i < 2; i++) {
 		let pos_data = currentTexts.value[i]["text"]["pos"]
@@ -41,9 +41,7 @@ const handleSelectedLineChange = (lineNumber) => {
 			pos_data = currentTexts.value[i]["text"]["pos"][lineNumber - 1]
 			for (let entry of pos_data) {
 				const tag = entry[1]
-				if (!(tag in tagColors)) {
-					tagColors[tag] = assignRandomColor()
-				}
+				currentlyDisplayedLines.value['usedTags'].add(tag)
 			}
 		}
 
@@ -52,8 +50,7 @@ const handleSelectedLineChange = (lineNumber) => {
 			pos: pos_data,
 			language: currentTexts.value[i]["language"],
 		}
-	}axios
-	currentlyDisplayedLines.value['tagColors'] = tagColors
+	}
 	currentlyDisplayedLines.value['comparison'] = currentTexts.value['comparison'][lineNumber - 1]
 }
 
@@ -81,7 +78,7 @@ const updateMaxText = (lineLists) => {
 const assignRandomColor = () => {
 	let colorCode = 0
 	// Excludes dark colors
-	while (colorCode < 800000) {
+	while (colorCode < 5000000) {
 		colorCode = Math.floor(Math.random() * 16777215)
 	}
       
