@@ -4,7 +4,10 @@ import NavBar from './components/NavBar.vue'
 import LineSelection from './components/LineSelection.vue'
 import MainText from './components/MainText.vue'
 import FileUploadForm from './components/FileUploadForm.vue'
-import { ref, nextTick } from 'vue'
+import * as tableData from './resources/table_data'
+import { readCSV } from './readCSVData'
+import { ref, nextTick, onMounted } from 'vue'
+import axios from 'axios'
 
 const currentTexts = ref({
 	0: {
@@ -25,6 +28,9 @@ const currentlyDisplayedLines = ref({
 	tagColors: {}
 })
 const textDisplayContainer = ref(null)
+
+const languageTable = ref({})
+//const posTable = ref({})
 
 const handleSelectedLineChange = (lineNumber) => {
 	const tagColors = {}
@@ -47,7 +53,7 @@ const handleSelectedLineChange = (lineNumber) => {
 			pos: pos_data,
 			language: currentTexts.value[i]["language"],
 		}
-	}
+	}axios
 	currentlyDisplayedLines.value['tagColors'] = tagColors
 	currentlyDisplayedLines.value['comparison'] = currentTexts.value['comparison'][lineNumber - 1]
 	console.log(currentlyDisplayedLines.value)
@@ -85,6 +91,26 @@ const scrollToBottom = () => {
 	})
 }
 
+onMounted(() => {
+	console.log(tableData)
+	for (const table of Object.values(tableData)) {
+		console.log(table)
+		axios.get(table)
+		.then((res) => {
+		return readCSV(res.data)
+		}).then((currentTabe) => {
+			const currentTableData = currentTabe.data
+			if (currentTableData[0][0] === 'lang') {
+				// Language codes start from third row.
+				for (const languageRow of currentTableData.slice(2)) {
+					languageTable.value[languageRow[0]] = languageRow[1]
+				}
+				}
+			})
+		}
+		console.log(languageTable.value)
+	})
+
 </script>
 
 <template>
@@ -95,6 +121,6 @@ const scrollToBottom = () => {
 		<FileUploadForm @receivedData="updateText"/>
 		<LineSelection :maxLines="currentTexts['maxLines']" @updateSelectedLine="handleSelectedLineChange"/>
 	</div>
-	<TextDisplayContainer ref="textDisplayContainer" :displayedTextObject=currentlyDisplayedLines />
+	<TextDisplayContainer ref="textDisplayContainer" :displayedTextObject=currentlyDisplayedLines :languageTable=languageTable />
 </div>
 </template>

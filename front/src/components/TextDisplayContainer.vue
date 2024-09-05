@@ -3,7 +3,8 @@
 import { ref } from 'vue'
 
 const props = defineProps({
-  displayedTextObject: Object
+  displayedTextObject: Object,
+  languageTable: Object
 })
 
 const filterTypesRef = ref([
@@ -53,7 +54,8 @@ const isNull = (value) => {
 		</div>
 		<!-- Displayed texts -->
 		<div>
-			The languages are in {{ displayedTextObject["lines"][0]["language"] }} and {{ displayedTextObject["lines"][1]["language"] }}
+			The languages are in {{ languageTable[displayedTextObject["lines"][0]["language"]] }} 
+			and {{ languageTable[displayedTextObject["lines"][1]["language"]] }}
 		</div>
 		<div v-if="selectedFilterTypeRef==='diff' && displayedTextObject['comparison'] !== undefined" v-for="i in 2" v-bind:key="i" class='col-6 mb-4 displayed-texts'>
 				<span v-for="allComparisons in displayedTextObject['comparison']" v-bind:key="allComparisons">
