@@ -36,7 +36,6 @@ const handleSelectedLineChange = (lineNumber) => {
 	const tagColors = {}
 
 	for (let i = 0; i < 2; i++) {
-		console.log(currentTexts.value[i])
 		let pos_data = currentTexts.value[i]["text"]["pos"]
 		if (pos_data !== null) {
 			pos_data = currentTexts.value[i]["text"]["pos"][lineNumber - 1]
@@ -56,11 +55,9 @@ const handleSelectedLineChange = (lineNumber) => {
 	}axios
 	currentlyDisplayedLines.value['tagColors'] = tagColors
 	currentlyDisplayedLines.value['comparison'] = currentTexts.value['comparison'][lineNumber - 1]
-	console.log(currentlyDisplayedLines.value)
 }
 
 const updateText = (receivedData) => {
-	console.log(receivedData)
 	currentTexts.value[0] = receivedData[0]
 	currentTexts.value[1] = receivedData[1]
 	currentTexts.value['comparison'] = receivedData['comparison']
@@ -82,8 +79,14 @@ const updateMaxText = (lineLists) => {
 
 
 const assignRandomColor = () => {
-      return '#' + Math.floor(Math.random() * 16777215).toString(16);
-    }
+	let colorCode = 0
+	// Excludes dark colors
+	while (colorCode < 800000) {
+		colorCode = Math.floor(Math.random() * 16777215)
+	}
+      
+	return '#' + colorCode.toString(16);
+}
 
 const scrollToBottom = () => {
 	nextTick(() => {
@@ -107,7 +110,10 @@ onMounted(() => {
 			else if (currentTableData[0][0] === 'pos') {
 				// PoS codes start from second row.
 				for (const posRow of currentTableData.slice(1)) {
-					posTable.value[posRow[0]] = posRow[1]
+					posTable.value[posRow[0]] = {
+						name: posRow[1],
+						color: assignRandomColor()
+					}
 					}
 				}
 			})

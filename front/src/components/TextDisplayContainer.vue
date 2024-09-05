@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref } from 'vue'
+import { ref, onUpdated } from 'vue'
 
 const props = defineProps({
   displayedTextObject: Object,
@@ -28,6 +28,22 @@ const selectedFilterTypeRef = ref(filterTypesRef.value[0].value)
 const isNull = (value) => {
 	return value === null
 }
+
+const validatePoSTag = (tagKey) => {
+	return props.posTable[tagKey] !== undefined
+}
+
+const provideTagColor = (tagKey) => {
+	if (validatePoSTag(tagKey)) {
+		return props.posTable[tagKey]['color']
+	}
+	return 'transparent'
+}
+
+onUpdated(() => {
+	console.log(props.posTable)
+	console.log(props.displayedTextObject['tagColors'])
+})
 </script>
 
 <template>
@@ -47,11 +63,12 @@ const isNull = (value) => {
 		</div>
 		<!-- PoS key explainer -->
 		<div v-if="selectedFilterTypeRef==='pos'">
-			<span v-for="(tagColor, tagKey) of displayedTextObject['tagColors']" v-bind:key="tagColor" :style="{backgroundColor:tagColor}">
-				<!-- Empty <span> maintains line-breaking whitespace. -->
-				{{ posTable[tagKey] }} <span></span>
+			<span v-for="(tagColor, tagKey) of displayedTextObject['tagColors']" v-bind:key="tagColor" :style="{backgroundColor:provideTagColor(tagKey)}">
+				<span v-if="validatePoSTag(tagKey)">
+					<!-- Empty <span> maintains line-breaking whitespace. -->
+					{{ posTable[tagKey]['name'] }} <span></span>
+				</span>
 			</span>
-
 		</div>
 		<!-- Displayed texts -->
 		<div>
@@ -76,7 +93,7 @@ const isNull = (value) => {
 			</span>
 			<span v-else-if="selectedFilterTypeRef==='pos'">
 				<div>
-					<span v-for="tag in text['pos']" v-bind:key="tag" :style="{backgroundColor: displayedTextObject['tagColors'][tag[1]]}">
+					<span v-for="tag in text['pos']" v-bind:key="tag" :style="{backgroundColor: provideTagColor([tag[1]])}">
 						<!-- Empty <span> maintains line-breaking whitespace. -->
 						{{ tag[0] }} <span></span>
 					</span>
