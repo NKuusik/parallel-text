@@ -4,17 +4,18 @@ import { ref } from 'vue'
 
 const props = defineProps({
   displayedTextObject: Object,
-  languageTable: Object
+  languageTable: Object,
+  posTable: Object
 })
 
 const filterTypesRef = ref([
 		{
-			title: 'Highlight differences',
-			value: 'diff'
-		},
-		{
 			title: 'Display Parts of Speech',
 			value: 'pos'
+		},
+		{
+			title: 'Highlight differences',
+			value: 'diff'
 		},
 		{
 			title: 'None',
@@ -48,7 +49,7 @@ const isNull = (value) => {
 		<div v-if="selectedFilterTypeRef==='pos'">
 			<span v-for="(tagColor, tagKey) of displayedTextObject['tagColors']" v-bind:key="tagColor" :style="{backgroundColor:tagColor}">
 				<!-- Empty <span> maintains line-breaking whitespace. -->
-				{{ tagKey }} <span></span>
+				{{ posTable[tagKey] }} <span></span>
 			</span>
 
 		</div>

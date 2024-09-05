@@ -30,7 +30,7 @@ const currentlyDisplayedLines = ref({
 const textDisplayContainer = ref(null)
 
 const languageTable = ref({})
-//const posTable = ref({})
+const posTable = ref({})
 
 const handleSelectedLineChange = (lineNumber) => {
 	const tagColors = {}
@@ -92,9 +92,7 @@ const scrollToBottom = () => {
 }
 
 onMounted(() => {
-	console.log(tableData)
 	for (const table of Object.values(tableData)) {
-		console.log(table)
 		axios.get(table)
 		.then((res) => {
 		return readCSV(res.data)
@@ -104,11 +102,17 @@ onMounted(() => {
 				// Language codes start from third row.
 				for (const languageRow of currentTableData.slice(2)) {
 					languageTable.value[languageRow[0]] = languageRow[1]
+					}
 				}
+			else if (currentTableData[0][0] === 'pos') {
+				// PoS codes start from second row.
+				for (const posRow of currentTableData.slice(1)) {
+					posTable.value[posRow[0]] = posRow[1]
+					}
 				}
 			})
 		}
-		console.log(languageTable.value)
+		console.log(posTable.value)
 	})
 
 </script>
@@ -121,6 +125,7 @@ onMounted(() => {
 		<FileUploadForm @receivedData="updateText"/>
 		<LineSelection :maxLines="currentTexts['maxLines']" @updateSelectedLine="handleSelectedLineChange"/>
 	</div>
-	<TextDisplayContainer ref="textDisplayContainer" :displayedTextObject=currentlyDisplayedLines :languageTable=languageTable />
+	<TextDisplayContainer ref="textDisplayContainer" :displayedTextObject=currentlyDisplayedLines 
+		:languageTable=languageTable :posTable=posTable />
 </div>
 </template>
