@@ -8,6 +8,7 @@ import * as tableData from './resources/table_data'
 import { readCSV } from './readCSVData'
 import { ref, nextTick, onMounted } from 'vue'
 import axios from 'axios'
+import { isAlphanumeric } from './utils/isAlphaNumeric'
 
 const currentTexts = ref({
 	0: {
@@ -40,8 +41,8 @@ const handleSelectedLineChange = (lineNumber) => {
 		if (pos_data !== null) {
 			pos_data = currentTexts.value[i]["text"]["pos"][lineNumber - 1]
 			for (let entry of pos_data) {
-				const tag = entry[1]
-				currentlyDisplayedLines.value['usedTags'].add(tag)
+				if (isAlphanumeric(entry[0]))
+				currentlyDisplayedLines.value['usedTags'].add(entry[1])
 			}
 		}
 
@@ -74,7 +75,7 @@ const updateMaxText = (lineLists) => {
 	currentTexts.value['maxLines'] = highestValue
 }
 
-
+// Todo: move to utils
 const assignRandomColor = () => {
 	let colorCode = 0
 	// Excludes dark colors
@@ -115,7 +116,6 @@ onMounted(() => {
 				}
 			})
 		}
-		console.log(posTable.value)
 	})
 
 </script>
