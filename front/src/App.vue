@@ -8,7 +8,7 @@ import * as tableData from './resources/table_data'
 import { readCSV } from './readCSVData'
 import { ref, nextTick, onMounted } from 'vue'
 import axios from 'axios'
-import { isAlphanumeric } from './utils/isAlphaNumeric'
+import { isNonAlphanumeric } from './utils/isNonAlphanumeric'
 
 const currentTexts = ref({
 	0: {
@@ -41,7 +41,7 @@ const handleSelectedLineChange = (lineNumber) => {
 		if (pos_data !== null) {
 			pos_data = currentTexts.value[i]["text"]["pos"][lineNumber - 1]
 			for (let entry of pos_data) {
-				if (isAlphanumeric(entry[0]))
+				if (!isNonAlphanumeric(entry[0]))
 				currentlyDisplayedLines.value['usedTags'].add(entry[1])
 			}
 		}

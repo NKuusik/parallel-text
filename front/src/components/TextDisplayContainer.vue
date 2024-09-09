@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref, onUpdated } from 'vue'
-import { isAlphanumeric } from '../utils/isAlphaNumeric';
+import { isNonAlphanumeric } from '../utils/isNonAlphanumeric';
 
 const props = defineProps({
   displayedTextObject: Object,
@@ -35,7 +35,7 @@ const validatePoSTag = (tagKey) => {
 }
 
 const provideTagColor = (tagKey, tokenValue='default') => {
-	if (validatePoSTag(tagKey) && isAlphanumeric(tokenValue) ) {
+	if (validatePoSTag(tagKey) && !isNonAlphanumeric(tokenValue) ) {
 		return props.posTable[tagKey]['color']
 	}
 	return 'transparent'
