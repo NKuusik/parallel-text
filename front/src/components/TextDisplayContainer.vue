@@ -9,20 +9,23 @@ const props = defineProps({
   posTable: Object
 })
 
-const filterTypesRef = ref([
-		{
-			title: 'Display Parts of Speech',
-			value: 'pos'
-		},
-		{
+const compulsoryFilterTypes = 
+		[{
 			title: 'Highlight differences',
 			value: 'diff'
 		},
 		{
 			title: 'None',
 			value: null
-		}
-	])
+		}]
+
+const extendedFilterTypes = 
+		[{
+			title: 'Display Parts of Speech',
+			value: 'pos'
+		}].concat(compulsoryFilterTypes);
+
+const filterTypesRef = ref(extendedFilterTypes)
 
 const selectedFilterTypeRef = ref(filterTypesRef.value[0].value)
 
@@ -41,10 +44,25 @@ const provideTagColor = (tagKey, tokenValue='default') => {
 	return 'transparent'
 }
 
+const isPosSupported = () => {
+	return (props.displayedTextObject['lines'][0]['language'] === 'en'
+			||
+			props.displayedTextObject['lines'][1]['language'] === 'en')
+	}
+
 onUpdated(() => {
-	console.log(props.posTable)
-	console.log(props.displayedTextObject)
+	// Changing refs onUpdated is risky business 
+	// which is why these conditions have to be strictly defined
+	// and mutually exclusive.
+	if(filterTypesRef.value.length === 3 && !isPosSupported()) {
+		filterTypesRef.value = compulsoryFilterTypes
+		selectedFilterTypeRef.value = filterTypesRef.value[0].value
+	} else if  (filterTypesRef.value.length === 2 && isPosSupported()) {
+		filterTypesRef.value = extendedFilterTypes
+		selectedFilterTypeRef.value = filterTypesRef.value[0].value
+	}
 })
+
 </script>
 
 <template>
@@ -54,8 +72,7 @@ onUpdated(() => {
 				v-model="selectedFilterTypeRef"
   				label="Filter"
   				:items="filterTypesRef"
-  				variant="outlined"
-				>
+  				variant="outlined">
 				<!-- Provides background color for selection -->
 				<template #prepend-item>
 					<v-card flat class="dropdown-selection" />
