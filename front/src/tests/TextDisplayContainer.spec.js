@@ -11,6 +11,38 @@ const vuetify = createVuetify({
   directives,
 })
 
+const testPropdisplayedTextObject = {
+  lines: [
+    {
+      language: 'en',
+      raw: 'Identical line',
+      pos: [
+            ['Identical', 'ADJ'],
+            ['line', 'N']
+          ]
+    },
+    {
+      language: 'en',
+      raw: 'Identical line',
+      pos: [
+            ['Identical', 'ADJ'],
+            ['line', 'N']
+          ]
+    }
+  ],
+  comparison: [['Identical line']],
+  usedTags: new Set()
+}
+
+const testPropLanguageTable = {
+    en: 'English'
+  }
+
+  const testPropPosTable = {
+    'ADJ': 'Adjective',
+    'N': 'Noun'
+  }
+
 global.ResizeObserver = require('resize-observer-polyfill')
 
 test('TextDisplayContainer without lines in displayedTextObject does not display anything', () => {
@@ -18,7 +50,8 @@ test('TextDisplayContainer without lines in displayedTextObject does not display
     props: {
       displayedTextObject: {
         lines: [null, null],
-        comparison: null
+        comparison: undefined,
+        usedTags: new Set()
         }
     },
 
@@ -31,28 +64,32 @@ test('TextDisplayContainer without lines in displayedTextObject does not display
 })
 
 
-test('TextDisplayContainer with identical lines in displayedTextObject displays these lines properly', () => {
+test('TextDisplayContainer with identical lines in displayedTextObject displays these lines properly in POS view', () => {
   const wrapper = mount(TextDisplayContainer, {
     props: {
-      displayedTextObject: {
-          lines: ['Identical line', 'Identical line'],
-          comparison: [['Identical line']]
-          }
+      displayedTextObject: testPropdisplayedTextObject,
+      languageTable: testPropLanguageTable,
+      posTable: testPropPosTable
     },
     global: {
       plugins: [vuetify]
     } 
   })
-  expect(true).toBe(true)
 
   expect(wrapper.find('div').exists()).toBe(true)
 
   const lines = wrapper.findAll('.displayed-texts')
 
-  expect(lines[0].text()).toMatch('Identical line')
-  expect(lines[1].text()).toMatch('Identical line')
+  expect(lines[0].text()).toMatch('Identical  line')
+  expect(lines[1].text()).toMatch('Identical  line')
 
-})
+  const posTags = wrapper.findAll('.pos-entry')
+  expect(posTags[0].text()).toMatch('Identical')
+  expect(posTags[1].text()).toMatch('line')
+  expect(posTags[2].text()).toMatch('Identical')
+  expect(posTags[3].text()).toMatch('line')
+
+}) 
 
 test('TextDisplayContainer with different lines in displayedTextObject displays these lines properly', () => {
   const wrapper = mount(TextDisplayContainer, {
