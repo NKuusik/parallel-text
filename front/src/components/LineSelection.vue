@@ -7,27 +7,26 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['updateSelectedLine'])
-const currentLine = ref(1)
 const prevButtonStyleRef = ref(false)
 const nextButtonStyleRef = ref(false)
 
 const chooseNextLine = () => {
-	if (currentLine.value < props.maxLines) {
-		currentLine.value++
+	if (store.currentLine < props.maxLines) {
+		store.currentLine++
 	} else {
-		currentLine.value = 1
+		store.currentLine = 1
 	}
 
-	emit('updateSelectedLine', currentLine.value)
+	emit('updateSelectedLine', store.currentLine)
 }
 
 const choosePreviousLine = () => {
-	if (currentLine.value > 1) {
-		currentLine.value--
+	if (store.currentLine > 1) {
+		store.currentLine--
 	} else {
-		currentLine.value = props.maxLines
+		store.currentLine = props.maxLines
 	}
-	emit('updateSelectedLine', currentLine.value)
+	emit('updateSelectedLine', store.currentLine)
 }
 
 const keyDownHandler = (event) => {
@@ -40,12 +39,12 @@ const keyDownHandler = (event) => {
 			chooseNextLine()
 		} else if (event.key === 'Enter') {
 
-			if (currentLine.value < 1) {
-				currentLine.value = 1
-			} else if (currentLine.value > props.maxLines) {
-				currentLine.value = props.maxLines
+			if (store.currentLine < 1) {
+				store.currentLine = 1
+			} else if (store.currentLine > props.maxLines) {
+				store.currentLine = props.maxLines
 			}
-			emit('updateSelectedLine', currentLine.value)
+			emit('updateSelectedLine', store.currentLine)
 		}
 	}
 };
@@ -74,7 +73,7 @@ const keyUpHandler = () => {
 
 <template>
     <div class="col-12">
-			<p>Currently on line {{currentLine}}/{{ maxLines }}</p>
+			<p>Currently on line {{store.currentLine}}/{{ maxLines }}</p>
 			<p>Choose the number of the line and press enter.</p>
 		</div>
 			
@@ -85,7 +84,7 @@ const keyUpHandler = () => {
 			</v-btn>
 			</div>
 			<div class="col-4">
-				<input :disabled="!store.isDataReceived" class="form-control text-center" id="input-form" type="number" v-model="currentLine">
+				<input :disabled="!store.isDataReceived" class="form-control text-center" id="input-form" type="number" v-model="store.currentLine">
 			</div>
 			<div class="col-4">
 				<v-btn class="button-universal" :class="{ 'active-button': nextButtonStyleRef }" :disabled="!store.isDataReceived" @click="chooseNextLine" append-icon="mdi-arrow-right" size="small">
