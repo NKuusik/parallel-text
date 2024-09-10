@@ -4,10 +4,9 @@ import NavBar from './components/NavBar.vue'
 import LineSelection from './components/LineSelection.vue'
 import MainText from './components/MainText.vue'
 import FileUploadForm from './components/FileUploadForm.vue'
-import * as tableData from './resources/table_data'
-import { readCSV } from './readCSVData'
+import { languageCodes } from './resources/languageCodes'
+import { posCodes } from './resources/posCodes'
 import { ref, nextTick, onMounted } from 'vue'
-import axios from 'axios'
 import { isNonAlphanumeric } from './utils/isNonAlphanumeric'
 
 const currentTexts = ref({
@@ -30,7 +29,7 @@ const currentlyDisplayedLines = ref({
 })
 const textDisplayContainer = ref(null)
 
-const languageTable = ref({})
+const languageTable = ref(languageCodes)
 const posTable = ref({})
 
 const handleSelectedLineChange = (lineNumber) => {
@@ -96,30 +95,13 @@ const scrollToBottom = () => {
 }
 
 onMounted(() => {
-	for (const table of Object.values(tableData)) {
-		axios.get(table)
-		.then((res) => {
-		return readCSV(res.data)
-		}).then((currentTabe) => {
-			const currentTableData = currentTabe.data
-			if (currentTableData[0][0] === 'lang') {
-				// Language codes start from third row.
-				for (const languageRow of currentTableData.slice(2)) {
-					languageTable.value[languageRow[0]] = languageRow[1]
-					}
-				}
-			else if (currentTableData[0][0] === 'pos') {
-				// PoS codes start from second row.
-				for (const posRow of currentTableData.slice(1)) {
-					posTable.value[posRow[0]] = {
-						name: posRow[1],
-						color: assignRandomColor()
-					}
-					}
-				}
-			})
+	Object.entries(posCodes).forEach(posEntry => {
+		posTable.value[posEntry[0]] = {
+			name: posEntry[1],
+			color: assignRandomColor()
 		}
 	})
+})
 
 </script>
 
