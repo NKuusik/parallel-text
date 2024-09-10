@@ -40,10 +40,8 @@ const handleSelectedLineChange = (lineNumber) => {
 		let pos_data_array = currentTexts.value[i]["text"]["pos"]
 		let pos_data = [];
 		if (pos_data_array) {
-			console.log(pos_data)
 			console.log(currentTexts.value[i]["text"]["pos"][lineNumber - 1])
 			pos_data = currentTexts.value[i]["text"]["pos"][lineNumber - 1]
-			console.log(pos_data)
 			if (pos_data) {
 				for (let entry of pos_data) {
 				if (!isNonAlphanumeric(entry[0]))

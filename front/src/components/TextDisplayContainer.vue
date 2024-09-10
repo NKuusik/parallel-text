@@ -104,17 +104,17 @@ onUpdated(() => {
 				</span>
 		</div>	
 		<div v-else v-for="text in displayedTextObject['lines']" v-bind:key="text" class='col-6 mb-4 displayed-texts'>
-			<span v-if="selectedFilterTypeRef===null">
-				<div>
-				{{ text['raw'] }}
-				</div>
-			</span>
-			<span v-else-if="selectedFilterTypeRef==='pos'">
+			<span v-if="selectedFilterTypeRef==='pos'">
 				<div>
 					<span v-for="tag in text['pos']" v-bind:key="tag" class="pos-entry" :style="{backgroundColor: provideTagColor(tag[1], tag[0])}">
 						<!-- Empty <span> maintains line-breaking whitespace. -->
 						{{ tag[0] }} <span></span>
 					</span>
+				</div>
+			</span>
+			<span v-else>
+				<div>
+				{{ text['raw'] }}
 				</div>
 			</span>
 		</div>
