@@ -163,7 +163,7 @@ test('Choosing comparison filter works properly', async () => {
   expect(lines[0].text()).toMatch('This is the first test text in comparison mode.');
   expect(lines[1].text()).toMatch('This is the second test text.');
 })
-/*
+
 test('Default to regular view with comparison filter if there is no comparison data', async () => {
   const wrapper = mount(TextDisplayContainer, {
     props: {
@@ -174,7 +174,7 @@ test('Default to regular view with comparison filter if there is no comparison d
         'Second line in regular view',
         [],
         [],
-        null,
+        undefined,
         new Set(['ADJ', 'N'])),
       languageTable: testPropLanguageTable,
       posTable: testPropPosTable
@@ -192,4 +192,33 @@ test('Default to regular view with comparison filter if there is no comparison d
   expect(lines[0].text()).toMatch('First line in regular view')
   expect(lines[1].text()).toMatch('Second line in regular view')
 })
-*/
+
+
+test('Disabling/enabling PoS filter depending on whether displayedTextObject contains English text', async () => {
+  const wrapper = mount(TextDisplayContainer, {
+    props: {
+      displayedTextObject: createTestDisplayedTextObject(
+        'et',
+        'fr',
+        'Eestikeelne tekst', 
+        'Bonjour',
+        [],
+        [],
+        [['Eestikeelne tekst', 'Bonjour']],
+        new Set()),
+      languageTable: testPropLanguageTable,
+      posTable: testPropPosTable
+    },
+    global: {
+      plugins: [vuetify]
+    } 
+  })
+
+  // As neither language supports PoS, default filter is 'diff'
+  await wrapper.vm.$nextTick()
+  expect(wrapper.vm.selectedFilterTypeRef).toBe('diff');
+
+  // After changing input text to English, default filter is 'pos'
+  await wrapper.setProps({displayedTextObject: createTestDisplayedTextObject()})
+  expect(wrapper.vm.selectedFilterTypeRef).toBe('pos');
+})
