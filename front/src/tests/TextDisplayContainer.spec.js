@@ -72,7 +72,7 @@ test('TextDisplayContainer without lines in displayedTextObject does not display
 })
 
 
-test('TextDisplayContainer with identical lines in displayedTextObject displays these lines properly in POS view', () => {
+test('TextDisplayContainer with identical lines in displayedTextObject displays these lines properly', async () => {
   const wrapper = mount(TextDisplayContainer, {
     props: {
       displayedTextObject: createTestDisplayedTextObject(),
@@ -83,11 +83,13 @@ test('TextDisplayContainer with identical lines in displayedTextObject displays 
       plugins: [vuetify]
     } 
   })
+  await wrapper.vm.$nextTick()
 
   const lines = wrapper.findAll('.displayed-texts')
   expect(lines[0].text()).toMatch('Identical  line')
   expect(lines[1].text()).toMatch('Identical  line')
 
+  expect(wrapper.vm.receivedFilterTypeRef).toBe('pos');
   const posTags = wrapper.findAll('.pos-entry')
 
   expect(posTags[2].text()).toMatch('Identical')
@@ -97,7 +99,7 @@ test('TextDisplayContainer with identical lines in displayedTextObject displays 
 
 }) 
 
-test('TextDisplayContainer with different lines in displayedTextObject displays these lines properly in POS view', () => {
+test('TextDisplayContainer with different lines in displayedTextObject displays these lines properly in POS view', async () => {
   const wrapper = mount(TextDisplayContainer, {
     props: {
       displayedTextObject: createTestDisplayedTextObject(
@@ -116,6 +118,8 @@ test('TextDisplayContainer with different lines in displayedTextObject displays 
       plugins: [vuetify]
     } 
   })
+
+  await wrapper.vm.$nextTick()
 
   const lines = wrapper.findAll('.displayed-texts')
   expect(lines[0].text()).toMatch('First  line')
@@ -145,7 +149,7 @@ test('Choosing comparison filter works properly', async () => {
   })
 
   // This is a way how to access component refs.
-  expect(wrapper.vm.selectedFilterTypeRef).toBe('pos');
+  expect(wrapper.vm.receivedFilterTypeRef).toBe('pos');
 
   let lines = wrapper.findAll('.displayed-texts');
   expect(lines[0].text()).toMatch('');
@@ -155,7 +159,7 @@ test('Choosing comparison filter works properly', async () => {
   expect(filterSelect.exists()).toBeTruthy();
 
   await filterSelect.vm.$emit('update:modelValue', 'diff');
-  expect(wrapper.vm.selectedFilterTypeRef).toBe('diff');
+  expect(wrapper.vm.receivedFilterTypeRef).toBe('diff');
   //await filterSelect.trigger('click')
   
   // Need to explicitly reassign in order to get updated values.
@@ -186,7 +190,7 @@ test('Default to regular view with comparison filter if there is no comparison d
 
   const filterSelect = wrapper.findComponent({name: 'VSelect'});
   await filterSelect.vm.$emit('update:modelValue', 'diff');
-  expect(wrapper.vm.selectedFilterTypeRef).toBe('diff');
+  expect(wrapper.vm.receivedFilterTypeRef).toBe('diff');
 
   const lines = wrapper.findAll('.displayed-texts')
   expect(lines[0].text()).toMatch('First line in regular view')
@@ -195,6 +199,7 @@ test('Default to regular view with comparison filter if there is no comparison d
 
 
 test('Disabling/enabling PoS filter depending on whether displayedTextObject contains English text', async () => {
+  
   const wrapper = mount(TextDisplayContainer, {
     props: {
       displayedTextObject: createTestDisplayedTextObject(
@@ -213,12 +218,16 @@ test('Disabling/enabling PoS filter depending on whether displayedTextObject con
       plugins: [vuetify]
     } 
   })
-
+ 
   // As neither language supports PoS, default filter is 'diff'
   await wrapper.vm.$nextTick()
-  expect(wrapper.vm.selectedFilterTypeRef).toBe('diff');
+
+  const filterSelectionForm = wrapper.findAllComponents({name: 'FilterSelectionForm'})
+  expect(filterSelectionForm[0].vm.selectedFilterTypeRef).toBe('diff');
+  expect(filterSelectionForm[0].vm.filterTypesRef.length).toBe(2);
 
   // After changing input text to English, default filter is 'pos'
   await wrapper.setProps({displayedTextObject: createTestDisplayedTextObject()})
-  expect(wrapper.vm.selectedFilterTypeRef).toBe('pos');
+  expect(filterSelectionForm[0].vm.selectedFilterTypeRef).toBe('pos')
+  expect(filterSelectionForm[0].vm.filterTypesRef.length).toBe(3);
 })

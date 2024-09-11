@@ -2,6 +2,7 @@
 
 import { ref, onUpdated } from 'vue'
 import { isNonAlphanumeric } from '../utils/isNonAlphanumeric';
+import FilterSelectionForm from './subcomponents/FilterSelectionForm.vue';
 
 const props = defineProps({
   displayedTextObject: Object,
@@ -9,25 +10,7 @@ const props = defineProps({
   posTable: Object
 })
 
-const compulsoryFilterTypes = 
-		[{
-			title: 'Highlight differences',
-			value: 'diff'
-		},
-		{
-			title: 'None',
-			value: null
-		}]
-
-const extendedFilterTypes = 
-		[{
-			title: 'Display Parts of Speech',
-			value: 'pos'
-		}].concat(compulsoryFilterTypes);
-
-const filterTypesRef = ref(extendedFilterTypes)
-
-const selectedFilterTypeRef = ref(filterTypesRef.value[0].value)
+const receivedFilterTypeRef = ref(null)
 
 const isNull = (value) => {
 	return value === null
@@ -44,43 +27,21 @@ const provideTagColor = (tagKey, tokenValue='default') => {
 	return 'transparent'
 }
 
-const isPosSupported = () => {
-	return (props.displayedTextObject['lines'][0]['language'] === 'en'
-			||
-			props.displayedTextObject['lines'][1]['language'] === 'en')
-	}
-
-onUpdated(() => {
-	// Changing refs onUpdated is risky business 
-	// which is why these conditions have to be strictly defined
-	// and mutually exclusive.
-	if(filterTypesRef.value.length === 3 && !isPosSupported()) {
-		filterTypesRef.value = compulsoryFilterTypes
-		selectedFilterTypeRef.value = filterTypesRef.value[0].value
-	} else if  (filterTypesRef.value.length === 2 && isPosSupported()) {
-		filterTypesRef.value = extendedFilterTypes
-		selectedFilterTypeRef.value = filterTypesRef.value[0].value
-	}
-})
+const handleFilterSelectionChange = (filterSelectionValue) => {
+	receivedFilterTypeRef.value = filterSelectionValue
+}
 
 </script>
 
 <template>
 	<div v-if="!displayedTextObject['lines'].every(isNull)" class="row mt-4">
-		<div>
-			<v-select
-				v-model="selectedFilterTypeRef"
-  				label="Filter"
-  				:items="filterTypesRef"
-  				variant="outlined">
-				<!-- Provides background color for selection -->
-				<template #prepend-item>
-					<v-card flat class="dropdown-selection" />
-          		</template>
-			</v-select>
-		</div>
+		<FilterSelectionForm 
+			:currentLanguages="[
+				displayedTextObject['lines'][0]['language'], 
+				displayedTextObject['lines'][1]['language']]" 
+			@updateFilterSelection="handleFilterSelectionChange" />		
 		<!-- PoS key explainer -->
-		<div v-if="selectedFilterTypeRef==='pos'">
+		<div v-if="receivedFilterTypeRef==='pos'">
 			<span v-for="tagKey of displayedTextObject['usedTags']" v-bind:key="tagKey" class="pos-entry" :style="{backgroundColor:provideTagColor(tagKey)}">
 				<span v-if="validatePoSTag(tagKey)">
 					<!-- Empty <span> maintains line-breaking whitespace. -->
@@ -90,10 +51,10 @@ onUpdated(() => {
 		</div>
 		<!-- Displayed texts -->
 		<div>
-			The languages are in {{ languageTable[displayedTextObject["lines"][0]["language"]] }} 
+			The texts are in {{ languageTable[displayedTextObject["lines"][0]["language"]] }} 
 			and {{ languageTable[displayedTextObject["lines"][1]["language"]] }}
 		</div>
-		<div v-if="selectedFilterTypeRef==='diff' && displayedTextObject['comparison'] !== undefined" v-for="i in 2" v-bind:key="i" class='col-6 mb-4 displayed-texts'>
+		<div v-if="receivedFilterTypeRef==='diff' && displayedTextObject['comparison'] !== undefined" v-for="i in 2" v-bind:key="i" class='col-6 mb-4 displayed-texts'>
 				<span v-for="allComparisons in displayedTextObject['comparison']" v-bind:key="allComparisons">
 					<span v-if="allComparisons.length == 1" class="identical-text">
 						{{allComparisons[0]}}
@@ -104,7 +65,7 @@ onUpdated(() => {
 				</span>
 		</div>	
 		<div v-else v-for="text in displayedTextObject['lines']" v-bind:key="text" class='col-6 mb-4 displayed-texts'>
-			<span v-if="selectedFilterTypeRef==='pos'">
+			<span v-if="receivedFilterTypeRef==='pos'">
 				<div>
 					<span v-for="tag in text['pos']" v-bind:key="tag" class="pos-entry" :style="{backgroundColor: provideTagColor(tag[1], tag[0])}">
 						<!-- Empty <span> maintains line-breaking whitespace. -->
