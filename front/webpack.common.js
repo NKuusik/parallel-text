@@ -42,6 +42,11 @@ module.exports = {
         ],
       },
       {
+        test: /\.csv$/,
+        loader: 'file-loader',
+        exclude: /node_modules/
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader'
       }

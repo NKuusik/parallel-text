@@ -37,9 +37,9 @@ class TextViewTestCase(TestCase):
         self.assertEqual(200, response.status_code)
         json_as_dict = json.loads(response.content)
         self.assertEqual(json_as_dict['first_file']['title'], 'file1.txt')
-        self.assertEqual(json_as_dict['first_file']['lines'], ['I am a test file 1'])
+        self.assertEqual(json_as_dict['first_file']['lines']["raw"], ['I am a test file 1'])
         self.assertEqual(json_as_dict['second_file']['title'], 'file2.txt')
-        self.assertEqual(json_as_dict['second_file']['lines'], ['I am a test file 2'])
+        self.assertEqual(json_as_dict['second_file']['lines']["raw"], ['I am a test file 2'])
 
     def test_invalid_data_posted_incorrect_file_extension(self):
         """

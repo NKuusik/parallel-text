@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import App from '../App.vue'
-import axios from 'axios';
+import axios from 'axios'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
@@ -13,11 +13,11 @@ const vuetify = createVuetify({
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
+
 test('Valid data functions correctly', async () => {
     // Resolves TypeError textDisplayContainer.value.$el.scrollIntoView is not a function
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
     vi.mock('axios')
-
 
     const firstTestFile = new File(
       ['This is the first test file.'], 
@@ -33,12 +33,31 @@ test('Valid data functions correctly', async () => {
       { data: {
         first_file: 
           { title: "First mocked text",
-            lines: ['First sentence in first text', 'Second sentence in first text']
+            language: "en",
+            lines: {
+              raw: ['First sentence in first text', 'Second sentence in first text'],
+              pos: [
+                    [
+                      ['some', 'KEY1'], ['PoS', 'KEY2'], ['value', 'KEY3'], 
+                      ['second', 'KEY4'],['line', 'KEY5'], ['values', 'KEY6']
+                    ]
+                  ]
+            },
           },
         second_file: 
         { title: "Second mocked text",
-          lines: ['First sentence in second text', 'Second sentence in second text']
+          language: "en",
+          lines: {
+            raw: ['First sentence in second text', 'Second sentence in second text'],
+            pos: [
+              [
+                ['some', 'KEY1'], ['PoS', 'KEY2'], ['value', 'KEY3'], 
+                ['second', 'KEY4'],['line', 'KEY5'], ['values', 'KEY6']
+              ]
+            ]
+          },
         },
+        comparison: [['Comparison for first line'], ['Comparison for second line']]
         } 
       }
       axios.post.mockResolvedValue(mockDataReceived)
@@ -74,6 +93,13 @@ test('Valid data functions correctly', async () => {
     await submitButton.trigger('submit')
   
     expect(lineText.text()).toMatch('Currently on line 1/2')
+
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY1'), 
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY2'), 
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY3'), 
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY4'), 
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY5'), 
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY6'), 
 
     vi.resetAllMocks()
 })
