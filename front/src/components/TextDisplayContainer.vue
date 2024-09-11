@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, onUpdated } from 'vue'
+import { ref } from 'vue'
 import { isNonAlphanumeric } from '../utils/isNonAlphanumeric';
 import FilterSelectionForm from './subcomponents/FilterSelectionForm.vue';
 

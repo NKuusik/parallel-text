@@ -8,6 +8,7 @@ import { languageCodes } from './resources/languageCodes'
 import { posCodes } from './resources/posCodes'
 import { ref, nextTick, onMounted } from 'vue'
 import { isNonAlphanumeric } from './utils/isNonAlphanumeric'
+import { assignRandomColor } from './utils/assignRandomColor'
 
 const currentTexts = ref({
 	0: {
@@ -75,17 +76,6 @@ const updateMaxText = (lineLists) => {
 		}
 	}
 	currentTexts.value['maxLines'] = highestValue
-}
-
-// Todo: move to utils
-const assignRandomColor = () => {
-	let colorCode = 0
-	// Excludes dark colors
-	while (colorCode < 5000000) {
-		colorCode = Math.floor(Math.random() * 16777215)
-	}
-      
-	return '#' + colorCode.toString(16);
 }
 
 const scrollToBottom = () => {
