@@ -36,7 +36,12 @@ test('Valid data functions correctly', async () => {
             language: "en",
             lines: {
               raw: ['First sentence in first text', 'Second sentence in first text'],
-              pos: null
+              pos: [
+                    [
+                      ['some', 'KEY1'], ['PoS', 'KEY2'], ['value', 'KEY3'], 
+                      ['second', 'KEY4'],['line', 'KEY5'], ['values', 'KEY6']
+                    ]
+                  ]
             },
           },
         second_file: 
@@ -44,7 +49,12 @@ test('Valid data functions correctly', async () => {
           language: "en",
           lines: {
             raw: ['First sentence in second text', 'Second sentence in second text'],
-            pos: null
+            pos: [
+              [
+                ['some', 'KEY1'], ['PoS', 'KEY2'], ['value', 'KEY3'], 
+                ['second', 'KEY4'],['line', 'KEY5'], ['values', 'KEY6']
+              ]
+            ]
           },
         },
         comparison: [['Comparison for first line'], ['Comparison for second line']]
@@ -83,6 +93,13 @@ test('Valid data functions correctly', async () => {
     await submitButton.trigger('submit')
   
     expect(lineText.text()).toMatch('Currently on line 1/2')
+
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY1'), 
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY2'), 
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY3'), 
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY4'), 
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY5'), 
+    expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY6'), 
 
     vi.resetAllMocks()
 })

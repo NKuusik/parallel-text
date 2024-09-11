@@ -3,7 +3,7 @@ import LineSelection from '../components/LineSelection.vue'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import { expect, describe, test, beforeEach, describe, it, afterEach } from 'vitest'
+import { expect, describe, test, beforeEach} from 'vitest'
 import { store } from '../store.js'
 
 const vuetify = createVuetify({
