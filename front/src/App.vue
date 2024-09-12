@@ -102,7 +102,7 @@ onMounted(() => {
 </script>
 
 <template>
-	<NavBar @aboutViewClick="toggleAboutView"/>
+	<NavBar :aboutViewStatus="toggleAboutViewRef" @aboutViewClick="toggleAboutView"/>
 <div class="container content-body">
 	<div v-if="!toggleAboutViewRef">
 		<MainText />

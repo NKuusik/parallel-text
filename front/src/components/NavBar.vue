@@ -2,6 +2,11 @@
 import { store } from '../store.js'
 import { ref, watch } from 'vue'
 
+
+const props = defineProps({
+	aboutViewStatus: Boolean
+})
+
 const exampleUseStyleRef = ref(false)
 
 watch(store, () => {
@@ -33,11 +38,13 @@ const handleAboutClick = () => {
 					
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<v-btn 
-						class="nav-link ml-auto button-universal" :class="{'example-use-active': exampleUseStyleRef}" 
+						class="nav-link ml-auto button-universal" 
+						:class="{'navbar-button-active': exampleUseStyleRef}" 
 						@click="handleExampleUseClick">Example use
 					</v-btn>
 					<v-btn 
 						class="nav-link ml-auto button-universal" 
+						:class="{'navbar-button-active': aboutViewStatus}"
 						@click="handleAboutClick">About
 					</v-btn>
 				</div>
