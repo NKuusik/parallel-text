@@ -4,6 +4,7 @@ import NavBar from './components/NavBar.vue'
 import LineSelection from './components/LineSelection.vue'
 import MainText from './components/MainText.vue'
 import FileUploadForm from './components/FileUploadForm.vue'
+import About from './components/About.vue'
 import { languageCodes } from './resources/languageCodes'
 import { posCodes } from './resources/posCodes'
 import { ref, nextTick, onMounted } from 'vue'
@@ -29,6 +30,7 @@ const currentlyDisplayedLines = ref({
 	usedTags: new Set()
 })
 const textDisplayContainer = ref(null)
+const toggleAboutViewRef = ref(false)
 
 const languageTable = ref(languageCodes)
 const posTable = ref({})
@@ -56,6 +58,10 @@ const handleSelectedLineChange = (lineNumber) => {
 		}
 	}
 	currentlyDisplayedLines.value['comparison'] = currentTexts.value['comparison'][lineNumber - 1]
+}
+
+const toggleAboutView = () => {
+	toggleAboutViewRef.value = !toggleAboutViewRef.value
 }
 
 const updateText = (receivedData) => {
@@ -96,14 +102,18 @@ onMounted(() => {
 </script>
 
 <template>
-	<NavBar />
+	<NavBar :aboutViewStatus="toggleAboutViewRef" @aboutViewClick="toggleAboutView"/>
 <div class="container content-body">
-	<div class="row">
+	<div v-if="!toggleAboutViewRef">
 		<MainText />
 		<FileUploadForm @receivedData="updateText"/>
 		<LineSelection :maxLines="currentTexts['maxLines']" @updateSelectedLine="handleSelectedLineChange"/>
-	</div>
-	<TextDisplayContainer ref="textDisplayContainer" :displayedTextObject=currentlyDisplayedLines 
+		<TextDisplayContainer ref="textDisplayContainer" :displayedTextObject=currentlyDisplayedLines 
 		:languageTable=languageTable :posTable=posTable />
+	</div>
+	<div v-else id="about-view">
+		<About/>
+	</div>
+
 </div>
 </template>

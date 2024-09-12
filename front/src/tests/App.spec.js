@@ -88,7 +88,7 @@ test('Valid data functions correctly', async () => {
     await wrapper.vm.$nextTick()
     await wrapper.vm.$nextTick()
 
-    const submitButton = wrapper.findAllComponents({name: 'VBtn'})[1]
+    const submitButton = wrapper.findAllComponents({name: 'VBtn'})[2]
     expect(submitButton.text()).toMatch('Submit')
     await submitButton.trigger('submit')
   
@@ -102,4 +102,32 @@ test('Valid data functions correctly', async () => {
     expect(wrapper.vm.currentlyDisplayedLines['usedTags']).toContain('KEY6'), 
 
     vi.resetAllMocks()
+})
+
+
+test('About view toggles correctly', async () => {
+  // Resolves TypeError textDisplayContainer.value.$el.scrollIntoView is not a function
+  window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
+
+const wrapper = mount(
+  App, 
+  {
+    global: {
+      plugins: [vuetify]
+  }
+  })
+  
+  expect(wrapper.vm.toggleAboutViewRef).toBe(false)
+  let headLineText = wrapper.find('h1')
+  expect(headLineText.text()).toMatch('Parallel text')
+
+  const aboutButton = wrapper.findAllComponents({name: 'VBtn'})[1]
+  expect(aboutButton.text()).toMatch('About')
+  await aboutButton.trigger('click')
+  expect(wrapper.vm.toggleAboutViewRef).toBe(true)
+
+  headLineText = wrapper.find('h1')
+  expect(headLineText.text()).toMatch('About')
+
 })

@@ -65,7 +65,7 @@ const handleFilterSelectionChange = (filterSelectionValue) => {
 				</span>
 		</div>	
 		<div v-else v-for="text in displayedTextObject['lines']" v-bind:key="text" class='col-6 mb-4 displayed-texts'>
-			<span v-if="receivedFilterTypeRef==='pos'">
+			<span v-if="receivedFilterTypeRef==='pos' && text['language'] === 'en'">
 				<div>
 					<span v-for="tag in text['pos']" v-bind:key="tag" class="pos-entry" :style="{backgroundColor: provideTagColor(tag[1], tag[0])}">
 						<!-- Empty <span> maintains line-breaking whitespace. -->
