@@ -12,11 +12,15 @@ watch(store, () => {
 	}
 })
 
+const emit = defineEmits(['aboutViewClick'])
+
 const handleExampleUseClick = () => {
 	store.toggleExampleUse()
 }
 
-
+const handleAboutClick = () => {
+	emit('aboutViewClick')
+}
 </script>
 
 <template>
@@ -31,6 +35,10 @@ const handleExampleUseClick = () => {
 					<v-btn 
 						class="nav-link ml-auto button-universal" :class="{'example-use-active': exampleUseStyleRef}" 
 						@click="handleExampleUseClick">Example use
+					</v-btn>
+					<v-btn 
+						class="nav-link ml-auto button-universal" 
+						@click="handleAboutClick">About
 					</v-btn>
 				</div>
 			</div>
