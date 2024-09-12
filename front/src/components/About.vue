@@ -40,6 +40,7 @@
             None
             <ul>
                 <li>no filter, simply display the two lines.</li>
+                <li>default mode if other filter is not available for a particular comparison.</li>
             </ul>
         </li>
         <li>

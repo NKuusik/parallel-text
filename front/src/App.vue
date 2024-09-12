@@ -30,7 +30,7 @@ const currentlyDisplayedLines = ref({
 	usedTags: new Set()
 })
 const textDisplayContainer = ref(null)
-const toggleAboutViewRef = ref(true)
+const toggleAboutViewRef = ref(false)
 
 const languageTable = ref(languageCodes)
 const posTable = ref({})
