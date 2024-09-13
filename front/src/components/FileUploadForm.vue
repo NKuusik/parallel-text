@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import axios from 'axios'
 import { store } from '../store.js'
 
@@ -48,13 +48,7 @@ const selectedSeparatorTypeRef = ref(separatorTypesRef.value[0].value)
 
 
 watch(store, () => {
-	if (store.exampleUse == true) {
-		firstFileRef.value = firstExampleText
-		secondFileRef.value = secondExampleText
-	} else {
-		firstFileRef.value = null
-		secondFileRef.value = null
-	}
+	loadExampleUseFiles()
 })
 
 const handleSubmit = () => {
@@ -135,6 +129,21 @@ const ruleFileTypeIsCorrect = (value) => {
 	}
 	return "Plain text file required."
 }
+
+const loadExampleUseFiles = () => {
+	if (store.exampleUse == true) {
+		firstFileRef.value = firstExampleText
+		secondFileRef.value = secondExampleText
+	} else {
+		firstFileRef.value = null
+		secondFileRef.value = null
+	}
+}
+
+onMounted(() => {
+	loadExampleUseFiles()
+})
+
 
 </script>
 
