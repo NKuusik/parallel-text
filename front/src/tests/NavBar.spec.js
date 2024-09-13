@@ -24,11 +24,11 @@ test('Test whether toggling example use button changes style of the button', asy
   const exampleUseButton = wrapper.findComponent({name: 'VBtn'})
   expect(exampleUseButton.text()).toMatch('Example use')
   expect(exampleUseButton.classes()).toContain('button-universal')  
-  expect(exampleUseButton.classes()).not.toContain('example-use-active')  
+  expect(exampleUseButton.classes()).not.toContain('navbar-button-active')  
 
   await exampleUseButton.trigger('click')
-  expect(exampleUseButton.classes()).toContain('example-use-active')  
+  expect(exampleUseButton.classes()).toContain('navbar-button-active')  
 
   await exampleUseButton.trigger('click')
-  expect(exampleUseButton.classes()).not.toContain('example-use-active')  
+  expect(exampleUseButton.classes()).not.toContain('navbar-button-active')
 })
