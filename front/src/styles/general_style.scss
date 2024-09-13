@@ -33,11 +33,6 @@ body	{
 	background: $container-background;
 }
 
-button:hover	{
-	background-color: $hover-color;
-	transition: background-color 1s;
-}
-
 .container  {
 	border-radius: $main-radius;
 	background: $container-background;
@@ -61,9 +56,11 @@ button:hover	{
 	color: $link-color;
 	border: 1px solid green;
 
-	&:hover{
-		background-color: $hover-color;
-		transition: 1s;
+	@media (hover: hover) {
+			&:hover{
+				background-color: $hover-color;
+				transition: 1s;
+			}
 	}
 
 	&:disabled {
